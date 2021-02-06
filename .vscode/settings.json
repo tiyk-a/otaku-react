@@ -1,0 +1,69 @@
+{
+    //---------------------------------------------
+    // VSCode設定
+    //---------------------------------------------
+    // エクスプローラの表示除外設定
+    "files.exclude": {
+      "**/.DS_Store": true
+    },
+    // 検索除外設定
+    "search.exclude": {
+      "**/node_modules": true
+    },
+    // 最終行に空行追加
+    "files.insertFinalNewline": true,
+    // インデントのカラー表示
+    "editor.highlightActiveIndentGuide": true,
+    // 制御文字を表示
+    "editor.renderControlCharacters": true,
+    // エディタレイアウトの保持
+    "workbench.editor.closeEmptyGroups": true,
+    // パンくずを表示
+    "breadcrumbs.enabled": true,
+    // 書式設定無しでテキストをコピー
+    "editor.copyWithSyntaxHighlighting": false,
+    // 整形はPrettierに任せるので標準の整形は無効化
+    "javascript.format.enable": false,
+    // .js 設定
+    "[javascript]": {
+      "editor.formatOnSave": true,
+      "editor.formatOnPaste": true,
+      // Save Action
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+      }
+    },
+    // .jsx 設定
+    "[javascriptreact]": {
+      "editor.formatOnSave": true,
+      "editor.formatOnPaste": true,
+      // Save Action
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+      }
+    },
+    // .ts 設定
+    "[typescript]": {
+      "editor.formatOnSave": true,
+      "editor.formatOnPaste": true,
+      // Save Action
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+      }
+    },
+    // .tsx 設定
+    "[typescriptreact]": {
+      "editor.formatOnSave": true,
+      "editor.formatOnPaste": true,
+      // Save Action
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+      }
+    },
+    // .json 設定
+    "[jsonc]": {
+      "editor.formatOnSave": true,
+      "editor.formatOnPaste": true
+    }
+  }
+  
