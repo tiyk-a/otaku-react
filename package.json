@@ -11,11 +11,11 @@
     "json-server": "^0.15.1",
     "material-ui-image": "^3.2.2",
     "react": "^16.10.2",
-    "react-cookie": "^4.0.1",
     "react-dom": "^16.10.2",
     "react-nl2br": "^0.6.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "@material-ui/x-license": "4.0.0-alpha.36"
   },
   "scripts": {
     "start": "react-scripts start",
