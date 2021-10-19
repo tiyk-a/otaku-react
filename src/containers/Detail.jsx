@@ -33,18 +33,20 @@ const Detail = () => {
 
   // 商品１件取得
   const getItem = () => {
+    console.log(id);
     axios
-      .get(ApiPath.ITEM.replace('$id', id))
+      .get("/posts?id=" + id)
       .then(response => {
-        const item = response.data;
+        const item = response.data[0];
         setItem({
           id: id,
           title: item.title,
-          description: item.description,
+          description: item.item_caption,
           price: item.price,
-          imagePath: item.imagePath,
+          imagePath: item.url,
         });
         setIsLoading(false);
+        console.log(item);
       })
       .catch(error => {});
   };
@@ -73,6 +75,7 @@ const Detail = () => {
         </div>
       ) : (
         <div>
+          <p>{item.title}</p>
           <Item item={item} />
           <div className="flexRowCenter">
             <Btn onClick={removeItem}>削除</Btn>

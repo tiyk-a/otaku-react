@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import ItemList from '../components/ItemList';
 import Loading from '../components/Loading';
-import { ApiPath } from '../constants';
+// import { ApiPath } from '../constants';
 
 /**
  * 商品全件取得（トップページ）のコンテナ
@@ -21,23 +21,24 @@ const All = () => {
   const getAllItems = async () => {
     const list = [];
     await axios
-      .get(ApiPath.ITEMS)
+      .get('/posts?from=300&to=320')
       .then(response => {
         const apiData = response.data;
+        console.log(response);
         apiData.forEach(targetItem => {
           const item = {
-            id: targetItem.id,
+            id: targetItem.item_id,
             title: targetItem.title,
-            description: targetItem.description,
+            description: targetItem.item_caption,
             price: targetItem.price,
-            imagePath: targetItem.imagePath,
+            imagePath: targetItem.url,
           };
           list.push(item);
         });
         setItemList(list);
         setIsLoading(false);
       })
-      .catch(error => {});
+      .catch(error => {console.log("koko")});
   };
 
   return (

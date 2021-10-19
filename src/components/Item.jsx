@@ -13,10 +13,12 @@ import { ApiPath } from '../constants';
  */
 const Item = ({ item }) => {
   const history = useHistory();
+  console.log("item no naka");
+  console.log(item);
   let imageUrl = '';
-  if (item.imagePath) {
-    imageUrl = `${ApiPath.API_ENDPOINT}${ApiPath.IMAGE}${item.imagePath}`;
-  }
+  // if (item.imagePath) {
+  //   imageUrl = `${ApiPath.API_ENDPOINT}${ApiPath.IMAGE}${item.imagePath}`;
+  // }
 
   const nl2br = require('react-nl2br');
 
@@ -30,7 +32,7 @@ const Item = ({ item }) => {
         <ul>
           <li className="textBoxTitle">
             <p>
-              <b>{item.title}</b>
+              <b>ここ{item.title}</b>
             </p>
           </li>
           <li className="textBox">

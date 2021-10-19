@@ -3,7 +3,7 @@ import styled from '@material-ui/styles/styled';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { ErrorImage } from '../components/Image';
-import { UserAuth } from '../constants';
+// import { UserAuth } from '../constants';
 
 /**
  * エラー画面描画のコンポーネント
@@ -18,9 +18,9 @@ const Error = styles => {
   const location = useLocation();
   const statusCode = location.state.status.replace(/\D/g, '');
 
-  const loginFunc = () => {
-    window.location.assign(UserAuth.PATH);
-  };
+  // const loginFunc = () => {
+  //   window.location.assign(UserAuth.PATH);
+  // };
 
   const jumpToNewItem = () => {
     window.location.assign('/new');
@@ -49,11 +49,11 @@ const Error = styles => {
           ) : null}
         </div>
       ) : null}
-      {statusCode === '401' ? (
+      {/* {statusCode === '401' ? (
         <Btn className="focusButton" onClick={loginFunc}>
           商品情報を閲覧するにはLOGINしてください
         </Btn>
-      ) : null}
+      ) : null} */}
     </div>
   );
 };

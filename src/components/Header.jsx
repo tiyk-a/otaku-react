@@ -2,7 +2,7 @@ import { AppBar } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import styled from '@material-ui/styles/styled';
 import React from 'react';
-import Login from '../containers/Login';
+// import Login from '../containers/Login';
 import Search from '../containers/Search';
 import history from '../history';
 
@@ -19,9 +19,9 @@ const Header = styles => {
   };
 
   // トップ画面に変遷
-  const toTop = () => {
-    history.push('/');
-  };
+  // const toTop = () => {
+  //   history.push('/');
+  // };
 
   // 新規商品作成画面に変遷
   const toNew = () => {
@@ -32,13 +32,13 @@ const Header = styles => {
     <HeaderBar>
       <div className="flexRowCenter">
         <NewItemIcon onClick={toNew} />
-        <a onClick={toTop}>
+        {/* <a onClick={toTop}>
           <p style={headerStyle}>MERCHANDISE RETRIEVAL SYSTEM</p>
-        </a>
+        </a> */}
       </div>
       <div className="flexRowCenter" style={headerStyle}>
         <Search />
-        <Login />
+        {/* <Login /> */}
       </div>
     </HeaderBar>
   );

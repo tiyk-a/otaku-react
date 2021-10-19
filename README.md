@@ -1,4 +1,6 @@
-# フロントエンド課題
+# OtakuinfoのAdmin用フロント画面
+~# フロントエンド課題~
+
 ## 使用した技術要素
 * react ^16.10.2
 * @material-ui/core ^4.5.1
@@ -24,8 +26,9 @@
 バージョンは「v11.6.0」を利用 - 参考記事 https://qiita.com/akakuro43/items/600e7e4695588ab2958d
 
 ##### 任意の階層でアプリケーションをBitbucketからクローン
+~$ git clone git@bitbucket.org:teamlabengineering/chiharu-front.git~
 ```
-$ git clone git@bitbucket.org:teamlabengineering/chiharu-front.git
+$ git clone git@github.com:tiyk-a/otaku-react.git
 ```
 
 ##### ディレクトリに移動

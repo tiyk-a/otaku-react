@@ -1,7 +1,7 @@
 import { Button, TextField } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
-import { Cookies } from 'react-cookie';
+// import { Cookies } from 'react-cookie';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import axios from '../axios';
 import { NotSelectedImage } from '../components/Image';
@@ -179,11 +179,11 @@ const ItemForm = () => {
   // 商品編集の場合の商品取得
   const findData = () => {
     axios
-      .get(apiUrl)
+      .get("/posts?id=" + id)
       .then(response => {
-        const item = response.data;
+        const item = response.data[0];
         setTitle(item.title);
-        setDescription(item.description);
+        setDescription(item.item_caption);
         setPrice(item.price);
         if (item.imagePath) {
           setImagePath(item.imagePath);
@@ -219,8 +219,8 @@ const ItemForm = () => {
 
   // 既存商品の更新
   const axiosItemPut = async (item, image) => {
-    const cookies = new Cookies();
-    const userToken = cookies.get('userToken');
+    // const cookies = new Cookies();
+    // const userToken = cookies.get('userToken');
     await axios
       .put(apiUrl, item)
       .then(response => {
