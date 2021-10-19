@@ -31,7 +31,6 @@ const All = () => {
             title: targetItem.title,
             description: targetItem.item_caption,
             price: targetItem.price,
-            imagePath: targetItem.url,
           };
           list.push(item);
         });

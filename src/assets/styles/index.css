@@ -2,7 +2,10 @@
 
 body {
   margin: 0;
-  background-color: #000000;
+  /* background-color: #000000; */
+  background: #9796f0;  /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  Chrome 10-25, Safari 5.1-6 */
+  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -10,7 +13,10 @@ body {
 
 html {
   /* background: "#EDBFC6"; */
-  background: #000000;
+  /* background: #000000; */
+  background: #9796f0;  /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  Chrome 10-25, Safari 5.1-6 */
+  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .displayFont {
@@ -37,18 +43,19 @@ ul, li {
   list-style: none;
   margin: 0;
   padding: 0;
-  margin: 10px 0;
+  /* margin: 10px 0; */
 }
 
 ul {
-  width: 25vw;
+  /* width: 25vw; */
+  display: flex;
 }
 
 .allItemsList {
-  display: flex;
+  /* display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: center; */
 }
 
 .itemContainer {
@@ -71,7 +78,9 @@ ul {
 
 .header {
   /* background-color: #FAFAFA; */
-  background-color: #000000;
+  background: #9796f0;  /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  Chrome 10-25, Safari 5.1-6 */
+  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -95,12 +104,16 @@ ul {
 
 .itemBox, .itemBoxL, .itemBoxLForm {
   /* background-color: #FAFAFA; */
-  background-color: #000000;
+  /* background-color: #000000; */
+  background: #9796f0;  /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  Chrome 10-25, Safari 5.1-6 */
+  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   color: white;
-  margin: 40px;
+  /* margin: 40px; */
   align-items: center;
-  padding: 50px 20px 30px 20px;
-  width: 30vw;
+  /* padding: 50px 20px 30px 20px; */
+  /* width: 30vw; */
   text-align: center;
   cursor: pointer;
 }
@@ -114,7 +127,10 @@ ul {
   width: 15vw;
   height: 15vh;
   /* background-color: white; */
-  background-color: #000000;
+  /* background-color: #000000; */
+  background: #9796f0;  /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  Chrome 10-25, Safari 5.1-6 */
+  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   text-align: center;
   margin: 0 auto;
   margin-bottom: 20px;
@@ -130,7 +146,7 @@ ul {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 60vw;
+  /* width: 60vw; */
   margin: 0 auto;
 }
 
@@ -191,7 +207,10 @@ textarea {
 
 .imageButton {
   /* background: white; */
-  background-color: #000000;
+  /* background-color: #000000; */
+  background: #9796f0;  /*fallback for old browsers*/
+  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  /* Chrome 10-25, Safari 5.1-6 */
+  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   height: 3vh;
   width: 15vh;
   box-shadow: 5px 5px 10px #666666;
@@ -210,15 +229,15 @@ p {
 
 .textBox {
   overflow: hidden;
-  width: 100%;
+  /* width: 100%; */
   text-align: left;
 }
 
 .textBoxTitle {
   overflow: hidden;
-  width: 100%;
+  /* width: 100%; */
   text-align: left;
-  font-size: 22px;
+  /* font-size: 22px; */
 }
 
 p b {
@@ -231,7 +250,7 @@ p b {
 }
 
 .price {
-  width: 100%;
+  /* width: 100%; */
   text-align: right;
   padding: 20px;
 }

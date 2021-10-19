@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/styles';
 import React from 'react';
-import { CookiesProvider } from 'react-cookie';
+// import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import App from './App';
@@ -15,13 +15,13 @@ const AppFunction = () => {
   const classes = useStyles();
 
   return (
-    <CookiesProvider>
+    // <CookiesProvider>
       <div className={classes.root}>
         <Router history={history}>
           <App />
         </Router>
       </div>
-    </CookiesProvider>
+    // </CookiesProvider>
   );
 };
 

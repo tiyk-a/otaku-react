@@ -33,7 +33,6 @@ const SearchResults = () => {
             title: target.title,
             description: target.description,
             price: target.price,
-            imagePath: target.imagePath,
           };
           list.push(item);
         });

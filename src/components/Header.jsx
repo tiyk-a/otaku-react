@@ -19,9 +19,9 @@ const Header = styles => {
   };
 
   // トップ画面に変遷
-  // const toTop = () => {
-  //   history.push('/');
-  // };
+  const toTop = () => {
+    history.push('/');
+  };
 
   // 新規商品作成画面に変遷
   const toNew = () => {
@@ -32,9 +32,9 @@ const Header = styles => {
     <HeaderBar>
       <div className="flexRowCenter">
         <NewItemIcon onClick={toNew} />
-        {/* <a onClick={toTop}>
+        <a onClick={toTop}>
           <p style={headerStyle}>MERCHANDISE RETRIEVAL SYSTEM</p>
-        </a> */}
+        </a>
       </div>
       <div className="flexRowCenter" style={headerStyle}>
         <Search />
@@ -50,7 +50,10 @@ const Header = styles => {
  */
 const HeaderBar = styled(AppBar)({
   width: '100%',
-  background: '#000000',
+  // background: '#000000',
+  background: '#9796f0',  /* fallback for old browsers */
+  background: '-webkit-linear-gradient(to right, #fbc7d4, #9796f0)',  /* Chrome 10-25, Safari 5.1-6 */
+  background: 'linear-gradient(to right, #fbc7d4, #9796f0)', /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   opacity: '0.9',
   height: '100px',
   flexDirection: 'row',

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 // import { Cookies } from 'react-cookie';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import axios from '../axios';
-import { NotSelectedImage } from '../components/Image';
 import { ApiPath } from '../constants';
 
 /**
@@ -13,7 +12,8 @@ import { ApiPath } from '../constants';
 const ItemForm = () => {
   // 商品のID
   const { id } = useParams();
-  const apiUrl = ApiPath.ITEM.replace('$id', id);
+  // const apiUrl = ApiPath.ITEM.replace('$id', id);
+  const apiUrl = "/save/$id";
 
   const history = useHistory();
 
@@ -24,10 +24,6 @@ const ItemForm = () => {
   const [description, setDescription] = useState('');
   // 商品価格のSTATE
   const [price, setPrice] = useState(0);
-  // 商品画像URLのSTATE
-  const [imagePath, setImagePath] = useState('');
-  // アップロード済み商品画像URLのSTATE
-  const [uploadedImagePath, setUploadedImagePath] = useState('');
 
   // 【商品各データ用のバリデーションメッセージSTATES】
   // 商品タイトルのバリデーションメッセージSTATE
@@ -36,8 +32,6 @@ const ItemForm = () => {
   const [maxLengthDescriptionMsg, setMaxLengthDescriptionMsg] = useState('');
   // 商品価格のバリデーションメッセージSTATE
   const [maxLengthPriceMsg, setMaxLengthPriceMsg] = useState('');
-  // 商品画像のバリデーションメッセージSTATE
-  const [imageValidationMsg, setImageValidationMsg] = useState('');
 
   // 【商品各データ用バリデーションSTATES】
   // 商品タイトルのバリデーションSTATE
@@ -47,13 +41,6 @@ const ItemForm = () => {
   // 商品価格のバリデーションSTATE
   const [validationPrice, setValidationPrice] = useState(false);
 
-  const acceptedImagePattern = new RegExp('^image/.{1,}$');
-  const acceptedImageExtensions = [
-    '^.{1,}.jpg$',
-    '^.{1,}.jpeg$',
-    '^.{1,}.png$',
-    '^.{1,}.gif$',
-  ];
   const createObjectURL =
     (window.URL || window.webkitURL).createObjectURL || window.createObjectURL;
 
@@ -67,7 +54,6 @@ const ItemForm = () => {
       setTitle('');
       setDescription('');
       setPrice('');
-      setImagePath('');
       setValidationTitle(false);
       setValidationDescription(false);
       setValidationPrice(false);
@@ -82,7 +68,6 @@ const ItemForm = () => {
     setTitle('');
     setDescription('');
     setPrice('');
-    setImagePath('');
   }, [location]);
 
   // 各要素が入力されたらSTATEをアップデート
@@ -104,25 +89,6 @@ const ItemForm = () => {
         break;
       default:
         break;
-    }
-  };
-
-  // 新しい画像ファイルがアップされたら反映
-  const onChangeImage = e => {
-    e.preventDefault();
-
-    // アップロードされた画像
-    const uploadedImage = e.target.files[0];
-    if (
-      acceptedImagePattern.exec(uploadedImage.type) &&
-      imagePath !== uploadedImage.name
-    ) {
-      setImagePath(uploadedImage);
-      setUploadedImagePath(createObjectURL(uploadedImage));
-    } else {
-      window.alert('画像ファイルを指定してください');
-      setImageValidationMsg('画像ファイルを指定してください');
-      setImagePath('');
     }
   };
 
@@ -163,19 +129,6 @@ const ItemForm = () => {
     }
   };
 
-  // 画像のputを行うかどうか判断
-  const patchImageJudger = () => {
-    let patchFlag = false;
-    if (imagePath && imagePath.name) {
-      acceptedImageExtensions.forEach(regex => {
-        if (new RegExp(regex).exec(imagePath.name) && patchFlag === false) {
-          patchFlag = true;
-        }
-      });
-    }
-    return patchFlag ? true : false;
-  };
-
   // 商品編集の場合の商品取得
   const findData = () => {
     axios
@@ -185,60 +138,28 @@ const ItemForm = () => {
         setTitle(item.title);
         setDescription(item.item_caption);
         setPrice(item.price);
-        if (item.imagePath) {
-          setImagePath(item.imagePath);
-        }
       })
       .catch(error => {});
   };
 
   // 新規商品登録のpostを行う
-  const axiosItemPost = async (item, image) => {
+  const axiosItemPost = async (item) => {
     await axios
+      // .post(ApiPath.ITEMS, item)
       .post(ApiPath.ITEMS, item)
       .then(response => {
-        // 画像のpatchが必要ならばpatch
-        if (patchImageJudger()) {
-          axios
-            .patch(ApiPath.ITEM_IMAGE.replace('$id', response.data.id), image, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            })
-            .then(response => {
-              history.push('/');
-            })
-            .catch(error => {});
-        } else {
-          history.push('/');
-        }
+        history.push('/');
         clearItemStates();
       })
       .catch(error => {});
   };
 
   // 既存商品の更新
-  const axiosItemPut = async (item, image) => {
-    // const cookies = new Cookies();
-    // const userToken = cookies.get('userToken');
+  const axiosItemPut = async (item) => {
     await axios
       .put(apiUrl, item)
       .then(response => {
-        // 画像のpatchが必要ならばpatch
-        if (patchImageJudger()) {
-          axios
-            .patch(ApiPath.ITEM_IMAGE.replace('$id', id), image, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            })
-            .then(response => {
-              history.push('/');
-            })
-            .catch(error => {});
-        } else {
-          history.push('/');
-        }
+        history.push('/');
         clearItemStates();
       })
       .catch(error => {});
@@ -249,7 +170,6 @@ const ItemForm = () => {
     setTitle('');
     setPrice('');
     setDescription('');
-    setImagePath('');
   };
 
   // 商品追加
@@ -257,12 +177,6 @@ const ItemForm = () => {
     checkTitle(title);
     checkDescription(description);
     checkPriceInput(price);
-
-    // 商品画像
-    const image = new FormData();
-    if (imagePath) {
-      image.append('image', imagePath);
-    }
 
     // バリデーションを確認
     if (validationTitle && validationDescription && validationPrice) {
@@ -273,40 +187,25 @@ const ItemForm = () => {
           title,
           description,
           price,
-          imagePath,
         };
-        axiosItemPost(item, image);
+        axiosItemPost(item);
       } else {
         item = {
           title: title,
           price: price,
           description: description,
-          imagePath: imagePath,
         };
-        axiosItemPut(item, image);
+        axiosItemPut(item);
       }
     } else {
       window.alert('入力値を確認してください');
     }
   };
-  const itemImage = imagePath
-    ? `${ApiPath.API_ENDPOINT}${ApiPath.IMAGE}${imagePath}`
-    : NotSelectedImage.path;
 
   return (
     <div>
       <div className="newItemForm">
         <h2>新規商品登録</h2>
-        {uploadedImagePath ? (
-          <img src={uploadedImagePath} alt="アップロード済み商品画像" />
-        ) : (
-          <div>
-            {id !== undefined && itemImage ? (
-              <img src={itemImage} alt="商品画像" />
-            ) : null}
-          </div>
-        )}
-        <br />
         <p>
           <b>商品名</b>
         </p>
@@ -354,9 +253,6 @@ const ItemForm = () => {
         />
         <p>{price.length}</p>
         <br />
-        <br />
-        <Field type="file" name="imagePath" onChange={onChangeImage} />
-        <p>{imageValidationMsg}</p>
         {id ? (
           <Btn onClick={addItem}>Update</Btn>
         ) : (

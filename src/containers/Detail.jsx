@@ -19,7 +19,6 @@ const Detail = () => {
     title: '',
     description: '',
     price: 0,
-    imagePath: '',
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -43,7 +42,6 @@ const Detail = () => {
           title: item.title,
           description: item.item_caption,
           price: item.price,
-          imagePath: item.url,
         });
         setIsLoading(false);
         console.log(item);
@@ -75,7 +73,6 @@ const Detail = () => {
         </div>
       ) : (
         <div>
-          <p>{item.title}</p>
           <Item item={item} />
           <div className="flexRowCenter">
             <Btn onClick={removeItem}>削除</Btn>
