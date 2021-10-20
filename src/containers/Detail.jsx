@@ -34,7 +34,7 @@ const Detail = () => {
   const getItem = () => {
     console.log(id);
     axios
-      .get("/posts?id=" + id)
+      .get(ApiPath.IM + id)
       .then(response => {
         const item = response.data[0];
         setItem({

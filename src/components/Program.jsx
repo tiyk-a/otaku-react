@@ -5,18 +5,18 @@ import { useHistory } from 'react-router-dom';
 import { ApiPath } from '../constants';
 
 /**
- *　商品１件を表示するコンポーネント
+ *　TV１件を表示するコンポーネント
  *
- * @param {object} item
+ * @param {object} program
  * @returns jsx
  */
-const Item = ({ item }) => {
+const Program = ({ program }) => {
   const history = useHistory();
 
   const nl2br = require('react-nl2br');
 
   // 編集ページに変遷
-  const detailItem = () => history.push(`/edit/${item.id}`);
+  const detailItem = () => history.push(`/edit/${program.id}`);
 
   return (
     <div className="itemContainer" onClick={detailItem}>
@@ -24,15 +24,15 @@ const Item = ({ item }) => {
         <ul>
           <li className="textBoxTitle">
             <p>
-              <b>{item.title}</b>
+              <b>{program.title}</b>
             </p>
           </li>
           <li className="textBox">
-            <p>{nl2br(item.description)}</p>
+            <p>{nl2br(program.description)}</p>
           </li>
           <li className="price">
             <p>
-              <b>{item.price}</b>&nbsp;yen
+              <b>{program.on_air_date}</b>
             </p>
           </li>
         </ul>
@@ -49,4 +49,4 @@ const Text = styled(Box)({
   padding: '10px',
 });
 
-export default Item;
+export default Program;

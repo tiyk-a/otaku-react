@@ -1,7 +1,6 @@
 import { Button, TextField } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
-// import { Cookies } from 'react-cookie';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import axios from '../axios';
 import { ApiPath } from '../constants';
@@ -132,7 +131,7 @@ const ItemForm = () => {
   // 商品編集の場合の商品取得
   const findData = () => {
     axios
-      .get("/posts?id=" + id)
+      .get(ApiPath.IM + id)
       .then(response => {
         const item = response.data[0];
         setTitle(item.title);
@@ -146,7 +145,7 @@ const ItemForm = () => {
   const axiosItemPost = async (item) => {
     await axios
       // .post(ApiPath.ITEMS, item)
-      .post(ApiPath.ITEMS, item)
+      .post(ApiPath.IM, item)
       .then(response => {
         history.push('/');
         clearItemStates();
@@ -157,7 +156,7 @@ const ItemForm = () => {
   // 既存商品の更新
   const axiosItemPut = async (item) => {
     await axios
-      .put(apiUrl, item)
+      .put(ApiPath.IM + id, item)
       .then(response => {
         history.push('/');
         clearItemStates();
