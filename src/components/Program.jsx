@@ -17,10 +17,10 @@ const Program = ({ program }) => {
   const nl2br = require('react-nl2br');
 
   // 編集ページに変遷
-  const detailItem = () => history.push(`/edit/${program.id}`);
+  const editTv = () => history.push(`/tv/edit/${program.id}`);
 
   return (
-    <div className="itemContainer" onClick={detailItem}>
+    <div className="itemContainer" onClick={editTv}>
       <Text>
         <ul>
           <li>{date}</li>

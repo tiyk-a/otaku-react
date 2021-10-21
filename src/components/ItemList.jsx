@@ -8,6 +8,7 @@ import Item from '../components/Item';
  * @returns jsx
  */
 const ItemList = (itemList) => {
+  console.log(itemList);
   return (
     <div className="allItemsList">
       <h2>ItemMaster</h2>

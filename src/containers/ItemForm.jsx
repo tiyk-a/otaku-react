@@ -11,9 +11,7 @@ import { ApiPath } from '../constants';
 const ItemForm = () => {
   // 商品のID
   const { id } = useParams();
-  // const apiUrl = ApiPath.ITEM.replace('$id', id);
-  const apiUrl = "/save/$id";
-
+  
   const history = useHistory();
 
   // 【商品データ用のSTATES】
@@ -23,22 +21,8 @@ const ItemForm = () => {
   const [description, setDescription] = useState('');
   // 商品価格のSTATE
   const [price, setPrice] = useState(0);
-
-  // 【商品各データ用のバリデーションメッセージSTATES】
-  // 商品タイトルのバリデーションメッセージSTATE
-  const [maxLengthTitleMsg, setMaxLengthTitleMsg] = useState('');
-  // 商品説明文のバリデーションメッセージSTATE
-  const [maxLengthDescriptionMsg, setMaxLengthDescriptionMsg] = useState('');
-  // 商品価格のバリデーションメッセージSTATE
-  const [maxLengthPriceMsg, setMaxLengthPriceMsg] = useState('');
-
-  // 【商品各データ用バリデーションSTATES】
-  // 商品タイトルのバリデーションSTATE
-  const [validationTitle, setValidationTitle] = useState(false);
-  // 商品説明文のバリデーションSTATE
-  const [validationDescription, setValidationDescription] = useState(false);
-  // 商品価格のバリデーションSTATE
-  const [validationPrice, setValidationPrice] = useState(false);
+  // 発売日のSTATE
+  const [date, setDate] = useState('');
 
   const createObjectURL =
     (window.URL || window.webkitURL).createObjectURL || window.createObjectURL;
@@ -46,16 +30,11 @@ const ItemForm = () => {
   useEffect(() => {
     if (id) {
       findData();
-      setValidationTitle(true);
-      setValidationDescription(true);
-      setValidationPrice(true);
     } else {
       setTitle('');
       setDescription('');
       setPrice('');
-      setValidationTitle(false);
-      setValidationDescription(false);
-      setValidationPrice(false);
+      setDate('');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -67,6 +46,7 @@ const ItemForm = () => {
     setTitle('');
     setDescription('');
     setPrice('');
+    setDate('');
   }, [location]);
 
   // 各要素が入力されたらSTATEをアップデート
@@ -75,56 +55,18 @@ const ItemForm = () => {
 
     switch (e.target.name) {
       case 'title':
-        checkTitle(txt);
         setTitle(txt);
         break;
       case 'description':
-        checkDescription(txt);
         setDescription(txt);
         break;
       case 'price':
-        checkPriceInput(txt);
         setPrice(txt);
         break;
+      case 'date':
+        setDate(txt);
       default:
         break;
-    }
-  };
-
-  // Priceへの入力が有効か確認
-  const checkPriceInput = txt => {
-    if (!isNaN(txt)) {
-      // 引数が数字である
-      if (txt > 0 && txt < 10000000) {
-        setValidationPrice(true);
-      } else {
-        setMaxLengthPriceMsg('価格は0円以上10000000(1千万)以下で指定してね！');
-        setValidationPrice(false);
-      }
-    } else {
-      // 引数が数字ではない
-      setMaxLengthPriceMsg('数字を入れてね');
-      setValidationPrice(false);
-    }
-  };
-
-  //Titleに入力された文字が有効か確認
-  const checkTitle = txt => {
-    if (txt.length > 0 && txt.length < 101) {
-      setValidationTitle(true);
-    } else {
-      setMaxLengthTitleMsg('商品タイトルは100文字以内で入力してください');
-      setValidationTitle(false);
-    }
-  };
-
-  //Descriptionに入力された文字が有効か確認
-  const checkDescription = txt => {
-    if (txt.length > 0 && txt.length < 501) {
-      setValidationDescription(true);
-    } else {
-      setMaxLengthDescriptionMsg('商品説明は500文字以内で入力してください');
-      setValidationDescription(false);
     }
   };
 
@@ -133,10 +75,12 @@ const ItemForm = () => {
     axios
       .get(ApiPath.IM + id)
       .then(response => {
-        const item = response.data[0];
+        console.log(response);
+        const item = response.data;
         setTitle(item.title);
         setDescription(item.item_caption);
         setPrice(item.price);
+        setDate(item.publication_date);
       })
       .catch(error => {});
   };
@@ -172,32 +116,11 @@ const ItemForm = () => {
   };
 
   // 商品追加
-  const addItem = async () => {
-    checkTitle(title);
-    checkDescription(description);
-    checkPriceInput(price);
-
-    // バリデーションを確認
-    if (validationTitle && validationDescription && validationPrice) {
-      let item = {};
-      if (!id) {
-        item = {
-          id: '',
-          title,
-          description,
-          price,
-        };
-        axiosItemPost(item);
-      } else {
-        item = {
-          title: title,
-          price: price,
-          description: description,
-        };
-        axiosItemPut(item);
-      }
+  const addItem = async (item) => {
+    if (id !== undefined) {
+      axiosItemPost(item);
     } else {
-      window.alert('入力値を確認してください');
+      axiosItemPut(item);
     }
   };
 
@@ -214,9 +137,7 @@ const ItemForm = () => {
           label="商品名"
           value={title}
           onChange={handleChange}
-          helperText={maxLengthTitleMsg}
           fullWidth={true}
-          placeholder="商品名は100文字以内で入力してください"
         />
         <p>{title.length}</p>
         <br />
@@ -229,12 +150,10 @@ const ItemForm = () => {
           label="商品説明文"
           value={description}
           onChange={handleChange}
-          helperText={maxLengthDescriptionMsg}
           fullWidth={true}
           multiline={true}
           rows={3}
           rowsMax={5}
-          placeholder="商品説明文は500文字以内で入力してください"
         />
         <p>{description.length}</p>
         <br />
@@ -247,10 +166,15 @@ const ItemForm = () => {
           label="商品価格"
           value={price}
           onChange={handleChange}
-          helperText={maxLengthPriceMsg}
-          placeholder="0〜１千万円で入力"
         />
-        <p>{price.length}</p>
+        <br />
+        <Field
+          required
+          name="date"
+          label="発売日"
+          value={date}
+          onChange={handleChange}
+        />
         <br />
         {id ? (
           <Btn onClick={addItem}>Update</Btn>

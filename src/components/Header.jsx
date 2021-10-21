@@ -3,7 +3,6 @@ import { Button } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import styled from '@material-ui/styles/styled';
 import React from 'react';
-// import Login from '../containers/Login';
 import Search from '../containers/Search';
 import history from '../history';
 
@@ -47,6 +46,12 @@ const Header = styles => {
     history.push(url);
   };
 
+  // マスター商品画面に変遷
+  const linkTeam = () => {
+    const url = `/team/`;
+    history.push(url);
+  };
+
   return (
     <HeaderBar>
       <div className="flexRowCenter">
@@ -59,7 +64,7 @@ const Header = styles => {
         <Btn onClick={linkIm}>マスター商品</Btn>
         <Btn onClick={linkTv}>TV</Btn>
         <Btn onClick={linkTw}>Twitter</Btn>
-        <Btn onClick={linkTw}>TMP</Btn>
+        <Btn onClick={linkTeam}>Team</Btn>
         <Btn onClick={linkTw}>TMP</Btn>
         <Btn onClick={linkTw}>TMP</Btn>
         <Btn onClick={linkTw}>TMP</Btn>

@@ -6,9 +6,11 @@ import Error from './components/Error';
 import Header from './components/Header';
 import All from './containers/All';
 import Tv from './containers/Tv';
+import Team from './containers/Team';
 import Twitter from './containers/Twitter';
 import Detail from './containers/Detail';
 import ItemForm from './containers/ItemForm';
+import TvForm from './containers/TvForm';
 import SearchResults from './containers/SearchResults';
 
 /**
@@ -64,6 +66,9 @@ class App extends Component {
           <Route exact path="/">
             <All />
           </Route>
+          <Route exact path="/team">
+            <Team />
+          </Route>
           <Route exact path="/tv">
             <Tv />
           </Route>
@@ -81,6 +86,9 @@ class App extends Component {
           </Route>
           <Route exact path="/edit/:id">
             <ItemForm />
+          </Route>
+          <Route exact path="/tv/edit/:id">
+            <TvForm />
           </Route>
           <Route exact path="/error/">
             <Error styles={styles} />

@@ -22,7 +22,7 @@ const All = () => {
   const getAllTv = async () => {
     const list = [];
     await axios
-      .get(ApiPath.TV)
+      .get(ApiPath.TV + '?page=15')
       .then(response => {
         const apiData = response.data;
         console.log(response);
