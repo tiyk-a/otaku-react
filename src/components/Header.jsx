@@ -1,4 +1,5 @@
 import { AppBar } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import styled from '@material-ui/styles/styled';
 import React from 'react';
@@ -28,6 +29,24 @@ const Header = styles => {
     history.push('/new');
   };
 
+  // マスター商品画面に変遷
+  const linkIm = () => {
+    const url = `/`;
+    history.push(url);
+  };
+
+  // TV画面に変遷
+  const linkTv = () => {
+    const url = `/tv/`;
+    history.push(url);
+  };
+
+  // マスター商品画面に変遷
+  const linkTw = () => {
+    const url = `/tw/`;
+    history.push(url);
+  };
+
   return (
     <HeaderBar>
       <div className="flexRowCenter">
@@ -35,6 +54,17 @@ const Header = styles => {
         <a onClick={toTop}>
           <p style={headerStyle}>MERCHANDISE RETRIEVAL SYSTEM</p>
         </a>
+      </div>
+      <div>
+        <Btn onClick={linkIm}>マスター商品</Btn>
+        <Btn onClick={linkTv}>TV</Btn>
+        <Btn onClick={linkTw}>Twitter</Btn>
+        <Btn onClick={linkTw}>TMP</Btn>
+        <Btn onClick={linkTw}>TMP</Btn>
+        <Btn onClick={linkTw}>TMP</Btn>
+        <Btn onClick={linkTw}>TMP</Btn>
+        <Btn onClick={linkTw}>TMP</Btn>
+        <Btn onClick={linkTw}>TMP</Btn>
       </div>
       <div className="flexRowCenter" style={headerStyle}>
         <Search />
@@ -74,6 +104,16 @@ const NewItemIcon = styled(CreateIcon)({
     opacity: '0.5',
     transition: 'opacity 0.5s',
   },
+});
+
+/**
+ * UI(ボタン)
+ */
+const Btn = styled(Button)({
+  marginLeft: '26px',
+  background: 'linear-gradient(to right bottom, #db36a4, #f7ff00)',
+  margin: '10px 0',
+  color: 'white',
 });
 
 export default Header;

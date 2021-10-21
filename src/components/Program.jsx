@@ -2,7 +2,6 @@ import { Box } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { ApiPath } from '../constants';
 
 /**
  *　TV１件を表示するコンポーネント
@@ -12,6 +11,8 @@ import { ApiPath } from '../constants';
  */
 const Program = ({ program }) => {
   const history = useHistory();
+  const moment = require("moment");
+  const date = moment(program.date).format('YYYY-MM-DD');
 
   const nl2br = require('react-nl2br');
 
@@ -22,6 +23,7 @@ const Program = ({ program }) => {
     <div className="itemContainer" onClick={detailItem}>
       <Text>
         <ul>
+          <li>{date}</li>
           <li className="textBoxTitle">
             <p>
               <b>{program.title}</b>
@@ -32,7 +34,7 @@ const Program = ({ program }) => {
           </li>
           <li className="price">
             <p>
-              <b>{program.on_air_date}</b>
+              <b>{program.price}</b>
             </p>
           </li>
         </ul>

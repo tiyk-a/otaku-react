@@ -2,7 +2,6 @@ import { Box } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { ApiPath } from '../constants';
 
 /**
  *　商品１件を表示するコンポーネント
@@ -12,6 +11,8 @@ import { ApiPath } from '../constants';
  */
 const Item = ({ item }) => {
   const history = useHistory();
+  const moment = require("moment");
+  const date = moment(item.pubDate).format('YYYY-MM-DD');
 
   const nl2br = require('react-nl2br');
 
@@ -22,6 +23,8 @@ const Item = ({ item }) => {
     <div className="itemContainer" onClick={detailItem}>
       <Text>
         <ul>
+          <li>{date}</li>
+          {/* <li>{item.id}</li> */}
           <li className="textBoxTitle">
             <p>
               <b>{item.title}</b>

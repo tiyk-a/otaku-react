@@ -5,6 +5,8 @@ import { Route, Switch } from 'react-router-dom';
 import Error from './components/Error';
 import Header from './components/Header';
 import All from './containers/All';
+import Tv from './containers/Tv';
+import Twitter from './containers/Twitter';
 import Detail from './containers/Detail';
 import ItemForm from './containers/ItemForm';
 import SearchResults from './containers/SearchResults';
@@ -61,6 +63,12 @@ class App extends Component {
         <Switch>
           <Route exact path="/">
             <All />
+          </Route>
+          <Route exact path="/tv">
+            <Tv />
+          </Route>
+          <Route exact path="/tw">
+            <Twitter />
           </Route>
           <Route path="/search">
             <SearchResults />

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
-import ItemList from '../components/ItemList';
 import Loading from '../components/Loading';
+import TvList from '../components/TvList';
 import { ApiPath } from '../constants';
 
 /**
@@ -9,44 +9,37 @@ import { ApiPath } from '../constants';
  *
  */
 const All = () => {
-  // 商品一覧リストのSTATES
-  const [itemList, setItemList] = useState([]);
+  // TV一覧リストのSTATES
+  const [tvList, setTvList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // const imList = getAllItems();
-    // const tvList = getAllTv();
-    // const data = {
-    //   'imList': imList,
-    //   'tvList': tvList,
-    // }
-    getAllItems();
+    getAllTv();
     setIsLoading(false);
   }, []);
 
-  // 商品全件取得
-  const getAllItems = async () => {
+  // TV全件取得
+  const getAllTv = async () => {
     const list = [];
     await axios
-      .get(ApiPath.IM)
+      .get(ApiPath.TV)
       .then(response => {
         const apiData = response.data;
-        // console.log(response);
+        console.log(response);
         apiData.forEach(targetItem => {
-          const item = {
-            id: targetItem.item_m_id,
+          const program = {
+            id: targetItem.program_id,
             title: targetItem.title,
-            description: targetItem.item_caption,
-            price: targetItem.price,
-            pubDate: targetItem.publication_date,
+            description: targetItem.description,
+            date: targetItem.on_air_date,
           };
-          list.push(item);
+          list.push(program);
         });
-        setItemList(list);
-        console.log(itemList);
+        setTvList(list);
+        console.log(tvList);
         // setIsLoading(false);
       })
-      .catch(error => {console.log("IM koko")});
+      .catch(error => {console.log("TV koko")});
   };
 
   return (
@@ -57,7 +50,7 @@ const All = () => {
         </div>
       ) : (
         <div>
-          <ItemList itemList={itemList} />
+          <TvList tvList={tvList} />
         </div>
       )}
     </div>

@@ -1,6 +1,5 @@
 import React from 'react';
 import Item from '../components/Item';
-import Program from '../components/Program';
 
 /**
  *商品リストコンポーネント
@@ -8,12 +7,12 @@ import Program from '../components/Program';
  * @param {array} itemList
  * @returns jsx
  */
-const ItemList = ({itemList, tvList}) => {
-  console.log(itemList[0]);
+const ItemList = (itemList) => {
   return (
     <div className="allItemsList">
-      {itemList !== undefined && itemList.length > 0 ? (
-        itemList.map((e, index) => (
+      <h2>ItemMaster</h2>
+      {itemList.itemList !== undefined && itemList.itemList.length > 0 ? (
+        itemList.itemList.map((e, index) => (
           <div className="itemBox" key={index}>
             <Item item={e} />
           </div>
@@ -21,19 +20,6 @@ const ItemList = ({itemList, tvList}) => {
       ) : (
         <div>
           <h1>IMデータが見つかりませんでした:(</h1>
-          <a href="/new">新しく商品を登録する？</a>
-        </div>
-      )}
-      {tvList !== undefined && tvList.length > 0 ? (
-        tvList.map((e, index) => (
-          <div className="itemBox" key={index}>
-            <p>{e.title}</p>
-            <Program program={e} />
-          </div>
-        ))
-      ) : (
-        <div>
-          <h1>TVデータが見つかりませんでした:(</h1>
           <a href="/new">新しく商品を登録する？</a>
         </div>
       )}

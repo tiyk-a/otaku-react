@@ -42,7 +42,7 @@ a:hover, .displayFont:hover {
 ul, li {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 10px;
   /* margin: 10px 0; */
 }
 
@@ -231,9 +231,15 @@ p {
   overflow: hidden;
   /* width: 100%; */
   text-align: left;
+  flex-basis:  auto;
+}
+
+ul li:nth-child(1){
+  flex-basis:  50px;
 }
 
 .textBoxTitle {
+  flex-basis:  200px;
   overflow: hidden;
   /* width: 100%; */
   text-align: left;
@@ -252,7 +258,8 @@ p b {
 .price {
   /* width: 100%; */
   text-align: right;
-  padding: 20px;
+  /* padding: 20px; */
+  flex-basis:  100px;
 }
 
 
