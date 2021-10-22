@@ -18,14 +18,10 @@ const Item = ({ item, teamId }) => {
   const moment = require("moment");
   const date = moment(item.pubDate).format('YYYY-MM-DD');
   const [id, setId] = useState('');
-  // const [teamId, setTeamId] = useState('');
   const [intoId, setIntoId] = useState('');
 
   useEffect(() => {
-    console.log(item);
-    console.log(teamId);
     setId(item.id);
-    // setTeamId(teamId);
   }, []);
 
   const nl2br = require('react-nl2br');
@@ -34,16 +30,13 @@ const Item = ({ item, teamId }) => {
   const detailItem = () => history.push(`/edit/${item.id}`);
 
   const upStatus = (res) => {
-    console.log(res);
   }
 
   const upBlog = async (item) => {
-    console.log(id);
     if (teamId !== undefined) {
       await axios
-        .get(ApiPath.IM + 'blog?imId=' + id + 'team=' + teamId, item)
+        .get(ApiPath.IM + 'blog?imId=' + id + '&team=' + teamId, item)
         .then(response => {
-          console.log(response);
           upStatus(response.body);
         })
         .catch(error => {});
@@ -58,12 +51,10 @@ const Item = ({ item, teamId }) => {
 
   const updImId = async (e) => {
     if (e.keyCode === 13) {
-      console.log(ApiPath.IM + 'merge?ord=' + id + 'into=' + intoId);
+      console.log(ApiPath.IM + 'merge?ord=' + id + '&into=' + intoId);
       await axios
-        // .post(ApiPath.ITEMS, item)
-        .get(ApiPath.IM + 'merge?ord=' + id + 'into=' + intoId)
+        .get(ApiPath.IM + 'merge?ord=' + id + '&into=' + intoId)
         .then(response => {
-          console.log(response);
           upStatus(response.body);
         })
         .catch(error => {});

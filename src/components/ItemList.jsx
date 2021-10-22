@@ -8,8 +8,6 @@ import Item from '../components/Item';
  * @returns jsx
  */
 const ItemList = ({itemList, teamId}) => {
-  console.log(itemList);
-  console.log(teamId);
   return (
     <div className="allItemsList">
       {itemList !== undefined && itemList.length > 0 ? (
