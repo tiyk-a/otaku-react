@@ -7,15 +7,15 @@ import Item from '../components/Item';
  * @param {array} itemList
  * @returns jsx
  */
-const ItemList = (itemList) => {
+const ItemList = ({itemList, teamId}) => {
   console.log(itemList);
+  console.log(teamId);
   return (
     <div className="allItemsList">
-      <h2>ItemMaster</h2>
-      {itemList.itemList !== undefined && itemList.itemList.length > 0 ? (
-        itemList.itemList.map((e, index) => (
+      {itemList !== undefined && itemList.length > 0 ? (
+        itemList.map((e, index) => (
           <div className="itemBox" key={index}>
-            <Item item={e} />
+            <Item item={e} teamId={teamId} />
           </div>
         ))
       ) : (

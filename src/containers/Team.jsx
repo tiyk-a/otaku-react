@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from '@material-ui/core';
+import { Button, StepButton } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import axios from '../axios';
 import ItemList from '../components/ItemList';
@@ -13,18 +13,20 @@ import { ApiPath } from '../constants';
 const Team = () => {
   // 商品一覧リストのSTATES
   const [itemList, setItemList] = useState([]);
+  const [h2, setH2] = useState('');
+  const [teamId, setTeamId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getTeamItems();
+    getTeamItems(6);
     setIsLoading(false);
   }, []);
 
   // 商品全件取得
-  const getTeamItems = async (teamId) => {
-    var id = 6;
-    if (teamId !== undefined) {
-        id = teamId;
+  const getTeamItems = async (id) => {
+    if (id !== undefined) {
+        setTeamId(id);
+        setButton(id);
     }
     const list = [];
     await axios
@@ -42,7 +44,6 @@ const Team = () => {
           list.push(item);
         });
         setItemList(list);
-        console.log(itemList);
       })
       .catch(error => {console.log("IM koko")});
   };
@@ -50,6 +51,38 @@ const Team = () => {
   const handleChange = e => {
     getTeamItems(e);
   };
+
+  const setButton = e => {
+    switch (e) {
+      case 6:
+        setH2('SnowMan');
+        break;
+      case 7:
+        setH2('関ジャニ∞');
+        break;
+      case 8:
+        setH2('SexyZone');
+        break;
+      case 9:
+        setH2('TOKIO');
+        break;
+      case 10:
+        setH2('V6');
+        break;
+      case 11:
+        setH2('嵐');
+        break;
+      case 12:
+        setH2('NEWS');
+        break;
+      case 13:
+        setH2('Kis-My-Ft2');
+        break;
+      case 17:
+        setH2('SixTONES');
+        break;
+    }
+  }
 
   return (
     <div>
@@ -68,7 +101,8 @@ const Team = () => {
           <Btn value="11" onClick={() => handleChange(11)}>嵐</Btn>
           <Btn value="12" onClick={() => handleChange(12)}>NEWS</Btn>
           <Btn value="13" onClick={() => handleChange(13)}>Kis-My-Ft2</Btn>
-          <ItemList itemList={itemList} />
+          <h2>{h2}</h2>
+          <ItemList itemList={itemList} teamId={teamId} />
         </div>
       )}
     </div>

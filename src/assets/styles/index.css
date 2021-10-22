@@ -231,7 +231,7 @@ p {
   overflow: hidden;
   /* width: 100%; */
   text-align: left;
-  flex-basis:  auto;
+  flex-basis:  500px;
 }
 
 ul li:nth-child(1){
@@ -239,9 +239,9 @@ ul li:nth-child(1){
 }
 
 .textBoxTitle {
-  flex-basis:  200px;
+  /* flex-basis:  200px; */
   overflow: hidden;
-  /* width: 100%; */
+  width: 40%;
   text-align: left;
   /* font-size: 22px; */
 }

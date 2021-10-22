@@ -23,6 +23,7 @@ const ItemForm = () => {
   const [price, setPrice] = useState(0);
   // 発売日のSTATE
   const [date, setDate] = useState('');
+  const [wpId, setWpId] = useState('');
 
   const createObjectURL =
     (window.URL || window.webkitURL).createObjectURL || window.createObjectURL;
@@ -75,32 +76,31 @@ const ItemForm = () => {
     axios
       .get(ApiPath.IM + id)
       .then(response => {
-        console.log(response);
         const item = response.data;
         setTitle(item.title);
         setDescription(item.item_caption);
         setPrice(item.price);
         setDate(item.publication_date);
-      })
-      .catch(error => {});
-  };
-
-  // 新規商品登録のpostを行う
-  const axiosItemPost = async (item) => {
-    await axios
-      // .post(ApiPath.ITEMS, item)
-      .post(ApiPath.IM, item)
-      .then(response => {
-        history.push('/');
-        clearItemStates();
+        setWpId(item.wp_id);
       })
       .catch(error => {});
   };
 
   // 既存商品の更新
   const axiosItemPut = async (item) => {
+    const data = {
+      item_m_id: id,
+      url: null,
+      title: title,
+      wp_id: wpId,
+      item_caption: description,
+      publication_date: date,
+      price: price,
+      fct_chk: null,
+      del_flg: null,
+    }
     await axios
-      .put(ApiPath.IM + id, item)
+      .post(ApiPath.IM + id, data)
       .then(response => {
         history.push('/');
         clearItemStates();
@@ -116,12 +116,8 @@ const ItemForm = () => {
   };
 
   // 商品追加
-  const addItem = async (item) => {
-    if (id !== undefined) {
-      axiosItemPost(item);
-    } else {
-      axiosItemPut(item);
-    }
+  const upItem = async (item) => {
+    axiosItemPut(item);
   };
 
   return (
@@ -176,11 +172,7 @@ const ItemForm = () => {
           onChange={handleChange}
         />
         <br />
-        {id ? (
-          <Btn onClick={addItem}>Update</Btn>
-        ) : (
-          <Btn onClick={addItem}>Add</Btn>
-        )}
+          <Btn onClick={upItem}>Update</Btn>
       </div>
     </div>
   );

@@ -32,6 +32,7 @@ const All = () => {
             description: targetItem.item_caption,
             price: targetItem.price,
             pubDate: targetItem.publication_date,
+            wpId: targetItem.wp_id,
           };
           list.push(item);
         });
@@ -49,7 +50,7 @@ const All = () => {
         </div>
       ) : (
         <div>
-          <ItemList itemList={itemList} />
+          <ItemList itemList={itemList} teamId={undefined} />
         </div>
       )}
     </div>

@@ -8,7 +8,6 @@ import Program from '../components/Program';
  * @returns jsx
  */
 const TvList = (tvList) => {
-    console.log(tvList);
   return (
     <div className="allItemsList">
       <h2>Program</h2>
