@@ -6,8 +6,7 @@ import history from './history';
  *
  */
 const axios = Axios.create({
-  // baseURL: process.env.REACT_APP_API_ENDPOINT,
-  baseURL: 'http://localhost',
+  baseURL: process.env.REACT_APP_JAVA_ENDPOINT,
 });
 
 /** axios interceptor */

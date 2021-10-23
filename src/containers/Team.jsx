@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button, StepButton } from '@material-ui/core';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import axios from '../axios';
 import ItemList from '../components/ItemList';
@@ -17,13 +17,8 @@ const Team = () => {
   const [teamId, setTeamId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    getTeamItems(6);
-    setIsLoading(false);
-  }, []);
-
   // 商品全件取得
-  const getTeamItems = async (id) => {
+  const getTeamItems = useCallback(async (id) => {
     if (id !== undefined) {
         setTeamId(id);
         setButton(id);
@@ -46,7 +41,12 @@ const Team = () => {
         setItemList(list);
       })
       .catch(error => {console.log("IM koko")});
-  };
+  }, []);
+
+  useEffect(() => {
+    getTeamItems(6);
+    setIsLoading(false);
+  }, [getTeamItems]);
 
   const handleChange = e => {
     getTeamItems(e);
@@ -80,6 +80,9 @@ const Team = () => {
         break;
       case 17:
         setH2('SixTONES');
+        break;
+      default:
+        setH2('SnowMan');
         break;
     }
   }

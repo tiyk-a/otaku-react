@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import axios from '../axios';
@@ -15,17 +15,10 @@ const All = () => {
   const [tvList, setTvList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [h2, setH2] = useState('');
-  const [teamId, setTeamId] = useState('');
-
-  useEffect(() => {
-    getAllTv(6);
-    setIsLoading(false);
-  }, []);
 
   // TV全件取得
-  const getAllTv = async (id) => {
+  const getAllTv = useCallback(async (id) => {
     if (id !== undefined) {
-        setTeamId(id);
         setButton(id);
     }
     const list = [];
@@ -33,7 +26,6 @@ const All = () => {
       .get(ApiPath.TV + 'team/' + id + '?limit=20')
       .then(response => {
         const apiData = response.data;
-        console.log(response);
         apiData.forEach(targetItem => {
           const program = {
             id: targetItem.program_id,
@@ -47,7 +39,12 @@ const All = () => {
         // setIsLoading(false);
       })
       .catch(error => {console.log("TV koko")});
-  };
+   }, []);
+
+  useEffect(() => {
+    getAllTv(6);
+    setIsLoading(false);
+  }, [getAllTv]);
 
   const handleChange = e => {
     getAllTv(e);
@@ -102,6 +99,9 @@ const All = () => {
         break;
       case 21:
         setH2('Kinki Kids');
+        break;
+      default:
+        setH2('SnowMan');
         break;
     }
   }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from '../axios';
 import ItemList from '../components/ItemList';
 import Loading from '../components/Loading';
@@ -13,13 +13,8 @@ const All = () => {
   const [itemList, setItemList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    getAllItems();
-    setIsLoading(false);
-  }, []);
-
   // 商品全件取得
-  const getAllItems = async () => {
+  const getAllItems = useCallback(async () => {
     const list = [];
     await axios
       .get(ApiPath.IM + '?page=10')
@@ -37,13 +32,18 @@ const All = () => {
           list.push(item);
         });
         setItemList(list);
-        console.log(itemList);
       })
       .catch(error => {console.log("IM koko")});
-  };
+  }, []);
+
+  useEffect(() => {
+    getAllItems();
+    setIsLoading(false);
+  }, [getAllItems]);
 
   return (
     <div>
+      <p>Env:{process.env.NODE_ENV}</p>
       {isLoading ? (
         <div>
           <Loading />

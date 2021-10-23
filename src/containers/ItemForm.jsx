@@ -25,9 +25,6 @@ const ItemForm = () => {
   const [date, setDate] = useState('');
   const [wpId, setWpId] = useState('');
 
-  const createObjectURL =
-    (window.URL || window.webkitURL).createObjectURL || window.createObjectURL;
-
   useEffect(() => {
     if (id) {
       findData();
@@ -66,6 +63,7 @@ const ItemForm = () => {
         break;
       case 'date':
         setDate(txt);
+        break;
       default:
         break;
     }

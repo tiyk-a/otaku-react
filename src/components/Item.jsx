@@ -22,7 +22,7 @@ const Item = ({ item, teamId }) => {
 
   useEffect(() => {
     setId(item.id);
-  }, []);
+  }, [item.id]);
 
   const nl2br = require('react-nl2br');
 
