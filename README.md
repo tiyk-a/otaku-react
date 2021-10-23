@@ -1,6 +1,18 @@
 # OtakuinfoのAdmin用フロント画面
 ~# フロントエンド課題~
 
+## Herokuデプロイ手順
+- `Procfile`なしでデプロイできるみたいです
+- `package.json`みてるらしいです
+
+```
+$ cd ~/directory
+$ git push heroku main
+```
+以上。
+URLは`https://chiharu-front.herokuapp.com/`です。
+heroku.gitは`https://git.heroku.com/chiharu-front.git`。
+
 ## 使用した技術要素
 * react ^16.10.2
 * @material-ui/core ^4.5.1

@@ -43,7 +43,6 @@ const All = () => {
 
   return (
     <div>
-      <p>Env:{process.env.NODE_ENV}</p>
       {isLoading ? (
         <div>
           <Loading />

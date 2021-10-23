@@ -1,12 +1,19 @@
 import Axios from 'axios';
 import history from './history';
 
+var url = '';
+if (process.env.NODE_ENV === 'production') {
+  url = 'http://160.251.22.190';
+  } else {
+  url = 'http://localhost:80';
+  }
+
 /**
  * axios設定
  *
  */
 const axios = Axios.create({
-  baseURL: process.env.REACT_APP_JAVA_ENDPOINT,
+  baseURL: url,
 });
 
 /** axios interceptor */
