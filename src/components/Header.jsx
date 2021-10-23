@@ -16,6 +16,7 @@ const Header = styles => {
     fontWeight: '900',
     fontSize: `${styles.styles.sidebarCollapsed ? 10 : 20}px`,
     letterSpacing: '0.4em',
+    cursor: 'pointer',
   };
 
   // トップ画面に変遷
@@ -56,24 +57,16 @@ const Header = styles => {
     <HeaderBar>
       <div className="flexRowCenter">
         <NewItemIcon onClick={toNew} />
-        {/* <a onClick={toTop}> */}
           <p style={headerStyle} onClick={toTop}>MERCHANDISE RETRIEVAL SYSTEM</p>
-        {/* </a> */}
       </div>
       <div>
-        <Btn onClick={linkIm}>マスター商品</Btn>
+        <Btn onClick={linkTeam}>IM</Btn>
         <Btn onClick={linkTv}>TV</Btn>
         <Btn onClick={linkTw}>Twitter</Btn>
-        <Btn onClick={linkTeam}>Team</Btn>
-        <Btn onClick={linkTw}>TMP</Btn>
-        <Btn onClick={linkTw}>TMP</Btn>
-        <Btn onClick={linkTw}>TMP</Btn>
-        <Btn onClick={linkTw}>TMP</Btn>
-        <Btn onClick={linkTw}>TMP</Btn>
+        <Btn onClick={linkIm}>マスター商品</Btn>
       </div>
       <div className="flexRowCenter" style={headerStyle}>
         <Search />
-        {/* <Login /> */}
       </div>
     </HeaderBar>
   );
