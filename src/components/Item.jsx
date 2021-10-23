@@ -43,6 +43,17 @@ const Item = ({ item, teamId }) => {
     }
   };
 
+  const delIm = async () => {
+    if (teamId !== undefined) {
+      await axios
+        .delete(ApiPath.IM + id)
+        .then(response => {
+          upStatus(response.body);
+        })
+        .catch(error => {});
+    }
+  };
+
   // 入力された検索ワードをSTATEに反映
   const handleChangeImId = e => {
     const txt = e.target.value;
@@ -89,12 +100,14 @@ const Item = ({ item, teamId }) => {
           <li>
             <Input
               type="text"
-              name="imId"
+              name="Merge imId"
               value={intoId}
               onChange={handleChangeImId}
               placeholder="imId"
               onKeyDown={updImId}
             />
+            <br />
+            <Btn onClick={delIm}>DELETE</Btn>
           </li>
           <li><Btn onClick={upBlog}>Blog更新</Btn></li>
         </ul>
