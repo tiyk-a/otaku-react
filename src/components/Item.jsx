@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
 import { useHistory } from 'react-router-dom';
+import { pink } from '@material-ui/core/colors';
 
 /**
  *　商品１件を表示するコンポーネント
@@ -72,8 +73,16 @@ const Item = ({ item, teamId }) => {
     }
   };
 
+  const postedStyle = {
+    // background: "",
+  };
+
+  const notPostedStyle = {
+    background: "pink",
+  };
+
   return (
-    <div className="itemContainer">
+    <div className="itemContainer" className={item.wpId !== null && item.wpId !== undefined ? "postedStyle": "notPostedStyle"}>
       <Text>
         <ul>
           <li>{date}</li>

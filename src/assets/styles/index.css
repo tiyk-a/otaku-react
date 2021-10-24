@@ -140,21 +140,9 @@ ul {
   width: 50vw;
 }
 
-/* .detailElement, .editItem {
-  word-break: break-word;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* width: 60vw; */
-  /* margin: 0 auto;
-} */
-
-/* .detailBox {
-  margin: 10px 20px;
-  text-align: left;
-  padding-left: 20px;
-} */
+.notPostedStyle {
+    background: pink;
+}
 
 img {
   width: 20vw;
