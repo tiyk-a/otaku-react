@@ -15,15 +15,17 @@ const All = () => {
   const [tvList, setTvList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [h2, setH2] = useState('');
+  const [teamId, setTeamId] = useState('');
 
   // TV全件取得
   const getAllTv = useCallback(async (id) => {
     if (id !== undefined) {
-        setButton(id);
+      setTeamId(id);
+      setButton(id);
     }
     const list = [];
     await axios
-      .get(ApiPath.TV + 'team/' + id + '?limit=20')
+      .get(ApiPath.TV + 'team/' + id)
       .then(response => {
         const apiData = response.data;
         apiData.forEach(targetItem => {
@@ -38,7 +40,7 @@ const All = () => {
         setTvList(list);
         // setIsLoading(false);
       })
-      .catch(error => {console.log("TV koko")});
+      .catch(error => {});
    }, []);
 
   useEffect(() => {
@@ -132,7 +134,7 @@ const All = () => {
           <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
           <Btn value="11" onClick={() => handleChange(21)}>Kinki Kids</Btn>
           <h2>{h2}</h2>
-          <TvList tvList={tvList} />
+          <TvList tvList={tvList} teamId={teamId} />
         </div>
       )}
     </div>

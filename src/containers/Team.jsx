@@ -14,18 +14,18 @@ const Team = () => {
   // 商品一覧リストのSTATES
   const [itemList, setItemList] = useState([]);
   const [h2, setH2] = useState('');
-  const [teamId, setTeamId] = useState('');
+  const [id, setId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   // 商品全件取得
   const getTeamItems = useCallback(async (id) => {
     if (id !== undefined) {
-        setTeamId(id);
-        setButton(id);
+      setId(id);
+      setButton(id);
     }
     const list = [];
     await axios
-      .get(ApiPath.IM + 'team/' + id + '?limit=20')
+      .get(ApiPath.IM + 'team/' + id)
       .then(response => {
         const apiData = response.data;
         apiData.forEach(targetItem => {
@@ -35,12 +35,13 @@ const Team = () => {
             description: targetItem.item_caption,
             price: targetItem.price,
             pubDate: targetItem.publication_date,
+            wpId: targetItem.wp_id,
           };
           list.push(item);
         });
         setItemList(list);
       })
-      .catch(error => {console.log("IM koko")});
+      .catch(error => {});
   }, []);
 
   useEffect(() => {
@@ -78,8 +79,29 @@ const Team = () => {
       case 13:
         setH2('Kis-My-Ft2');
         break;
+      case 14:
+        setH2('ABC-Z');
+        break;
+      case 15:
+        setH2('ジャニーズWEST');
+        break;
+      case 16:
+        setH2('King&Prince');
+        break;
       case 17:
         setH2('SixTONES');
+        break;
+      case 18:
+        setH2('なにわ男子');
+        break;
+      case 19:
+        setH2('Hey!Say!JUMP');
+        break;
+      case 20:
+        setH2('KAT-TUN');
+        break;
+      case 21:
+        setH2('Kinki Kids');
         break;
       default:
         setH2('SnowMan');
@@ -104,8 +126,16 @@ const Team = () => {
           <Btn value="11" onClick={() => handleChange(11)}>嵐</Btn>
           <Btn value="12" onClick={() => handleChange(12)}>NEWS</Btn>
           <Btn value="13" onClick={() => handleChange(13)}>Kis-My-Ft2</Btn>
+          <Btn value="11" onClick={() => handleChange(14)}>ABC-Z</Btn>
+          <Btn value="11" onClick={() => handleChange(15)}>ジャニーズWEST</Btn>
+          <Btn value="11" onClick={() => handleChange(16)}>King&Prince</Btn>
+          <Btn value="11" onClick={() => handleChange(17)}>SixTONES</Btn>
+          <Btn value="11" onClick={() => handleChange(18)}>なにわ男子</Btn>
+          <Btn value="11" onClick={() => handleChange(19)}>Hey!Say!JUMP</Btn>
+          <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
+          <Btn value="11" onClick={() => handleChange(21)}>Kinki Kids</Btn>
           <h2>{h2}</h2>
-          <ItemList itemList={itemList} teamId={teamId} />
+          <ItemList itemList={itemList} teamId={id} />
         </div>
       )}
     </div>

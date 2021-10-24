@@ -1,6 +1,12 @@
 # OtakuinfoのAdmin用フロント画面
 ~# フロントエンド課題~
 
+## 使用制限
+**`https`通信はしようできません**
+-> `http`で接続してね！
+○`http://chiharu-front.herokuapp.com/`
+×`https://chiharu-front.herokuapp.com/`
+
 ## Herokuデプロイ手順
 - `Procfile`なしでデプロイできるみたいです
 - `package.json`みてるらしいです

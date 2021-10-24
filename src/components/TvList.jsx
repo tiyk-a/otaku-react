@@ -7,14 +7,14 @@ import Program from '../components/Program';
  * @param {array} itemList
  * @returns jsx
  */
-const TvList = (tvList) => {
+const TvList = ({tvList, teamId}) => {
   return (
     <div className="allItemsList">
       <h2>Program</h2>
-      {tvList !== undefined && tvList.tvList !== undefined && tvList.tvList.length > 0 ? (
-        tvList.tvList.map((e, index) => (
+      {tvList !== undefined && tvList.length > 0 ? (
+        tvList.map((e, index) => (
           <div className="itemBox" key={index}>
-            <Program program={e} />
+            <Program program={e} teamId={teamId} />
           </div>
         ))
       ) : (

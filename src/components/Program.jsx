@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
  * @param {object} program
  * @returns jsx
  */
-const Program = ({ program }) => {
+const Program = ({ program, teamId }) => {
   const history = useHistory();
   const moment = require("moment");
   const date = moment(program.date).format('YYYY-MM-DD');
@@ -21,7 +21,7 @@ const Program = ({ program }) => {
   const nl2br = require('react-nl2br');
 
   // 編集ページに変遷
-  const editTv = () => history.push(`/tv/edit/${program.id}`);
+  const editTv = () => history.push(`/tv/edit/${teamId}/${program.id}`);
 
   const delTv = async () => {
     await axios

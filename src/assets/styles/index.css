@@ -140,21 +140,21 @@ ul {
   width: 50vw;
 }
 
-.detailElement, .editItem {
+/* .detailElement, .editItem {
   word-break: break-word;
   align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   /* width: 60vw; */
-  margin: 0 auto;
-}
+  /* margin: 0 auto;
+} */
 
-.detailBox {
+/* .detailBox {
   margin: 10px 20px;
   text-align: left;
   padding-left: 20px;
-}
+} */
 
 img {
   width: 20vw;

@@ -11,7 +11,8 @@ import { ApiPath } from '../constants';
 const ItemForm = () => {
   // 商品のID
   const { id } = useParams();
-  
+  const { teamId } = useParams();
+
   const history = useHistory();
 
   // 【商品データ用のSTATES】
@@ -72,7 +73,7 @@ const ItemForm = () => {
   // 商品編集の場合の商品取得
   const findData = () => {
     axios
-      .get(ApiPath.IM + id)
+      .get(ApiPath.IM + teamId + '/' + id)
       .then(response => {
         const item = response.data;
         setTitle(item.title);
@@ -98,7 +99,7 @@ const ItemForm = () => {
       del_flg: null,
     }
     await axios
-      .post(ApiPath.IM + id, data)
+      .post(ApiPath.IM + teamId + '/' + id, data)
       .then(response => {
         history.push('/');
         clearItemStates();

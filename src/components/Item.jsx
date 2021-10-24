@@ -27,7 +27,7 @@ const Item = ({ item, teamId }) => {
   const nl2br = require('react-nl2br');
 
   // 編集ページに変遷
-  const detailItem = () => history.push(`/edit/${item.id}`);
+  const editItem = () => history.push(`/edit/${teamId}/${item.id}`);
 
   const upStatus = (res) => {
   }
@@ -37,7 +37,7 @@ const Item = ({ item, teamId }) => {
       await axios
         .get(ApiPath.IM + 'blog?imId=' + id + '&team=' + teamId, item)
         .then(response => {
-          upStatus(response.body);
+          window.location.reload();
         })
         .catch(error => {});
     }
@@ -62,7 +62,6 @@ const Item = ({ item, teamId }) => {
 
   const updImId = async (e) => {
     if (e.keyCode === 13) {
-      console.log(ApiPath.IM + 'merge?ord=' + id + '&into=' + intoId);
       await axios
         .get(ApiPath.IM + 'merge?ord=' + id + '&into=' + intoId)
         .then(response => {
@@ -81,14 +80,14 @@ const Item = ({ item, teamId }) => {
           <li>
             {item.id}
             <br />
-            {item.wpId !== undefined ? (item.wpId) : ("No Wp")}
+            {item.wpId !== null && item.wpId !== undefined ? (item.wpId) : ("No Wp")}
           </li>
           <li className="textBoxTitle">
             <p>
               <b>{item.title}</b>
             </p>
           </li>
-          <li className="textBox" onClick={detailItem}>
+          <li className="textBox" onClick={editItem}>
             <p>{nl2br(item.description)}</p>
             <p>{item.url}</p>
           </li>

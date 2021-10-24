@@ -49,7 +49,7 @@ const Header = styles => {
 
   // マスター商品画面に変遷
   const linkTeam = () => {
-    const url = `/team/`;
+    const url = `/`;
     history.push(url);
   };
 
