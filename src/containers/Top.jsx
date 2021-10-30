@@ -53,12 +53,12 @@ const Top = () => {
 
         im.forEach(itemM => {
           const m = {
-            id: itemM.item_m_id,
+            id: itemM.im_id,
             title: itemM.title,
-            description: itemM.item_caption,
             price: itemM.price,
             pubDate: itemM.publication_date,
             wpId: itemM.wp_id,
+            ver: itemM.verList,
           };
           imlist.push(m);
         });

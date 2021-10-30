@@ -96,6 +96,9 @@ const ItemM = ({ item, teamId }) => {
             </p>
           </li>
           <li className="textBox" onClick={editItem}>
+            {item.ver.map((e, index) => (
+                <p>{e.ver_name}</p>
+            ))}
             {/* <p>{nl2br(item.description)}</p> */}
             <p>{item.url}</p>
           </li>

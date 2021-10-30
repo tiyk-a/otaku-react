@@ -31,14 +31,15 @@ const Item = ({ item, teamId, itemMList }) => {
   const [fromIM, setFromIM] = useState('');
   const [toIM, setToIM] = useState('');
   const [title, setTitle] = useState('');
-  const [imTitle, setImTitle] = useState('');
+  const [imTitle, setImTitle] = useState("");
   const [tmpVer, setTmpVer] = useState('');
   const [verArr, setVerArr] = useState([]);
 
   useEffect(() => {
+    console.log(itemMList);
     setId(item.id);
     setDate(moment(item.pubDate).format('YYYY-MM-DD'));
-    setImTitle("test");
+    setImId(0);
     setTitle(item.title);
   }, [item.id, item.pubDate, item.title, moment]);
 
@@ -63,6 +64,9 @@ const Item = ({ item, teamId, itemMList }) => {
 
   const registerIM = async () => {
     if (teamId !== undefined) {
+      if (imId === 0) {
+        setImId(undefined);
+      }
       const data = {
         item_id: id,
         im_id: imId,
@@ -98,10 +102,14 @@ const Item = ({ item, teamId, itemMList }) => {
   };
 
   const handleChangeIMTitle = e => {
-    const val = e.target.value;
-    console.log(e.target);
-    setImTitle(val);
-    // setImId(val.id);
+    console.log(e);
+    const txt = e.target.value;
+    setImTitle(txt);
+    itemMList.forEach(item => {
+      if (item.title === txt) {
+        setImId(item.id);
+      }
+    });
   };
 
   const addVerArr = e => {
@@ -231,9 +239,11 @@ const Item = ({ item, teamId, itemMList }) => {
                 className="titleInput"
                 />
                 <FormControl fullWidth>
+                  <p>IMID: {imId}</p>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
+                    defaultValue=""
                     value={imTitle}
                     label="Age"
                     onChange={handleChangeIMTitle}
