@@ -118,10 +118,10 @@ ul {
   cursor: pointer;
 }
 
-.itemBox:hover {
-  opacity: 0.6;
+/* .itemBox:hover {
+  opacity: 0.8;
   transition: opacity 0.5s;
-}
+} */
 
 .imageBox {
   width: 15vw;
@@ -356,4 +356,30 @@ input[type="file" i] {
 
 .MuiInputBase-inputMultiline {
   color: white !important;
+}
+
+.titleInput {
+  width: 400px;
+}
+
+.dateForm {
+  width: 150px;
+}
+
+.picker__box .picker__header .picker__date-display .picker__weekday-display {
+  background-color: #ff4444;
+}
+.picker__box .picker__header .picker__date-display {
+background-color: #ff4444;
+}
+.picker__box .picker__table .picker--focused, .picker__box .picker__table .picker__day--selected, .picker__box .picker__table .picker__day--selected:hover {
+background-color: #ff4444;
+}
+.picker__box .picker__table .picker__day.picker__day--today {
+color: #ff4444;
+}
+
+.css-6hp17o-MuiList-root-MuiMenu-list {
+  direction: flex;
+  flex-direction: column;
 }
