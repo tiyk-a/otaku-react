@@ -5,7 +5,6 @@ import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-import { useHistory } from 'react-router-dom';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { DatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -22,7 +21,6 @@ import Select from '@mui/material/Select';
  * @returns jsx
  */
 const Item = ({ item, teamId, itemMList }) => {
-  const history = useHistory();
   const moment = require("moment");
   const [id, setId] = useState('');
   const [imId, setImId] = useState('');
@@ -36,7 +34,6 @@ const Item = ({ item, teamId, itemMList }) => {
   const [verArr, setVerArr] = useState([]);
 
   useEffect(() => {
-    console.log(itemMList);
     setId(item.id);
     setDate(moment(item.pubDate).format('YYYY-MM-DD'));
     setImId(0);
@@ -44,9 +41,6 @@ const Item = ({ item, teamId, itemMList }) => {
   }, [item.id, item.pubDate, item.title, moment]);
 
   const nl2br = require('react-nl2br');
-
-  const upStatus = (res) => {
-  }
 
   const upBlog = async (item) => {
     if (teamId !== undefined) {
@@ -79,7 +73,6 @@ const Item = ({ item, teamId, itemMList }) => {
         .then(response => {
           console.log(response);
           window.location.reload();
-          upStatus(response.body);
         })
         .catch(error => {});
     }
@@ -125,7 +118,6 @@ const Item = ({ item, teamId, itemMList }) => {
       await axios
         .delete(ApiPath.ITEM + id)
         .then(response => {
-          upStatus(response.body);
         })
         .catch(error => {});
     }
@@ -148,12 +140,24 @@ const Item = ({ item, teamId, itemMList }) => {
       await axios
         .get(ApiPath.IM + 'merge?ord=' + id + '&into=' + intoId)
         .then(response => {
-          upStatus(response.body);
         })
         .catch(error => {});
       setIntoId('');
     }
   };
+
+  const updFctChk = async (e) => {
+    if (imId === null || imId === undefined || imId === 0) {
+      
+    } else {
+      await axios
+        .get(ApiPath.IM + "chk/" + id + "/" + imId)
+        .then(response => {
+          window.location.reload();
+        })
+        .catch(error => {});
+    }
+  }
 
   const postedStyle = {
     // background: "",
@@ -250,7 +254,8 @@ const Item = ({ item, teamId, itemMList }) => {
                   </Select>
                 </FormControl>
                 <br />
-                <Btn onClick={registerIM}>IM登録</Btn>
+                <Btn onClick={registerIM}>IM新規登録</Btn>
+                <Btn onClick={updFctChk}>IM設定</Btn>
               </p>
             </li>
             <li className="textBox">
