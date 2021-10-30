@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import axios from '../axios';
-import ItemMList from '../components/ItemMList';
+import ItemList from '../components/ItemList';
 import Loading from '../components/Loading';
 import { ApiPath } from '../constants';
 
@@ -10,7 +10,7 @@ import { ApiPath } from '../constants';
  * 商品全件取得（トップページ）のコンテナ
  *
  */
-const Team = () => {
+const Item = () => {
   // 商品一覧リストのSTATES
   const [itemList, setItemList] = useState([]);
   const [h2, setH2] = useState('');
@@ -25,17 +25,17 @@ const Team = () => {
     }
     const list = [];
     await axios
-      .get(ApiPath.IM + 'team/' + id)
+      .get(ApiPath.ITEM + 'team/' + id)
       .then(response => {
         const apiData = response.data;
         apiData.forEach(targetItem => {
           const item = {
-            id: targetItem.item_m_id,
+            id: targetItem.item_id,
             title: targetItem.title,
             description: targetItem.item_caption,
             price: targetItem.price,
             pubDate: targetItem.publication_date,
-            wpId: targetItem.wp_id,
+            masterId: targetItem.item_m_id,
           };
           list.push(item);
         });
@@ -135,7 +135,7 @@ const Team = () => {
           <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
           <Btn value="11" onClick={() => handleChange(21)}>Kinki Kids</Btn>
           <h2>{h2}</h2>
-          <ItemMList itemList={itemList} teamId={id} />
+          <ItemList itemList={itemList} teamId={id} />
         </div>
       )}
     </div>
@@ -152,4 +152,4 @@ const Btn = styled(Button)({
   color: 'white',
 });
 
-export default Team;
+export default Item;

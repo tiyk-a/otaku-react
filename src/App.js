@@ -4,7 +4,9 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Error from './components/Error';
 import Header from './components/Header';
+import Item from './containers/Item';
 import Tv from './containers/Tv';
+import Top from './containers/Top';
 import Team from './containers/Team';
 import Twitter from './containers/Twitter';
 import ItemForm from './containers/ItemForm';
@@ -62,7 +64,11 @@ class App extends Component {
         <Header styles={styles} />
         <Switch>
           <Route exact path="/">
-            <Team />
+            <Top />
+            {/* <Team /> */}
+          </Route>
+          <Route exact path="/item">
+            <Item />
           </Route>
           <Route exact path="/tv">
             <Tv />

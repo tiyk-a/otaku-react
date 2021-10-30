@@ -10,9 +10,11 @@ import { ApiPath } from '../constants';
  * 商品全件取得（トップページ）のコンテナ
  *
  */
-const Team = () => {
+const Top = () => {
   // 商品一覧リストのSTATES
   const [itemList, setItemList] = useState([]);
+  const [itemMList, setItemMList] = useState([]);
+  const [iimList, setIimList] = useState([]);
   const [h2, setH2] = useState('');
   const [id, setId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -23,23 +25,58 @@ const Team = () => {
       setId(id);
       setButton(id);
     }
-    const list = [];
+
+    // imのない未来のilist
+    const ilist = [];
+    // 未来のimlist
+    const imlist = [];
+    // imがある未来のilist
+    const iimlist = [];
     await axios
-      .get(ApiPath.IM + 'team/' + id)
+      .get('api/' + id)
       .then(response => {
-        const apiData = response.data;
-        apiData.forEach(targetItem => {
-          const item = {
-            id: targetItem.item_m_id,
-            title: targetItem.title,
-            description: targetItem.item_caption,
-            price: targetItem.price,
-            pubDate: targetItem.publication_date,
-            wpId: targetItem.wp_id,
-          };
-          list.push(item);
+        const i = response.data.i;
+        const im = response.data.im;
+        const iim = response.data.iim;
+
+        i.forEach(item => {
+            const ele = {
+                id: item.item_id,
+                title: item.title,
+                description: i.item_caption,
+                price: item.price,
+                pubDate: item.publication_date,
+                wpId: item.im_id,
+            };
+            ilist.push(ele);
         });
-        setItemList(list);
+
+        im.forEach(itemM => {
+          const m = {
+            id: itemM.item_m_id,
+            title: itemM.title,
+            description: itemM.item_caption,
+            price: itemM.price,
+            pubDate: itemM.publication_date,
+            wpId: itemM.wp_id,
+          };
+          imlist.push(m);
+        });
+
+        iim.forEach(item => {
+          const iim = {
+            id: item.item_id,
+            title: item.title,
+            description: item.item_caption,
+            price: item.price,
+            pubDate: item.publication_date,
+            wpId: item.im_id,
+          };
+          iimlist.push(iim);
+        });
+        setItemList(ilist);
+        setItemMList(imlist);
+        setIimList(iimlist);
       })
       .catch(error => {});
   }, []);
@@ -135,7 +172,7 @@ const Team = () => {
           <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
           <Btn value="11" onClick={() => handleChange(21)}>Kinki Kids</Btn>
           <h2>{h2}</h2>
-          <ItemMList itemList={itemList} teamId={id} />
+          <ItemMList itemList={itemList} itemMList={itemMList} iimList={iimList} teamId={id} />
         </div>
       )}
     </div>
@@ -152,4 +189,4 @@ const Btn = styled(Button)({
   color: 'white',
 });
 
-export default Team;
+export default Top;

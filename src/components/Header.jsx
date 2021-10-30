@@ -29,6 +29,11 @@ const Header = styles => {
     history.push('/new');
   };
 
+  const linkItem = () => {
+    const url = `/item`;
+    history.push(url);
+  };
+
   // マスター商品画面に変遷
   const linkIm = () => {
     const url = `/`;
@@ -62,6 +67,7 @@ const Header = styles => {
       </div>
       <div>
         <Btn onClick={linkTeam}>IM</Btn>
+        <Btn onClick={linkItem}>Item</Btn>
         <Btn onClick={linkTv}>TV</Btn>
         <Btn onClick={linkTw}>Twitter</Btn>
         <Btn onClick={linkIm}>マスター商品</Btn>

@@ -10,7 +10,7 @@ import { ApiPath } from '../constants';
  * 商品全件取得（トップページ）のコンテナ
  *
  */
-const Team = () => {
+const ItemM = () => {
   // 商品一覧リストのSTATES
   const [itemList, setItemList] = useState([]);
   const [h2, setH2] = useState('');
@@ -30,12 +30,11 @@ const Team = () => {
         const apiData = response.data;
         apiData.forEach(targetItem => {
           const item = {
-            id: targetItem.item_m_id,
+            id: targetItem.item_id,
             title: targetItem.title,
             description: targetItem.item_caption,
             price: targetItem.price,
             pubDate: targetItem.publication_date,
-            wpId: targetItem.wp_id,
           };
           list.push(item);
         });
@@ -152,4 +151,4 @@ const Btn = styled(Button)({
   color: 'white',
 });
 
-export default Team;
+export default ItemM;
