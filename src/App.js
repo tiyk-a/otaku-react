@@ -7,7 +7,6 @@ import Header from './components/Header';
 import Item from './containers/Item';
 import Tv from './containers/Tv';
 import Top from './containers/Top';
-import Team from './containers/Team';
 import Twitter from './containers/Twitter';
 import ItemForm from './containers/ItemForm';
 import TvForm from './containers/TvForm';
@@ -65,7 +64,6 @@ class App extends Component {
         <Switch>
           <Route exact path="/">
             <Top />
-            {/* <Team /> */}
           </Route>
           <Route exact path="/item">
             <Item />

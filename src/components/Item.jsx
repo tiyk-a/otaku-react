@@ -45,9 +45,6 @@ const Item = ({ item, teamId, itemMList }) => {
 
   const nl2br = require('react-nl2br');
 
-  // 編集ページに変遷
-  const editItem = () => history.push(`/edit/${teamId}/${item.id}`);
-
   const upStatus = (res) => {
   }
 

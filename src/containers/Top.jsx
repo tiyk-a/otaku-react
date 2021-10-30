@@ -4,7 +4,6 @@ import styled from '@material-ui/styles/styled';
 import axios from '../axios';
 import ItemMList from '../components/ItemMList';
 import Loading from '../components/Loading';
-import { ApiPath } from '../constants';
 
 /**
  * 商品全件取得（トップページ）のコンテナ

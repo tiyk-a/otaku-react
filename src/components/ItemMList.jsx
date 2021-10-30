@@ -17,15 +17,13 @@ const ItemMList = ({itemList, itemMList, iimList, teamId}) => {
     const [date, setDate] = useState('');
 
     useEffect(() => {
-        console.log(itemMList);
         setDate(moment('2020-01-01').format('YYYY-MM-DD'));
     }, [moment]);
 
-    // 入力された検索ワードをSTATEに反映
-  const handleChangeDate = e => {
-    console.log(e);
+// 入力された検索ワードをSTATEに反映
+const handleChangeDate = e => {
     setDate(e);
-  };
+};
 
   return (
     <div className="allItemsList">
@@ -67,17 +65,17 @@ const ItemMList = ({itemList, itemMList, iimList, teamId}) => {
             autoOk={true}
             />
         </MuiPickersUtilsProvider>
-      {itemMList !== undefined && itemMList.length > 0 ? (
-        itemMList.map((e, index) => (
-          <div className="itemBox" key={index}>
-            <ItemM item={e} teamId={teamId} />
-          </div>
-        ))
-      ) : (
-        <div>
-          <h1>今後のItemMが見つかりませんでした:(</h1>
-        </div>
-      )}
+        {itemMList !== undefined && itemMList.length > 0 ? (
+            itemMList.map((e, index) => (
+            <div className="itemBox" key={index}>
+                <ItemM item={e} teamId={teamId} />
+            </div>
+            ))
+        ) : (
+            <div>
+            <h1>今後のItemMが見つかりませんでした:(</h1>
+            </div>
+        )}
       <h3>チェック済み今後のItem</h3>
       <p>今表示なし</p>
       {/* {iimList !== undefined && iimList.length > 0 ? (

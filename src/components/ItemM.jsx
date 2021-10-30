@@ -5,7 +5,6 @@ import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-import { useHistory } from 'react-router-dom';
 
 /**
  *　商品１件を表示するコンポーネント
@@ -14,7 +13,6 @@ import { useHistory } from 'react-router-dom';
  * @returns jsx
  */
 const ItemM = ({ item, teamId }) => {
-  const history = useHistory();
   const moment = require("moment");
   const date = moment(item.pubDate).format('YYYY-MM-DD');
   const [id, setId] = useState('');
@@ -50,11 +48,11 @@ const ItemM = ({ item, teamId }) => {
     }
   };
 
-  const handleChangeTitle = e => {
+const handleChangeTitle = e => {
     console.log("socci");
     const txt = e.target.value;
     setTitle(txt);
-  };
+};
 
 const handleVerArr = e => {
     const txt = e.target.value;
