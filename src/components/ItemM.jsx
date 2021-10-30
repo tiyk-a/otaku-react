@@ -19,18 +19,15 @@ const ItemM = ({ item, teamId }) => {
   const date = moment(item.pubDate).format('YYYY-MM-DD');
   const [id, setId] = useState('');
   const [intoId, setIntoId] = useState('');
+  const [title, setTitle] = useState('');
+  const [verArr, setVerArr] = useState([]);
+  const [tmpVer, setTmpVer] = useState('');
 
   useEffect(() => {
+    setTitle(item.title);
+    setVerArr(item.ver);
     setId(item.id);
   }, [item.id]);
-
-  const nl2br = require('react-nl2br');
-
-  // 編集ページに変遷
-  const editItem = () => history.push(`/edit/${teamId}/${item.id}`);
-
-  const upStatus = (res) => {
-  }
 
   const upBlog = async (item) => {
     if (teamId !== undefined) {
@@ -48,28 +45,69 @@ const ItemM = ({ item, teamId }) => {
       await axios
         .delete(ApiPath.IM + id)
         .then(response => {
-          upStatus(response.body);
         })
         .catch(error => {});
     }
   };
 
-  // 入力された検索ワードをSTATEに反映
-  const handleChangeImId = e => {
+  const handleChangeTitle = e => {
+    console.log("socci");
     const txt = e.target.value;
-    setIntoId(txt);
+    setTitle(txt);
   };
 
-  const updImId = async (e) => {
-    if (e.keyCode === 13) {
-      await axios
-        .get(ApiPath.IM + 'merge?ord=' + id + '&into=' + intoId)
-        .then(response => {
-          upStatus(response.body);
-        })
-        .catch(error => {});
-      setIntoId('');
+const handleVerArr = e => {
+    const txt = e.target.value;
+    var verId = e.target.parentNode.getAttribute('data');
+
+    if (verId === null || verId === undefined) {
+        // IDがないということは新規追加
+        setTmpVer(txt);
+    } else {
+        // IDあるので更新
+        // 1. Make a shallow copy of the items
+        let vers = [...verArr];
+        // 2. Make a shallow copy of the item you want to mutate
+        let ver = {...vers[verId]};
+        // 3. Replace the property you're intested in
+        ver.ver_name = txt;
+        // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+        vers[verId] = ver;
+        // 5. Set the state to our new copy
+        setVerArr(vers);
     }
+};
+
+const addVerArr = e => {
+    if (e.keyCode === 13) {
+      const tmpObj = {
+          im_v_id: null,
+          im_id: id,
+          ver_name: tmpVer,
+          sort_order: null, 
+      }
+      console.log(tmpObj);
+      setVerArr([...verArr, tmpObj]);
+      setTmpVer("");
+    }
+}
+
+const updIM = async () => {
+    const data = {
+    im_id: id,
+    title: title,
+    wp_id: item.wpId,
+    publication_date: date,
+    del_flg: false,
+    verArr: verArr,
+    }
+    await axios
+    .post(ApiPath.IM + id, data)
+    .then(response => {
+        console.log(response);
+        window.location.reload();
+    })
+    .catch(error => {});
   };
 
   const postedStyle = {
@@ -92,14 +130,43 @@ const ItemM = ({ item, teamId }) => {
           </li>
           <li className="textBoxTitle">
             <p>
-              <b>{item.title}</b>
+              <Input
+                type="text"
+                name="IM register"
+                value={title}
+                onChange={handleChangeTitle}
+                placeholder="imId"
+                className="titleInput"
+            　/>
             </p>
+            <Btn onClick={updIM}>IM更新</Btn>
           </li>
-          <li className="textBox" onClick={editItem}>
-            {item.ver.map((e, index) => (
-                <p>{e.ver_name}</p>
-            ))}
-            {/* <p>{nl2br(item.description)}</p> */}
+          <li className="textBox">
+            <Input
+                type="text"
+                name="ver"
+                value={tmpVer}
+                onChange={handleVerArr}
+                placeholder="ver"
+                className="titleInput"
+                onKeyDown={addVerArr}
+            />
+            {verArr.length > 0 ? (
+                verArr.map((e, index) => (
+                    <div className="itemBox" key={index}>
+                        <Input
+                            type="text"
+                            name="ver"
+                            value={e.ver_name}
+                            data={index}
+                            onChange={handleVerArr}
+                            placeholder="ver"
+                            className="titleInput"
+                        />
+                    </div>
+                ))
+            ):("")
+            }
             <p>{item.url}</p>
           </li>
           <li className="price">
@@ -108,15 +175,6 @@ const ItemM = ({ item, teamId }) => {
             </p>
           </li>
           <li>
-            <Input
-              type="text"
-              name="Merge imId"
-              value={intoId}
-              onChange={handleChangeImId}
-              placeholder="imId"
-              onKeyDown={updImId}
-            />
-            <br />
             <Btn onClick={delIm}>DELETE</Btn>
           </li>
           <li><Btn onClick={upBlog}>Blog更新</Btn></li>

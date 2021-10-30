@@ -143,7 +143,6 @@ const Item = ({ item, teamId, itemMList }) => {
   // 入力された検索ワードをSTATEに反映
   const handleVerArr = e => {
     const txt = e.target.value;
-    console.log(txt);
     setTmpVer(txt);
   };
 
@@ -183,7 +182,7 @@ const Item = ({ item, teamId, itemMList }) => {
                 <b>{item.title}</b>
               </p>
             </li>
-            <li className="textBox" onClick={editItem}>
+            <li className="textBox">
               <p>{nl2br(item.description)}</p>
               <p>{item.url}</p>
             </li>
