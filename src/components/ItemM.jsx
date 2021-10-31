@@ -48,13 +48,13 @@ const ItemM = ({ item, teamId }) => {
     }
   };
 
-const handleChangeTitle = e => {
+  const handleChangeTitle = e => {
     console.log("socci");
     const txt = e.target.value;
     setTitle(txt);
-};
+  };
 
-const handleVerArr = e => {
+  const handleVerArr = e => {
     const txt = e.target.value;
     var verId = e.target.parentNode.getAttribute('data');
 
@@ -74,9 +74,9 @@ const handleVerArr = e => {
         // 5. Set the state to our new copy
         setVerArr(vers);
     }
-};
+  };
 
-const addVerArr = e => {
+  const addVerArr = e => {
     if (e.keyCode === 13) {
       const tmpObj = {
           im_v_id: null,
@@ -88,9 +88,9 @@ const addVerArr = e => {
       setVerArr([...verArr, tmpObj]);
       setTmpVer("");
     }
-}
+  }
 
-const updIM = async () => {
+  const updIM = async () => {
     const data = {
     im_id: id,
     title: title,
@@ -137,9 +137,10 @@ const updIM = async () => {
                 className="titleInput"
             　/>
             </p>
-            <Btn onClick={updIM}>IM更新</Btn>
+            <Btn onClick={updIM}>使わないでIM更新（verの更新できない）</Btn>
           </li>
           <li className="textBox">
+            <p>中括弧（「[」と「]」）は使用しないでください</p>
             <Input
                 type="text"
                 name="ver"

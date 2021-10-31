@@ -259,6 +259,7 @@ const Item = ({ item, teamId, itemMList }) => {
               </p>
             </li>
             <li className="textBox">
+              <p>記号は使用しないでください</p>
               <Input
                 type="text"
                 name="ver"
@@ -287,6 +288,15 @@ const Item = ({ item, teamId, itemMList }) => {
                     ))
                 ):("")
               }
+              {itemMList.map((e, index) => (
+                e.id === imId ? (
+                  e.ver.map((v, index) => (
+                    <p>{v.ver_name}</p>
+                  ))
+                ) : (
+                  ""
+                )
+              ))}
               <p>{nl2br(item.description)}</p>
               <p>{item.url}</p>
             </li>
