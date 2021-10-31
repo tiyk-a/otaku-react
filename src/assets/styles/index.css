@@ -383,3 +383,7 @@ color: #ff4444;
   direction: flex;
   flex-direction: column;
 }
+
+.MuiPickersSlideTransition-transitionContainer > * {
+  color: black;
+}

@@ -43,7 +43,6 @@ const handleChangeDate = e => {
       <p>期間指定</p>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
         <DatePicker
-            disableToolbar
             variant="inline"
             inputVariant="standard"
             format="yyyy/MM"
@@ -54,7 +53,6 @@ const handleChangeDate = e => {
             autoOk={true}
             />
         <DatePicker
-            disableToolbar
             variant="inline"
             inputVariant="standard"
             format="yyyy/MM"

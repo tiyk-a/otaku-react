@@ -210,7 +210,6 @@ const Item = ({ item, teamId, itemMList }) => {
             <li>
               <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
                 <DatePicker
-                  disableToolbar
                   variant="inline"
                   inputVariant="standard"
                   format="yyyy/MM/dd"
