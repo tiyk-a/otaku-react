@@ -47,6 +47,7 @@ const Item = ({ item, teamId, itemMList }) => {
       await axios
         .get(ApiPath.ITEM + 'blog?imId=' + id + '&team=' + teamId, item)
         .then(response => {
+          console.log(response);
           window.location.reload();
         })
         .catch(error => {});
@@ -140,6 +141,7 @@ const Item = ({ item, teamId, itemMList }) => {
       await axios
         .get(ApiPath.IM + 'merge?ord=' + id + '&into=' + intoId)
         .then(response => {
+          console.log(response);
         })
         .catch(error => {});
       setIntoId('');
@@ -148,11 +150,12 @@ const Item = ({ item, teamId, itemMList }) => {
 
   const updFctChk = async (e) => {
     if (imId === null || imId === undefined || imId === 0) {
-      
     } else {
+      console.log(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId);
       await axios
-        .get(ApiPath.IM + "chk/" + id + "/" + imId)
+        .get(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId)
         .then(response => {
+          console.log(response);
           window.location.reload();
         })
         .catch(error => {});

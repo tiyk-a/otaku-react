@@ -4,6 +4,7 @@ import styled from '@material-ui/styles/styled';
 import axios from '../axios';
 import ItemMList from '../components/ItemMList';
 import Loading from '../components/Loading';
+// import GoogleCal from '../GoogleCal'
 
 /**
  * 商品全件取得（トップページ）のコンテナ
@@ -81,6 +82,16 @@ const Top = () => {
   }, []);
 
   useEffect(() => {
+    // const googleCal = new GoogleCal;
+    // googleCal.connect()
+    // .then(() => {
+    //   return googleCal.getTodayEvents(); // 誕生日や祝日のカレンダーは取得対象から除外
+    // })
+    // .then(val => {
+    //   console.log(val);
+
+    // });
+
     getTeamItems(6);
     setIsLoading(false);
   }, [getTeamItems]);
