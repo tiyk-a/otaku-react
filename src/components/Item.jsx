@@ -30,8 +30,11 @@ const Item = ({ item, teamId, itemMList }) => {
   const [toIM, setToIM] = useState('');
   const [title, setTitle] = useState('');
   const [imTitle, setImTitle] = useState("");
+  const [otherImTitle, setOtherImTitle] = useState("");
   const [tmpVer, setTmpVer] = useState('');
   const [verArr, setVerArr] = useState([]);
+  const [imKey, setImKey] = useState('');
+  const [imSearchRes, setImSearchRes] = useState([]);
 
   useEffect(() => {
     setId(item.id);
@@ -103,15 +106,39 @@ const Item = ({ item, teamId, itemMList }) => {
     });
   };
 
+  const handleChangeOtherIMTitle = e => {
+    console.log(e);
+    const txt = e.target.value;
+    setOtherImTitle(txt);
+    imSearchRes.forEach(item => {
+      if (item.title === txt) {
+        setImId(item.im_id);
+      }
+    });
+  };
+
   const addVerArr = e => {
     if (e.keyCode === 13) {
-      console.log("koko");
-      console.log(verArr);
       setVerArr([...verArr, tmpVer]);
-      console.log(verArr);
       setTmpVer("");
     }
     console.log(verArr[0]);
+  }
+
+  const searchImByKw = (e) => {
+    if (e.keyCode === 13) {
+      searchOtherIm(imKey);
+      setImKey("");
+    }
+  }
+
+  const searchOtherIm = async (key) => {
+    await axios
+      .get(ApiPath.IM + 'search?key=' + key + '&excludeTeamId=' + teamId)
+      .then(response => {
+        setImSearchRes(response.data);
+      })
+      .catch(error => {});
   }
 
   const delIm = async () => {
@@ -129,6 +156,11 @@ const Item = ({ item, teamId, itemMList }) => {
   const handleChangeImId = e => {
     const txt = e.target.value;
     setIntoId(txt);
+  };
+
+  const handleChangeImKey = e => {
+    const txt = e.target.value;
+    setImKey(txt);
   };
 
   // 入力された検索ワードをSTATEに反映
@@ -152,9 +184,9 @@ const Item = ({ item, teamId, itemMList }) => {
   const updFctChk = async (e) => {
     if (imId === null || imId === undefined || imId === 0) {
     } else {
-      console.log(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId);
+      console.log(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId + "&teamId=" + teamId);
       await axios
-        .get(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId)
+        .get(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId + "&teamId=" + teamId)
         .then(response => {
           console.log(response);
           window.location.reload();
@@ -174,155 +206,157 @@ const Item = ({ item, teamId, itemMList }) => {
   return (
     <div className="itemContainer" className={item.masterId !== null && item.masterId !== undefined ? "postedStyle": "notPostedStyle"}>
       <Text>
-        {item.masterId !== null && item.masterId !== undefined ? 
-          <ul>
-            <li>{date}</li>
-            <li>
-              {item.id}
-              <br />
-              {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("No IM")}
-            </li>
-            <li className="textBoxTitle">
-              <p>
-                <b>{item.title}</b>
-              </p>
-            </li>
-            <li className="textBox">
-              <p>{nl2br(item.description)}</p>
-              <p>{item.url}</p>
-            </li>
-            <li className="price">
-              <p>
-                <b>{item.price}</b>&nbsp;yen
-              </p>
-            </li>
-            <li>
-              <Input
-                type="text"
-                name="Merge imId"
-                value={intoId}
-                onChange={handleChangeImId}
-                placeholder="imId"
-                onKeyDown={updImId}
+        <ul>
+          <li>
+            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
+              <DatePicker
+                variant="inline"
+                inputVariant="standard"
+                format="yyyy/MM/dd"
+                id="date"
+                label="date"
+                value={date}
+                onChange={handleChangeDate}
+                className="dateForm"
+                autoOk={true}
               />
-              <br />
-              <Btn onClick={delIm}>DELETE</Btn>
-            </li>
-            <li><Btn onClick={upBlog}>Blog更新</Btn></li>
-          </ul>
-          :<ul>
-            <li>
-              <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
-                <DatePicker
-                  variant="inline"
-                  inputVariant="standard"
-                  format="yyyy/MM/dd"
-                  id="date"
-                  label="date"
-                  value={date}
-                  onChange={handleChangeDate}
-                  className="dateForm"
-                  autoOk={true}
-                />
-              </MuiPickersUtilsProvider>
-            </li>
-            <li>
-              {item.id}
-              <br />
-              {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("No IM")}
-            </li>
-            <li className="textBoxTitle">
-              <p>
+            </MuiPickersUtilsProvider>
+          </li>
+          <li>
+            {item.id}
+            <br />
+            {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("No IM")}
+          </li>
+          <li className="textBoxTitle">
+            <p>
+              <Input
+              type="text"
+              name="IM register"
+              value={title}
+              onChange={handleChangeTitle}
+              placeholder="imId"
+              className="titleInput"
+              />
+              <FormControl fullWidth>
+                <p>IMID: {imId}</p>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  defaultValue=""
+                  value={imTitle}
+                  label="Age"
+                  onChange={handleChangeIMTitle}
+                >
+                {itemMList.map((e, index) => (
+                  <MenuItem value={e.title}>{e.title}</MenuItem>
+                ))}
+                </Select>
+                {/* <p>他チームのIMをチーム絞ってみたい</p>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="other-team"
+                  defaultValue="他チームID"
+                  value={otherTeamId}
+                  label="他チームID"
+                  onChange={handleOtherTeamId}
+                >
+                {otherTeamIdList[0].map((e, index) => (
+                  <MenuItem value={e}>{e}</MenuItem>
+                ))}
+                </Select> */}
+                <p>IM検索</p>
                 <Input
-                type="text"
-                name="IM register"
-                value={title}
-                onChange={handleChangeTitle}
-                placeholder="imId"
-                className="titleInput"
-                />
-                <FormControl fullWidth>
-                  <p>IMID: {imId}</p>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    defaultValue=""
-                    value={imTitle}
-                    label="Age"
-                    onChange={handleChangeIMTitle}
-                  >
-                  {itemMList.map((e, index) => (
-                    <MenuItem value={e.title}>{e.title}</MenuItem>
-                  ))}
-                  </Select>
-                </FormControl>
-                <br />
-                <Btn onClick={registerIM}>IM新規登録・更新</Btn>
-                <Btn onClick={updFctChk}>IM設定</Btn>
-              </p>
-            </li>
-            <li className="textBox">
-              <p>記号は使用しないでください</p>
-              <Input
-                type="text"
-                name="ver"
-                value={tmpVer}
-                onChange={handleVerArr}
-                placeholder="ver"
-                className="titleInput"
-                onKeyDown={addVerArr}
-              />
-              {
-                verArr.length > 0 ? (
-                    verArr.map((e, index) => (
-                      <div className="itemBox" key={index}>
-                        <p>{e}
-                        </p>
-                        <Input
-                          type="text"
-                          name="ver"
-                          value={e}
-                          onChange={handleVerArr}
-                          placeholder="ver"
-                          className="titleInput"
-                          onKeyDown={addVerArr}
-                        />
-                      </div>
-                    ))
-                ):("")
-              }
-              {itemMList.map((e, index) => (
-                e.id === imId ? (
-                  e.ver.map((v, index) => (
-                    <p>{v.ver_name}</p>
-                  ))
-                ) : (
-                  ""
-                )
-              ))}
-              <p>{nl2br(item.description)}</p>
-              <p>{item.url}</p>
-            </li>
-            <li className="price">
-              <p>
-                <b>{item.price}</b>&nbsp;yen
-              </p>
-            </li>
-            <li>
-              <Input
-                type="text"
-                name="Merge imId"
-                value={intoId}
-                onChange={handleChangeImId}
-                placeholder="imId"
-                onKeyDown={updImId}
-              />
+                  type="text"
+                  name="IM search"
+                  value={imKey}
+                  onChange={handleChangeImKey}
+                  placeholder="im keyword"
+                  className="titleInput"
+                  onKeyDown={searchImByKw}
+              　/>
+              {imSearchRes.length > 0 ? (
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="other-team-im"
+                  defaultValue="他チームID"
+                  value={otherImTitle}
+                  label="他チームID"
+                  onChange={handleChangeOtherIMTitle}
+                >
+                {imSearchRes.map((e, index) => (
+                  <MenuItem value={e.title}>{e.title}</MenuItem>
+                ))}
+                </Select>
+              ) : (
+                ""
+              )}
+              </FormControl>
               <br />
-              <Btn onClick={delIm}>DELETE</Btn>
-            </li>
-            <li><Btn onClick={upBlog}>Blog更新</Btn></li>
-          </ul>
-          }
+              <Btn onClick={registerIM}>IM新規登録・更新</Btn>
+              <Btn onClick={updFctChk}>IM設定</Btn>
+            </p>
+          </li>
+          <li className="textBox">
+            <p>記号は使用しないでください</p>
+            <Input
+              type="text"
+              name="ver"
+              value={tmpVer}
+              onChange={handleVerArr}
+              placeholder="ver"
+              className="titleInput"
+              onKeyDown={addVerArr}
+            />
+            {
+              verArr.length > 0 ? (
+                  verArr.map((e, index) => (
+                    <div className="itemBox" key={index}>
+                      <p>{e}
+                      </p>
+                      <Input
+                        type="text"
+                        name="ver"
+                        value={e}
+                        onChange={handleVerArr}
+                        placeholder="ver"
+                        className="titleInput"
+                        onKeyDown={addVerArr}
+                      />
+                    </div>
+                  ))
+              ):("")
+            }
+            {itemMList.map((e, index) => (
+              e.id === imId ? (
+                e.ver.map((v, index) => (
+                  <p>{v.ver_name}</p>
+                ))
+              ) : (
+                ""
+              )
+            ))}
+            <p>{nl2br(item.description)}</p>
+            <p>{item.url}</p>
+          </li>
+          <li className="price">
+            <p>
+              <b>{item.price}</b>&nbsp;yen
+            </p>
+          </li>
+          <li>
+            <Input
+              type="text"
+              name="Merge imId"
+              value={intoId}
+              onChange={handleChangeImId}
+              placeholder="imId"
+              onKeyDown={updImId}
+            />
+            <br />
+            <Btn onClick={delIm}>DELETE</Btn>
+          </li>
+          <li><Btn onClick={upBlog}>Blog更新</Btn></li>
+        </ul>
       </Text>
     </div>
   );

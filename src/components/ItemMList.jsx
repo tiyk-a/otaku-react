@@ -13,17 +13,17 @@ import jaLocale from 'date-fns/locale/ja';
  * @returns jsx
  */
 const ItemMList = ({itemList, itemMList, iimList, teamId}) => {
-    const moment = require("moment");
-    const [date, setDate] = useState('');
+  const moment = require("moment");
+  const [date, setDate] = useState('');
 
-    useEffect(() => {
-        setDate(moment('2020-01-01').format('YYYY-MM-DD'));
-    }, [moment]);
+  useEffect(() => {
+    setDate(moment('2020-01-01').format('YYYY-MM-DD'));
+  }, [moment]);
 
-// 入力された検索ワードをSTATEに反映
-const handleChangeDate = e => {
-    setDate(e);
-};
+  // 入力された検索ワードをSTATEに反映
+  const handleChangeDate = e => {
+      setDate(e);
+  };
 
   return (
     <div className="allItemsList">

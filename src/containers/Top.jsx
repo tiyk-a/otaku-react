@@ -192,7 +192,6 @@ const Top = () => {
           <Btn value="11" onClick={() => handleChange(14)}>ABC-Z</Btn>
           <Btn value="11" onClick={() => handleChange(15)}>ジャニーズWEST</Btn>
           <Btn value="11" onClick={() => handleChange(16)}>King&Prince</Btn>
-          <Btn value="11" onClick={() => handleChange(17)}>SixTONES</Btn>
           <Btn value="11" onClick={() => handleChange(18)}>なにわ男子</Btn>
           <Btn value="11" onClick={() => handleChange(19)}>Hey!Say!JUMP</Btn>
           <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
