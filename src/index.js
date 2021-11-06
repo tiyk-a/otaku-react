@@ -2,10 +2,11 @@ import { makeStyles } from '@material-ui/styles';
 import React from 'react';
 // import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom';
-import { Router } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import App from './App';
 import './assets/styles/index.css';
 import history from './history';
+import { QueryParamProvider } from 'use-query-params'
 
 /**
  * AppFunction
@@ -18,7 +19,9 @@ const AppFunction = () => {
     // <CookiesProvider>
       <div className={classes.root}>
         <Router history={history}>
-          <App />
+          <QueryParamProvider ReactRouterRoute={Route}>
+            <App />
+          </QueryParamProvider>
         </Router>
       </div>
     // </CookiesProvider>

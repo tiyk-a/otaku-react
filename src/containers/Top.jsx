@@ -1,7 +1,8 @@
 import { Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
+import { NumberParam, useQueryParam } from 'use-query-params'
 import axios from '../axios';
 import ItemMList from '../components/ItemMList';
 import Loading from '../components/Loading';
@@ -13,7 +14,7 @@ import history from '../history';
  *
  */
 const Top = () => {
-  const { teamId } = useParams();
+  const [teamId, setTeamId] = useQueryParam('teamId', NumberParam);
 
   // 商品一覧リストのSTATES
   const [itemList, setItemList] = useState([]);
@@ -96,17 +97,22 @@ const Top = () => {
 
     // });
 
-    if (teamId !== undefined) {
-      getTeamItems(teamId);
-    } else {
-      getTeamItems(6);
+    if (teamId === undefined) {
+      setTeamId(6);
     }
+    getTeamItems(teamId);
+    setButton(teamId);
+    // } 
+    // else {
+    //   getTeamItems(6);
+    //   setButton(6);
+    // }
     
     setIsLoading(false);
   }, [getTeamItems]);
 
   const handleChange = e => {
-    history.push('/' + e);
+    history.push('/?teamId=' + e);
     getTeamItems(e);
   };
 
