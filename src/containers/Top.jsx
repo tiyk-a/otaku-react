@@ -26,9 +26,16 @@ const Top = () => {
 
   // 商品全件取得
   const getTeamItems = useCallback(async (id) => {
+    var path = '';
+
     if (id !== undefined) {
       setId(id);
       setButton(id);
+      path = 'api/' + id;
+    } else {
+      setId(5);
+      setButton(5);
+      path = 'api/5';
     }
 
     // imのない未来のilist
@@ -38,7 +45,7 @@ const Top = () => {
     // imがある未来のilist
     const iimlist = [];
     await axios
-      .get('api/' + id)
+      .get(path)
       .then(response => {
         const i = response.data.i;
         const im = response.data.im;
@@ -98,15 +105,11 @@ const Top = () => {
     // });
 
     if (teamId === undefined) {
-      setTeamId(6);
+      setTeamId(5);
+      setButton(5);
     }
     getTeamItems(teamId);
     setButton(teamId);
-    // } 
-    // else {
-    //   getTeamItems(6);
-    //   setButton(6);
-    // }
     
     setIsLoading(false);
   }, [getTeamItems]);
@@ -118,6 +121,9 @@ const Top = () => {
 
   const setButton = e => {
     switch (e) {
+      case 5:
+        setH2('All');
+        break;
       case 6:
         setH2('SnowMan');
         break;
@@ -180,6 +186,7 @@ const Top = () => {
         </div>
       ) : (
         <div>
+          <Btn value="5" onClick={() => handleChange(5)}>All</Btn>
           <Btn value="17" onClick={() => handleChange(17)}>SixTONES</Btn>
           <Btn value="6" onClick={() => handleChange(6)}>SnowMan</Btn>
           <Btn value="7" onClick={() => handleChange(7)}>関ジャニ∞</Btn>

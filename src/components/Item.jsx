@@ -355,7 +355,6 @@ const Item = ({ item, teamId, itemMList }) => {
             <br />
             <Btn onClick={delIm}>DELETE</Btn>
           </li>
-          <li><Btn onClick={upBlog}>Blog更新</Btn></li>
         </ul>
       </Text>
     </div>
