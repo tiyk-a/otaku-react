@@ -164,11 +164,11 @@ const Btn = styled(Button)({
   marginTop: '20px',
   background: 'linear-gradient(to right bottom, #db36a4, #f7ff00)',
   display: 'block',
-  color: 'white',
+  color: 'black',
 });
 
 const Field = styled(TextField)({
-  color: 'white',
+  color: 'black',
 });
 
 export default TvForm;

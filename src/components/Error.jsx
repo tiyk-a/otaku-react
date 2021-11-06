@@ -64,7 +64,7 @@ const Error = styles => {
 const Btn = styled(Button)({
   marginLeft: '26px',
   background: 'linear-gradient(to right bottom, #db36a4, #f7ff00)',
-  color: 'white',
+  color: 'black',
 });
 
 export default Error;
