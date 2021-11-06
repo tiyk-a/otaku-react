@@ -62,7 +62,7 @@ class App extends Component {
       <AppContainer>
         <Header styles={styles} />
         <Switch>
-          <Route exact path="/">
+          <Route exact path="/:teamId?">
             <Top />
           </Route>
           <Route exact path="/item">

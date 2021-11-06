@@ -256,7 +256,7 @@ const Item = ({ item, teamId, itemMList }) => {
                   </Select>
                 </FormControl>
                 <br />
-                <Btn onClick={registerIM}>IM新規登録</Btn>
+                <Btn onClick={registerIM}>IM新規登録・更新</Btn>
                 <Btn onClick={updFctChk}>IM設定</Btn>
               </p>
             </li>

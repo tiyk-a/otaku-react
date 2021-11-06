@@ -1,16 +1,20 @@
-import React, { useEffect, useState, useCallback } from 'react';
 import { Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from '../axios';
 import ItemMList from '../components/ItemMList';
 import Loading from '../components/Loading';
 // import GoogleCal from '../GoogleCal'
+import history from '../history';
 
 /**
  * 商品全件取得（トップページ）のコンテナ
  *
  */
 const Top = () => {
+  const { teamId } = useParams();
+
   // 商品一覧リストのSTATES
   const [itemList, setItemList] = useState([]);
   const [itemMList, setItemMList] = useState([]);
@@ -92,11 +96,17 @@ const Top = () => {
 
     // });
 
-    getTeamItems(6);
+    if (teamId !== undefined) {
+      getTeamItems(teamId);
+    } else {
+      getTeamItems(6);
+    }
+    
     setIsLoading(false);
   }, [getTeamItems]);
 
   const handleChange = e => {
+    history.push('/' + e);
     getTeamItems(e);
   };
 
