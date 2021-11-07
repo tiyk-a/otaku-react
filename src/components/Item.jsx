@@ -45,18 +45,6 @@ const Item = ({ item, teamId, itemMList }) => {
 
   const nl2br = require('react-nl2br');
 
-  const upBlog = async (item) => {
-    if (teamId !== undefined) {
-      await axios
-        .get(ApiPath.ITEM + 'blog?imId=' + id + '&team=' + teamId, item)
-        .then(response => {
-          console.log(response);
-          window.location.reload();
-        })
-        .catch(error => {});
-    }
-  };
-
   const registerIM = async () => {
     if (teamId !== undefined) {
       if (imId === 0) {
