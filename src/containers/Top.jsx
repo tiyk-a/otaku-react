@@ -20,6 +20,7 @@ const Top = () => {
   const [itemList, setItemList] = useState([]);
   const [itemMList, setItemMList] = useState([]);
   const [iimList, setIimList] = useState([]);
+  const [errJList, setErrJList] = useState([]);
   const [h2, setH2] = useState('');
   const [id, setId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -44,51 +45,73 @@ const Top = () => {
     const imlist = [];
     // imがある未来のilist
     const iimlist = [];
+    // errorJsonのリスト
+    const errlist = [];
+
     await axios
       .get(path)
       .then(response => {
         const i = response.data.i;
         const im = response.data.im;
         const iim = response.data.iim;
+        const errJ = response.data.errJ;
 
-        i.forEach(item => {
+        if (i !== null) {
+          i.forEach(item => {
             const ele = {
-                id: item.item_id,
-                title: item.title,
-                description: i.item_caption,
-                price: item.price,
-                pubDate: item.publication_date,
-                wpId: item.im_id,
+              id: item.item_id,
+              title: item.title,
+              description: i.item_caption,
+              price: item.price,
+              pubDate: item.publication_date,
+              wpId: item.im_id,
             };
             ilist.push(ele);
-        });
+          });
+        }
 
-        im.forEach(itemM => {
-          const m = {
-            id: itemM.im_id,
-            title: itemM.title,
-            price: itemM.price,
-            pubDate: itemM.publication_date,
-            wpId: itemM.wp_id,
-            ver: itemM.verList,
-          };
+        if (im !== null) {
+          im.forEach(itemM => {
+            const m = {
+              id: itemM.im_id,
+              title: itemM.title,
+              price: itemM.price,
+              pubDate: itemM.publication_date,
+              wpId: itemM.wp_id,
+              ver: itemM.verList,
+            };
           imlist.push(m);
-        });
+          });
+        }
 
-        iim.forEach(item => {
-          const iim = {
-            id: item.item_id,
-            title: item.title,
-            description: item.item_caption,
-            price: item.price,
-            pubDate: item.publication_date,
-            wpId: item.im_id,
-          };
-          iimlist.push(iim);
-        });
+        if (iim !== null) {
+          iim.forEach(item => {
+            const iim = {
+              id: item.item_id,
+              title: item.title,
+              description: item.item_caption,
+              price: item.price,
+              pubDate: item.publication_date,
+              wpId: item.im_id,
+            };
+            iimlist.push(iim);
+          });
+        }
+
+        if (errJ !== null) {
+          errJ.forEach(j => {
+            const ele = {
+              id: j.errj_id,
+              json: j.json,
+            };
+            errlist.push(ele);
+          });
+        }
+
         setItemList(ilist);
         setItemMList(imlist);
         setIimList(iimlist);
+        setErrJList(errlist);
       })
       .catch(error => {});
   }, []);
@@ -204,7 +227,7 @@ const Top = () => {
           <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
           <Btn value="11" onClick={() => handleChange(21)}>Kinki Kids</Btn>
           <h2>{h2}</h2>
-          <ItemMList itemList={itemList} itemMList={itemMList} iimList={iimList} teamId={id} />
+          <ItemMList itemList={itemList} itemMList={itemMList} iimList={iimList} teamId={id} errJList={errJList} />
         </div>
       )}
     </div>

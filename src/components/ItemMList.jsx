@@ -12,11 +12,12 @@ import jaLocale from 'date-fns/locale/ja';
  * @param {array} itemList
  * @returns jsx
  */
-const ItemMList = ({itemList, itemMList, iimList, teamId}) => {
+const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
   const moment = require("moment");
   const [date, setDate] = useState('');
 
   useEffect(() => {
+    console.log(errJList);
     setDate(moment('2020-01-01').format('YYYY-MM-DD'));
   }, [moment]);
 
@@ -37,6 +38,18 @@ const ItemMList = ({itemList, itemMList, iimList, teamId}) => {
       ) : (
         <div>
           <h1>未チェックItemが見つかりませんでした:(</h1>
+        </div>
+      )}
+      <h3>ErrorJson</h3>
+      {errJList !== undefined && errJList.length > 0 ? (
+        errJList.map((e, index) => (
+          <div className="itemBox" key={index}>
+            <p>{e.json}</p>
+          </div>
+        ))
+      ) : (
+        <div>
+          <h1>ErrorJsonはなし</h1>
         </div>
       )}
       <h3>今後のItemM</h3>
