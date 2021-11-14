@@ -216,7 +216,6 @@ const Item = ({ item, teamId, itemMList }) => {
             {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("No IM")}
           </li>
           <li className="textBoxTitle">
-            <p>
               <Input
               type="text"
               name="IM register"
@@ -282,7 +281,6 @@ const Item = ({ item, teamId, itemMList }) => {
               <br />
               <Btn onClick={registerIM}>IM新規登録・更新</Btn>
               <Btn onClick={updFctChk}>IM設定</Btn>
-            </p>
           </li>
           <li className="textBox">
             <p>記号は使用しないでください</p>
