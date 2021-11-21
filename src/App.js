@@ -8,7 +8,6 @@ import Item from './containers/Item';
 import Tv from './containers/Tv';
 import Top from './containers/Top';
 import Twitter from './containers/Twitter';
-import ItemForm from './containers/ItemForm';
 import TvForm from './containers/TvForm';
 import SearchResults from './containers/SearchResults';
 
@@ -76,12 +75,6 @@ class App extends Component {
           </Route>
           <Route path="/search">
             <SearchResults />
-          </Route>
-          <Route exact path="/new">
-            <ItemForm />
-          </Route>
-          <Route exact path="/edit/:teamId/:id">
-            <ItemForm />
           </Route>
           <Route exact path="/tv/edit/:teamId/:id">
             <TvForm />
