@@ -2,31 +2,42 @@ import { Button, TextField } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { DatePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import jaLocale from 'date-fns/locale/ja';
 import axios from '../axios';
 import { ApiPath } from '../constants';
 
 /**
  * 新規商品登録or商品情報アップデート時のフォーム
  */
-const ItemForm = () => {
+const ItemForm = (teamIdObj) => {
+
+  const teamId = teamIdObj.teamId;
+
   // 商品のID
   const { id } = useParams();
-  const { teamId } = useParams();
 
   const history = useHistory();
 
   // 【商品データ用のSTATES】
   // 商品タイトルのSTATE
   const [title, setTitle] = useState('');
+  // 商品コードのSTATE
+  const [itemCode, setItemCode] = useState('');
   // 商品説明文のSTATE
   const [description, setDescription] = useState('');
   // 商品価格のSTATE
   const [price, setPrice] = useState(0);
   // 発売日のSTATE
   const [date, setDate] = useState('');
+  // Itemを登録する元となるErrorJsonIdのSTATE
+  const [ejId, setEjId] = useState('');
   const [wpId, setWpId] = useState('');
 
   useEffect(() => {
+    console.log(teamId);
     if (id) {
       findData();
     } else {
@@ -56,18 +67,26 @@ const ItemForm = () => {
       case 'title':
         setTitle(txt);
         break;
+      case 'item_code':
+        setItemCode(txt);
+        break;
       case 'description':
         setDescription(txt);
         break;
       case 'price':
         setPrice(txt);
         break;
-      case 'date':
-        setDate(txt);
+      case 'ejId':
+        setEjId(txt);
         break;
       default:
         break;
     }
+  };
+
+  // 入力された日付をSTATEに反映
+  const handleChangeDate = e => {
+      setDate(e);
   };
 
   // 商品編集の場合の商品取得
@@ -85,8 +104,8 @@ const ItemForm = () => {
       .catch(error => {});
   };
 
-  // 既存商品の更新
-  const axiosItemPut = async (item) => {
+  // 既存IMの更新
+  const axiosItemPut = async () => {
     const data = {
       item_m_id: id,
       url: null,
@@ -100,6 +119,39 @@ const ItemForm = () => {
     }
     await axios
       .post(ApiPath.IM + teamId + '/' + id, data)
+      .then(response => {
+        history.push('/');
+        clearItemStates();
+      })
+      .catch(error => {});
+  };
+
+  // Item新規追加
+  const axiosItemAdd = async () => {
+    const Item = {
+      item_id: null,
+      site_id: 3,
+      item_code: itemCode,
+      url: null,
+      price: price,
+      title: title,
+      item_caption: description,
+      publication_date: date,
+      fct_chk: true,
+      del_flg: false,
+      im_id: null,
+      created_at: null,
+      updated_at: null,
+    }
+
+    const data = {
+      item: Item,
+      jsonId: ejId,
+    }
+
+    console.log(ApiPath.ITEM + "team/" + teamId);
+    await axios
+      .post(ApiPath.ITEM + "team/" + teamId, data)
       .then(response => {
         history.push('/');
         clearItemStates();
@@ -122,56 +174,77 @@ const ItemForm = () => {
   return (
     <div>
       <div className="newItemForm">
-        <h2>新規商品登録</h2>
+        <h2>新規Item登録</h2>
         <p>
-          <b>商品名</b>
+          <b>Tiele</b>
         </p>
-        <TextField
-          required
-          name="title"
-          label="商品名"
-          value={title}
-          onChange={handleChange}
-          fullWidth={true}
-        />
-        <p>{title.length}</p>
-        <br />
-        <p>
-          <b>商品説明文</b>
-        </p>
-        <TextField
-          required
-          name="description"
-          label="商品説明文"
-          value={description}
-          onChange={handleChange}
-          fullWidth={true}
-          multiline={true}
-          rows={3}
-          rowsMax={5}
-        />
-        <p>{description.length}</p>
-        <br />
-        <p>
-          <b>商品価格</b>
-        </p>
-        <Field
-          required
-          name="price"
-          label="商品価格"
-          value={price}
-          onChange={handleChange}
-        />
-        <br />
-        <Field
-          required
-          name="date"
-          label="発売日"
-          value={date}
-          onChange={handleChange}
-        />
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
+          <TextField
+            required
+            name="title"
+            label="商品名"
+            value={title}
+            onChange={handleChange}
+            fullWidth={true}
+          />
+          <br />
+          <p>
+            <b>商品説明文</b>
+          </p>
+          <TextField
+            required
+            name="description"
+            label="商品説明文"
+            value={description}
+            onChange={handleChange}
+            fullWidth={true}
+            multiline={true}
+            rows={3}
+            rowsMax={5}
+          />
+          <br />
+          <TextField
+            required
+            name="item_code"
+            label="商品コード"
+            value={itemCode}
+            onChange={handleChange}
+            fullWidth={true}
+          />
+          <br />
+          <p>
+            <b>商品価格</b>
+          </p>
+          <Field
+            required
+            name="price"
+            label="商品価格"
+            value={price}
+            onChange={handleChange}
+          />
+          <br />
+          <DatePicker
+            variant="inline"
+            inputVariant="standard"
+            format="yyyy/MM/dd"
+            id="date"
+            value={date}
+            onChange={handleChangeDate}
+            className="dateForm"
+            autoOk={true}
+          />
+          <br />
+          <Field
+            required
+            name="ejId"
+            label="ErrorJsonId"
+            value={ejId}
+            onChange={handleChange}
+          />
+        </MuiPickersUtilsProvider>
         <br />
           <Btn onClick={upItem}>Update</Btn>
+          <Btn onClick={axiosItemAdd}>新規登録</Btn>
       </div>
     </div>
   );

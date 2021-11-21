@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useCallback, useEffect, useState } from 'react';
 // import { useParams } from 'react-router-dom';
-import { NumberParam, useQueryParam } from 'use-query-params'
+import { NumberParam, useQueryParam } from 'use-query-params';
 import axios from '../axios';
 import ItemMList from '../components/ItemMList';
 import Loading from '../components/Loading';
@@ -102,6 +102,7 @@ const Top = () => {
           errJ.forEach(j => {
             const ele = {
               id: j.errj_id,
+              teamId: j.team_id,
               json: j.json,
             };
             errlist.push(ele);

@@ -5,6 +5,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { DatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from 'date-fns/locale/ja';
+import ItemForm from '../containers/ItemForm';
 
 /**
  *商品リストコンポーネント
@@ -41,10 +42,14 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
         </div>
       )}
       <h3>ErrorJson</h3>
+      <ItemForm teamIdObj={teamId} />
       {errJList !== undefined && errJList.length > 0 ? (
         errJList.map((e, index) => (
           <div className="itemBox" key={index}>
-            <p>{e.json}</p>
+            <p>ErrorJsonId：{e.id} TeamId: {e.teamId}
+            <br />
+            {e.json}
+            </p>
           </div>
         ))
       ) : (
