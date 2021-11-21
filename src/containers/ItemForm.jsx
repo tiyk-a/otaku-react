@@ -14,7 +14,7 @@ import { ApiPath } from '../constants';
  */
 const ItemForm = (teamIdObj) => {
 
-  const teamId = teamIdObj.teamId;
+  const teamId = teamIdObj.teamIdObj;
 
   // 商品のID
   const { id } = useParams();
