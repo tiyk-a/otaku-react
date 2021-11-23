@@ -213,20 +213,20 @@ const Top = () => {
           <Btn value="5" onClick={() => handleChange(5)}>All</Btn>
           <Btn value="17" onClick={() => handleChange(17)}>SixTONES</Btn>
           <Btn value="6" onClick={() => handleChange(6)}>SnowMan</Btn>
-          <Btn value="7" onClick={() => handleChange(7)}>関ジャニ∞</Btn>
+          <Btn value="11" onClick={() => handleChange(16)}>King&Prince</Btn>
+          <Btn value="11" onClick={() => handleChange(18)}>なにわ男子</Btn>
           <Btn value="8" onClick={() => handleChange(8)}>SexyZone</Btn>
+          <Btn value="7" onClick={() => handleChange(7)}>関ジャニ∞</Btn>
+          <Btn value="13" onClick={() => handleChange(13)}>Kis-My-Ft2</Btn>
+          <Btn value="11" onClick={() => handleChange(15)}>ジャニーズWEST</Btn>
+          <Btn value="11" onClick={() => handleChange(19)}>Hey!Say!JUMP</Btn>
+          <Btn value="11" onClick={() => handleChange(14)}>ABC-Z</Btn>
+          <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
+          <Btn value="12" onClick={() => handleChange(12)}>NEWS</Btn>
+          <Btn value="11" onClick={() => handleChange(21)}>Kinki Kids</Btn>
           <Btn value="9" onClick={() => handleChange(9)}>TOKIO</Btn>
           <Btn value="10" onClick={() => handleChange(10)}>V6</Btn>
           <Btn value="11" onClick={() => handleChange(11)}>嵐</Btn>
-          <Btn value="12" onClick={() => handleChange(12)}>NEWS</Btn>
-          <Btn value="13" onClick={() => handleChange(13)}>Kis-My-Ft2</Btn>
-          <Btn value="11" onClick={() => handleChange(14)}>ABC-Z</Btn>
-          <Btn value="11" onClick={() => handleChange(15)}>ジャニーズWEST</Btn>
-          <Btn value="11" onClick={() => handleChange(16)}>King&Prince</Btn>
-          <Btn value="11" onClick={() => handleChange(18)}>なにわ男子</Btn>
-          <Btn value="11" onClick={() => handleChange(19)}>Hey!Say!JUMP</Btn>
-          <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
-          <Btn value="11" onClick={() => handleChange(21)}>Kinki Kids</Btn>
           <h2>{h2}</h2>
           <ItemMList itemList={itemList} itemMList={itemMList} iimList={iimList} teamId={id} errJList={errJList} />
         </div>
