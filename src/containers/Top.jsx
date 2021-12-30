@@ -24,19 +24,21 @@ const Top = () => {
   const [h2, setH2] = useState('');
   const [id, setId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [relList, setRelList] = useState([]);
 
   // 商品全件取得
   const getTeamItems = useCallback(async (id) => {
     var path = '';
 
-    if (id !== undefined) {
+    // Top画面リクエストならallメソッドでデータ取ってくる。それ以外はチームのを取って送る
+    if (id === undefined || id === 5) {
+      setId(5);
+      setButton(5);
+      path = 'api/all/';
+    } else {
       setId(id);
       setButton(id);
       path = 'api/' + id;
-    } else {
-      setId(5);
-      setButton(5);
-      path = 'api/5';
     }
 
     // imのない未来のilist
@@ -51,70 +53,146 @@ const Top = () => {
     await axios
       .get(path)
       .then(response => {
+        const allFlg = response.data.allFlg;
         const i = response.data.i;
         const im = response.data.im;
         const iim = response.data.iim;
         const errJ = response.data.errJ;
 
-        if (i !== null) {
-          i.forEach(item => {
-            const ele = {
-              id: item.item_id,
-              title: item.title,
-              description: i.item_caption,
-              price: item.price,
-              pubDate: item.publication_date,
-              wpId: item.im_id,
-            };
-            ilist.push(ele);
-          });
-        }
+        // Top画面の場合（データ型が違うからこう書くしかない）
+        if (allFlg) {
+          if (i !== null) {
+            const relList = [];
+            console.debug("soko");
+            i.forEach(item => {
+              const tmpRelList = [];
+              item.teamIdList.forEach(rel => {
+                tmpRelList.push(rel);
+              });
+              relList.push(tmpRelList);
+              const ele = {
+                id: item.item.item_id,
+                title: item.item.title,
+                description: item.item.item_caption,
+                price: item.item.price,
+                pubDate: item.item.publication_date,
+                wpId: item.item.im_id,
+                relList: tmpRelList
+              };
+              ilist.push(ele);
+            });
+            setItemList(ilist);
+          }
 
-        if (im !== null) {
-          im.forEach(itemM => {
-            const m = {
-              id: itemM.im_id,
-              title: itemM.title,
-              price: itemM.price,
-              pubDate: itemM.publication_date,
-              wpId: itemM.wp_id,
-              ver: itemM.verList,
-            };
-          imlist.push(m);
-          });
-        }
+          if (im !== null) {
+            console.log("im nonaka");
+            im.forEach(itemM => {
+              console.log(itemM);
+              // const m = {
+              //   id: itemM.im_id,
+              //   title: itemM.title,
+              //   price: itemM.price,
+              //   pubDate: itemM.publication_date,
+              //   wpId: itemM.wp_id,
+              //   ver: itemM.verList,
+              // };
+            // imlist.push(m);
+            });
+          }
 
-        if (iim !== null) {
-          iim.forEach(item => {
-            const iim = {
-              id: item.item_id,
-              title: item.title,
-              description: item.item_caption,
-              price: item.price,
-              pubDate: item.publication_date,
-              wpId: item.im_id,
-            };
-            iimlist.push(iim);
-          });
-        }
+          if (iim !== null) {
+            console.log("iim nonaka");
+            iim.forEach(item => {
+              console.log(item);
+              // const iim = {
+              //   id: item.item_id,
+              //   title: item.title,
+              //   description: item.item_caption,
+              //   price: item.price,
+              //   pubDate: item.publication_date,
+              //   wpId: item.im_id,
+              // };
+              // iimlist.push(iim);
+            });
+          }
 
-        if (errJ !== null) {
-          errJ.forEach(j => {
-            const ele = {
-              id: j.errj_id,
-              teamId: j.team_id,
-              json: j.json,
-            };
-            errlist.push(ele);
-          });
-        }
+          if (errJ !== null) {
+            console.log("errJ nonaka");
+            errJ.forEach(j => {
+              console.log(j);
+              // const ele = {
+              //   id: j.errj_id,
+              //   teamId: j.team_id,
+              //   json: j.json,
+              // };
+              // errlist.push(ele);
+            });
+          }
 
-        setItemList(ilist);
-        setItemMList(imlist);
-        setIimList(iimlist);
-        setErrJList(errlist);
-      })
-      .catch(error => {});
+          // setItemList(ilist);
+          // setItemMList(imlist);
+          // setIimList(iimlist);
+          // setErrJList(errlist);
+        } else {
+          if (i !== null) {
+            i.forEach(item => {
+              const ele = {
+                id: item.item_id,
+                title: item.title,
+                description: i.item_caption,
+                price: item.price,
+                pubDate: item.publication_date,
+                wpId: item.im_id,
+              };
+              ilist.push(ele);
+            });
+          }
+
+          if (im !== null) {
+            im.forEach(itemM => {
+              const m = {
+                id: itemM.im_id,
+                title: itemM.title,
+                price: itemM.price,
+                pubDate: itemM.publication_date,
+                wpId: itemM.wp_id,
+                ver: itemM.verList,
+              };
+            imlist.push(m);
+            });
+          }
+
+          if (iim !== null) {
+            iim.forEach(item => {
+              const iim = {
+                id: item.item_id,
+                title: item.title,
+                description: item.item_caption,
+                price: item.price,
+                pubDate: item.publication_date,
+                wpId: item.im_id,
+              };
+              iimlist.push(iim);
+            });
+          }
+
+          if (errJ !== null) {
+            errJ.forEach(j => {
+              const ele = {
+                id: j.errj_id,
+                teamId: j.team_id,
+                json: j.json,
+              };
+              errlist.push(ele);
+            });
+          }
+
+          setItemList(ilist);
+          setItemMList(imlist);
+          setIimList(iimlist);
+          setErrJList(errlist);
+        }
+      }).catch(error => {});
   }, []);
 
   useEffect(() => {
@@ -204,33 +282,56 @@ const Top = () => {
 
   return (
     <div>
-      {isLoading ? (
-        <div>
-          <Loading />
-        </div>
-      ) : (
-        <div>
-          <Btn value="5" onClick={() => handleChange(5)}>All</Btn>
-          <Btn value="17" onClick={() => handleChange(17)}>SixTONES</Btn>
-          <Btn value="6" onClick={() => handleChange(6)}>SnowMan</Btn>
-          <Btn value="11" onClick={() => handleChange(16)}>King&Prince</Btn>
-          <Btn value="11" onClick={() => handleChange(18)}>なにわ男子</Btn>
-          <Btn value="8" onClick={() => handleChange(8)}>SexyZone</Btn>
-          <Btn value="7" onClick={() => handleChange(7)}>関ジャニ∞</Btn>
-          <Btn value="13" onClick={() => handleChange(13)}>Kis-My-Ft2</Btn>
-          <Btn value="11" onClick={() => handleChange(15)}>ジャニーズWEST</Btn>
-          <Btn value="11" onClick={() => handleChange(19)}>Hey!Say!JUMP</Btn>
-          <Btn value="11" onClick={() => handleChange(14)}>ABC-Z</Btn>
-          <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
-          <Btn value="12" onClick={() => handleChange(12)}>NEWS</Btn>
-          <Btn value="11" onClick={() => handleChange(21)}>Kinki Kids</Btn>
-          <Btn value="9" onClick={() => handleChange(9)}>TOKIO</Btn>
-          <Btn value="10" onClick={() => handleChange(10)}>V6</Btn>
-          <Btn value="11" onClick={() => handleChange(11)}>嵐</Btn>
-          <h2>{h2}</h2>
-          <ItemMList itemList={itemList} itemMList={itemMList} iimList={iimList} teamId={id} errJList={errJList} />
-        </div>
-      )}
+      {
+        function() {
+          if (isLoading) {
+            return (
+              <div>
+                <Loading />
+              </div>
+            )
+          } else {
+            return (
+              <div>
+                <Btn value="5" onClick={() => handleChange(5)}>All</Btn>
+                <Btn value="17" onClick={() => handleChange(17)}>SixTONES</Btn>
+                <Btn value="6" onClick={() => handleChange(6)}>SnowMan</Btn>
+                <Btn value="11" onClick={() => handleChange(16)}>King&Prince</Btn>
+                <Btn value="11" onClick={() => handleChange(18)}>なにわ男子</Btn>
+                <Btn value="8" onClick={() => handleChange(8)}>SexyZone</Btn>
+                <Btn value="7" onClick={() => handleChange(7)}>関ジャニ∞</Btn>
+                <Btn value="13" onClick={() => handleChange(13)}>Kis-My-Ft2</Btn>
+                <Btn value="11" onClick={() => handleChange(15)}>ジャニーズWEST</Btn>
+                <Btn value="11" onClick={() => handleChange(19)}>Hey!Say!JUMP</Btn>
+                <Btn value="11" onClick={() => handleChange(14)}>ABC-Z</Btn>
+                <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
+                <Btn value="12" onClick={() => handleChange(12)}>NEWS</Btn>
+                <Btn value="11" onClick={() => handleChange(21)}>Kinki Kids</Btn>
+                <Btn value="9" onClick={() => handleChange(9)}>TOKIO</Btn>
+                <Btn value="10" onClick={() => handleChange(10)}>V6</Btn>
+                <Btn value="11" onClick={() => handleChange(11)}>嵐</Btn>
+                <h2>{h2}</h2>
+                {
+                  function() {
+                    if (id === 5) {
+                      return (
+                        <div>
+                          <ItemMList itemList={itemList} itemMList={itemMList} iimList={iimList} teamId={id} errJList={errJList} />
+                        </div>
+                        // <p>{itemList}{itemMList}{iimList}{id}{errJList}</p>
+                      )
+                    } else {
+                      return (
+                        <ItemMList itemList={itemList} itemMList={itemMList} iimList={iimList} teamId={id} errJList={errJList} />
+                      )
+                    }
+                  }()
+                }
+              </div>
+            )
+          }
+        }()
+      }
     </div>
   );
 };

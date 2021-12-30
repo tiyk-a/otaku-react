@@ -18,7 +18,6 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
   const [date, setDate] = useState('');
 
   useEffect(() => {
-    console.log(errJList);
     setDate(moment('2020-01-01').format('YYYY-MM-DD'));
   }, [moment]);
 

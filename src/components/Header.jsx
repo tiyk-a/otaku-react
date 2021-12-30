@@ -62,7 +62,7 @@ const Header = styles => {
     <HeaderBar>
       <div className="flexRowCenter">
         <NewItemIcon onClick={toNew} />
-          <p style={headerStyle} onClick={toTop}>MERCHANDISE RETRIEVAL SYSTEM</p>
+          <p style={headerStyle} onClick={toTop}>フロント</p>
           <p>Env:{process.env.NODE_ENV}</p>
       </div>
       <div>

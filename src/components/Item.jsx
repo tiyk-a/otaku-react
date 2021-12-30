@@ -4,6 +4,7 @@ import { Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
+import TeamIdToName from '../functions/TeamIdToName';
 import { ApiPath } from '../constants';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { DatePicker } from '@material-ui/pickers';
@@ -26,6 +27,7 @@ const Item = ({ item, teamId, itemMList }) => {
   const [imId, setImId] = useState('');
   const [intoId, setIntoId] = useState('');
   const [date, setDate] = useState('');
+  const [amazon_image, setAmazon_image] = useState('');
   const [fromIM, setFromIM] = useState('');
   const [toIM, setToIM] = useState('');
   const [title, setTitle] = useState('');
@@ -57,6 +59,7 @@ const Item = ({ item, teamId, itemMList }) => {
         title: title,
         wp_id: "",
         publication_date: date,
+        amazon_image: amazon_image,
         del_flg: false,
         verArr: verArr,
       }
@@ -78,7 +81,6 @@ const Item = ({ item, teamId, itemMList }) => {
 
   // 入力された検索ワードをSTATEに反映
   const handleChangeTitle = e => {
-    console.log(e.target.value);
     const txt = e.target.value;
     setTitle(txt);
   };
@@ -104,6 +106,11 @@ const Item = ({ item, teamId, itemMList }) => {
       }
     });
   };
+
+  const handleChangeAmazonImage = e => {
+    console.log(e);
+    setAmazon_image(e);
+  }
 
   const addVerArr = e => {
     if (e.keyCode === 13) {
@@ -196,6 +203,13 @@ const Item = ({ item, teamId, itemMList }) => {
       <Text>
         <ul>
           <li>
+            {item.relList !== null && item.relList !== undefined ? (
+              item.relList.map((e, index) => (
+                  <TeamIdToName teamId={e} />
+                ))
+            ) : (
+              <></>
+            )}
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
               <DatePicker
                 variant="inline"
@@ -281,6 +295,14 @@ const Item = ({ item, teamId, itemMList }) => {
               <br />
               <Btn onClick={registerIM}>IM新規登録・更新</Btn>
               <Btn onClick={updFctChk}>IM設定</Btn>
+              <Input
+              type="text"
+              name="amazon image"
+              value={amazon_image}
+              onChange={handleChangeAmazonImage}
+              placeholder="amazon_image"
+              className="titleInput"
+              />
           </li>
           <li className="textBox">
             <p>記号は使用しないでください</p>
