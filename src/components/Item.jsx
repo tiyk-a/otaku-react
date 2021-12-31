@@ -216,7 +216,7 @@ const Item = ({ item, teamId, itemMList }) => {
                 inputVariant="standard"
                 format="yyyy/MM/dd"
                 id="date"
-                label="date"
+                label="発売日"
                 value={date}
                 onChange={handleChangeDate}
                 className="dateForm"
@@ -227,7 +227,7 @@ const Item = ({ item, teamId, itemMList }) => {
           <li>
             {item.id}
             <br />
-            {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("No IM")}
+            {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("")}
           </li>
           <li className="textBoxTitle">
               <Input

@@ -53,14 +53,11 @@ const Top = () => {
     await axios
       .get(path)
       .then(response => {
-        const allFlg = response.data.allFlg;
         const i = response.data.i;
         const im = response.data.im;
         const iim = response.data.iim;
         const errJ = response.data.errJ;
 
-        // Top画面の場合（データ型が違うからこう書くしかない）
-        if (allFlg) {
           if (i !== null) {
             const relList = [];
             console.debug("soko");
@@ -81,22 +78,39 @@ const Top = () => {
               };
               ilist.push(ele);
             });
-            setItemList(ilist);
+            // setItemList(ilist);
           }
 
           if (im !== null) {
             console.log("im nonaka");
             im.forEach(itemM => {
-              console.log(itemM);
-              // const m = {
-              //   id: itemM.im_id,
-              //   title: itemM.title,
-              //   price: itemM.price,
-              //   pubDate: itemM.publication_date,
-              //   wpId: itemM.wp_id,
-              //   ver: itemM.verList,
-              // };
-            // imlist.push(m);
+              console.log(itemM.relList);
+
+              // relListから必要な情報を抜き出す
+              var wpId = '';
+              const tmpRelList = [];
+              itemM.relList.forEach(rel => {
+                // wpIdを取得したい
+                if (rel.team_id === id) {
+                  wpId = rel.wp_id;
+                }
+
+                // teamIdListを作る
+                if (!tmpRelList.includes(rel.team_id)) {
+                  tmpRelList.push(rel.team_id);
+                }
+              });
+
+              const m = {
+                id: itemM.im.im_id,
+                title: itemM.im.title,
+                price: itemM.im.price,
+                pubDate: itemM.im.publication_date,
+                wpId: wpId,
+                ver: itemM.verList,
+                relList: tmpRelList,
+              };
+            imlist.push(m);
             });
           }
 
@@ -104,15 +118,15 @@ const Top = () => {
             console.log("iim nonaka");
             iim.forEach(item => {
               console.log(item);
-              // const iim = {
-              //   id: item.item_id,
-              //   title: item.title,
-              //   description: item.item_caption,
-              //   price: item.price,
-              //   pubDate: item.publication_date,
-              //   wpId: item.im_id,
-              // };
-              // iimlist.push(iim);
+              const iim = {
+                id: item.item.item_id,
+                title: item.item.title,
+                description: item.item.item_caption,
+                price: item.item.price,
+                pubDate: item.item.publication_date,
+                wpId: item.item.im_id,
+              };
+              iimlist.push(iim);
             });
           }
 
@@ -120,64 +134,6 @@ const Top = () => {
             console.log("errJ nonaka");
             errJ.forEach(j => {
               console.log(j);
-              // const ele = {
-              //   id: j.errj_id,
-              //   teamId: j.team_id,
-              //   json: j.json,
-              // };
-              // errlist.push(ele);
-            });
-          }
-
-          // setItemList(ilist);
-          // setItemMList(imlist);
-          // setIimList(iimlist);
-          // setErrJList(errlist);
-        } else {
-          if (i !== null) {
-            i.forEach(item => {
-              const ele = {
-                id: item.item_id,
-                title: item.title,
-                description: i.item_caption,
-                price: item.price,
-                pubDate: item.publication_date,
-                wpId: item.im_id,
-              };
-              ilist.push(ele);
-            });
-          }
-
-          if (im !== null) {
-            im.forEach(itemM => {
-              const m = {
-                id: itemM.im_id,
-                title: itemM.title,
-                price: itemM.price,
-                pubDate: itemM.publication_date,
-                wpId: itemM.wp_id,
-                ver: itemM.verList,
-              };
-            imlist.push(m);
-            });
-          }
-
-          if (iim !== null) {
-            iim.forEach(item => {
-              const iim = {
-                id: item.item_id,
-                title: item.title,
-                description: item.item_caption,
-                price: item.price,
-                pubDate: item.publication_date,
-                wpId: item.im_id,
-              };
-              iimlist.push(iim);
-            });
-          }
-
-          if (errJ !== null) {
-            errJ.forEach(j => {
               const ele = {
                 id: j.errj_id,
                 teamId: j.team_id,
@@ -191,7 +147,6 @@ const Top = () => {
           setItemMList(imlist);
           setIimList(iimlist);
           setErrJList(errlist);
-        }
       }).catch(error => {});
   }, []);
 
