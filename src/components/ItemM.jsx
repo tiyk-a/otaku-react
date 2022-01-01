@@ -1,5 +1,5 @@
 import { Box } from '@material-ui/core';
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
@@ -19,6 +19,7 @@ const ItemM = ({ item, teamId }) => {
   const [id, setId] = useState('');
   const [intoId, setIntoId] = useState('');
   const [title, setTitle] = useState('');
+  const [image, setImage] = useState('');
   const [verArr, setVerArr] = useState([]);
   const [tmpVer, setTmpVer] = useState('');
 
@@ -26,6 +27,7 @@ const ItemM = ({ item, teamId }) => {
     setTitle(item.title);
     setVerArr(item.ver);
     setId(item.id);
+    setImage(item.image);
   }, [item.id]);
 
   const upBlog = async (item) => {
@@ -50,9 +52,13 @@ const ItemM = ({ item, teamId }) => {
   };
 
   const handleChangeTitle = e => {
-    console.log("socci");
     const txt = e.target.value;
     setTitle(txt);
+  };
+
+  const handleChangeImage = e => {
+    const txt = e.target.value;
+    setImage(txt);
   };
 
   const handleVerArr = e => {
@@ -97,6 +103,7 @@ const ItemM = ({ item, teamId }) => {
     title: title,
     wp_id: item.wpId,
     publication_date: date,
+    amazon_image: image,
     del_flg: false,
     verArr: verArr,
     }
@@ -149,6 +156,17 @@ const ItemM = ({ item, teamId }) => {
             　/>
             </p>
             <Btn onClick={updIM}>使わないでIM更新（verの更新できない）</Btn>
+            <TextField
+              required
+              name="amazon image"
+              label="amazon image"
+              value={image}
+              onChange={handleChangeImage}
+              fullWidth={true}
+              multiline={true}
+              rows={3}
+              rowsMax={5}
+            />
           </li>
           <li className="textBox">
             <p>中括弧（「[」と「]」）は使用しないでください</p>

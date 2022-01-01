@@ -94,25 +94,40 @@ const Top = () => {
                 if (rel.team_id === id) {
                   wpId = rel.wp_id;
                 }
+        // IM
+        if (im !== null) {
+          console.log("im nonaka");
+          im.forEach(itemM => {
+            console.log(itemM.relList);
 
-                // teamIdListを作る
-                if (!tmpRelList.includes(rel.team_id)) {
-                  tmpRelList.push(rel.team_id);
-                }
-              });
+            // relListから必要な情報を抜き出す
+            var wpId = '';
+            const tmpRelList = [];
+            itemM.relList.forEach(rel => {
+              // wpIdを取得したい
+              if (rel.team_id === id) {
+                wpId = rel.wp_id;
+              }
 
-              const m = {
-                id: itemM.im.im_id,
-                title: itemM.im.title,
-                price: itemM.im.price,
-                pubDate: itemM.im.publication_date,
-                wpId: wpId,
-                ver: itemM.verList,
-                relList: tmpRelList,
-              };
-            imlist.push(m);
+              // teamIdListを作る
+              if (!tmpRelList.includes(rel.team_id)) {
+                tmpRelList.push(rel.team_id);
+              }
             });
-          }
+
+            const m = {
+              id: itemM.im.im_id,
+              title: itemM.im.title,
+              price: itemM.im.price,
+              pubDate: itemM.im.publication_date,
+              image: itemM.im.amazon_image,
+              wpId: wpId,
+              ver: itemM.verList,
+              relList: tmpRelList,
+            };
+          imlist.push(m);
+          });
+        }
 
           if (iim !== null) {
             console.log("iim nonaka");

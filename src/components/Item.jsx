@@ -109,7 +109,7 @@ const Item = ({ item, teamId, itemMList }) => {
 
   const handleChangeAmazonImage = e => {
     console.log(e);
-    setAmazon_image(e);
+    setAmazon_image(e.target.value);
   }
 
   const addVerArr = e => {
