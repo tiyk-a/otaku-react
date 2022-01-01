@@ -25,10 +25,24 @@ const ItemM = ({ item, teamId }) => {
 
   useEffect(() => {
     setTitle(item.title);
-    setVerArr(item.ver);
+
+    // verを登録する（im_v_idとver_name, im_idを配列にして入れる）
+    setVerArrFunc(item.ver);
+
     setId(item.id);
     setImage(item.image);
   }, [item.id]);
+
+  const setVerArrFunc = (ver) => {
+    // verを登録する（im_v_idとver_name, im_idを配列にして入れる）
+    const outerArray = [];
+    ver.forEach(ver => {
+      const innerArray = [];
+      innerArray.push(ver.im_v_id, ver.ver_name, ver.im_id);
+      outerArray.push(innerArray);
+    });
+    setVerArr(outerArray);
+  }
 
   const upBlog = async (item) => {
     if (teamId !== undefined) {
@@ -75,9 +89,9 @@ const ItemM = ({ item, teamId }) => {
         // 2. Make a shallow copy of the item you want to mutate
         let ver = {...vers[verId]};
         // 3. Replace the property you're intested in
-        ver.ver_name = txt;
+        ver[1] = txt;
         // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-        vers[verId] = ver;
+        vers[verId] = [ver[0], ver[1], ver[2]];
         // 5. Set the state to our new copy
         setVerArr(vers);
     }
@@ -85,14 +99,8 @@ const ItemM = ({ item, teamId }) => {
 
   const addVerArr = e => {
     if (e.keyCode === 13) {
-      const tmpObj = {
-          im_v_id: null,
-          im_id: id,
-          ver_name: tmpVer,
-          sort_order: null, 
-      }
-      console.log(tmpObj);
-      setVerArr([...verArr, tmpObj]);
+      const tmpArr = [null, tmpVer, id];
+      setVerArr([...verArr, tmpArr]);
       setTmpVer("");
     }
   }
@@ -105,12 +113,11 @@ const ItemM = ({ item, teamId }) => {
     publication_date: date,
     amazon_image: image,
     del_flg: false,
-    verArr: verArr,
+    vers: verArr,
     }
     await axios
     .post(ApiPath.IM + id, data)
     .then(response => {
-        console.log(response);
         window.location.reload();
     })
     .catch(error => {});
@@ -140,22 +147,20 @@ const ItemM = ({ item, teamId }) => {
             {date}
           </li>
           <li>
-            {item.id}
+            IMId: {item.id}
             <br />
-            {item.wpId !== null && item.wpId !== undefined ? (item.wpId) : ("No Wp")}
+            WpId: {item.wpId !== null && item.wpId !== undefined ? (item.wpId) : ("No Wp")}
           </li>
           <li className="textBoxTitle">
-            <p>
-              <Input
-                type="text"
-                name="IM register"
-                value={title}
-                onChange={handleChangeTitle}
-                placeholder="imId"
-                className="titleInput"
-            　/>
-            </p>
-            <Btn onClick={updIM}>使わないでIM更新（verの更新できない）</Btn>
+            <Input
+              type="text"
+              name="IM register"
+              value={title}
+              onChange={handleChangeTitle}
+              placeholder="imId"
+              className="titleInput"
+            />
+            <Btn onClick={updIM}>IM更新</Btn>
             <TextField
               required
               name="amazon image"
@@ -171,28 +176,29 @@ const ItemM = ({ item, teamId }) => {
           <li className="textBox">
             <p>中括弧（「[」と「]」）は使用しないでください</p>
             <Input
-                type="text"
-                name="ver"
-                value={tmpVer}
-                onChange={handleVerArr}
-                placeholder="ver"
-                className="titleInput"
-                onKeyDown={addVerArr}
+              type="text"
+              row="5"
+              name="ver"
+              value={tmpVer}
+              onChange={handleVerArr}
+              placeholder="ver"
+              className="titleInput"
+              onKeyDown={addVerArr}
             />
             {verArr.length > 0 ? (
-                verArr.map((e, index) => (
-                    <div className="itemBox" key={index}>
-                        <Input
-                            type="text"
-                            name="ver"
-                            value={e.ver_name}
-                            data={index}
-                            onChange={handleVerArr}
-                            placeholder="ver"
-                            className="titleInput"
-                        />
-                    </div>
-                ))
+              verArr.map((e, index) => (
+                <div className="itemBox" key={index}>
+                  <Input
+                    type="text"
+                    name="ver"
+                    value={e[1]}
+                    data={index}
+                    onChange={handleVerArr}
+                    placeholder="ver"
+                    className="titleInput"
+                  />
+                </div>
+              ))
             ):("")
             }
             <p>{item.url}</p>

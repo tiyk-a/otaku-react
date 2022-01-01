@@ -58,42 +58,30 @@ const Top = () => {
         const iim = response.data.iim;
         const errJ = response.data.errJ;
 
-          if (i !== null) {
-            const relList = [];
-            console.debug("soko");
-            i.forEach(item => {
-              const tmpRelList = [];
-              item.teamIdList.forEach(rel => {
-                tmpRelList.push(rel);
-              });
-              relList.push(tmpRelList);
-              const ele = {
-                id: item.item.item_id,
-                title: item.item.title,
-                description: item.item.item_caption,
-                price: item.item.price,
-                pubDate: item.item.publication_date,
-                wpId: item.item.im_id,
-                relList: tmpRelList
-              };
-              ilist.push(ele);
+        // item(w/o IM)
+        if (i !== null) {
+          const relList = [];
+          console.debug("soko");
+          i.forEach(item => {
+            const tmpRelList = [];
+            item.teamIdList.forEach(rel => {
+              tmpRelList.push(rel);
             });
-            // setItemList(ilist);
-          }
+            relList.push(tmpRelList);
+            const ele = {
+              id: item.item.item_id,
+              title: item.item.title,
+              description: item.item.item_caption,
+              price: item.item.price,
+              pubDate: item.item.publication_date,
+              wpId: item.item.im_id,
+              relList: tmpRelList
+            };
+            ilist.push(ele);
+          });
+          // setItemList(ilist);
+        }
 
-          if (im !== null) {
-            console.log("im nonaka");
-            im.forEach(itemM => {
-              console.log(itemM.relList);
-
-              // relListから必要な情報を抜き出す
-              var wpId = '';
-              const tmpRelList = [];
-              itemM.relList.forEach(rel => {
-                // wpIdを取得したい
-                if (rel.team_id === id) {
-                  wpId = rel.wp_id;
-                }
         // IM
         if (im !== null) {
           console.log("im nonaka");
