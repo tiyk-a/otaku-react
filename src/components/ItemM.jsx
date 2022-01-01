@@ -60,6 +60,7 @@ const ItemM = ({ item, teamId }) => {
       await axios
         .delete(ApiPath.IM + id)
         .then(response => {
+          window.location.reload();
         })
         .catch(error => {});
     }
