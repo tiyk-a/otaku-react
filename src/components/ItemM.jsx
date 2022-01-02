@@ -22,6 +22,7 @@ const ItemM = ({ item, teamId }) => {
   const [image, setImage] = useState('');
   const [verArr, setVerArr] = useState([]);
   const [tmpVer, setTmpVer] = useState('');
+  const [editedFlg, setEditedFlg] = useState(false);
 
   useEffect(() => {
     setTitle(item.title);
@@ -60,7 +61,6 @@ const ItemM = ({ item, teamId }) => {
       await axios
         .delete(ApiPath.IM + id)
         .then(response => {
-          window.location.reload();
         })
         .catch(error => {});
     }
@@ -69,11 +69,17 @@ const ItemM = ({ item, teamId }) => {
   const handleChangeTitle = e => {
     const txt = e.target.value;
     setTitle(txt);
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
   };
 
   const handleChangeImage = e => {
     const txt = e.target.value;
     setImage(txt);
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
   };
 
   const handleVerArr = e => {
@@ -96,6 +102,9 @@ const ItemM = ({ item, teamId }) => {
         // 5. Set the state to our new copy
         setVerArr(vers);
     }
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
   };
 
   const addVerArr = e => {
@@ -103,6 +112,9 @@ const ItemM = ({ item, teamId }) => {
       const tmpArr = [null, tmpVer, id];
       setVerArr([...verArr, tmpArr]);
       setTmpVer("");
+      if (!editedFlg) {
+        setEditedFlg(true);
+      }
     }
   }
 
@@ -116,8 +128,10 @@ const ItemM = ({ item, teamId }) => {
     del_flg: false,
     vers: verArr,
     }
+    console.log(data);
+    console.log(verArr);
     await axios
-    .post(ApiPath.IM + id, data)
+    .post(ApiPath.IM + "upd", data)
     .then(response => {
         window.location.reload();
     })
@@ -132,8 +146,18 @@ const ItemM = ({ item, teamId }) => {
     background: "pink",
   };
 
+  const toggleEditedFlg = () => {
+    if (editedFlg) {
+      setEditedFlg(false);
+    } else {
+      setEditedFlg(true);
+    }
+  }
+
   return (
-    <div className="itemContainer" className={item.wpId !== null && item.wpId !== undefined ? "postedStyle": "notPostedStyle"}>
+    <div className="itemContainer" className={item.wpId !== null && item.wpId !== undefined ? "postedStyle": editedFlg ? "editedStyle" : "notPostedStyle"}>
+      {editedFlg ? (<div className="target_im" id={item.id} data-title={title} data-wpid={item.wpId} data-date={date} data-image={image} data-verarr={verArr}></div>) : (null)}
+      <p>flg: {editedFlg ? "true" : "false"}</p>
       <Text>
         <ul>
           <li>
@@ -146,6 +170,10 @@ const ItemM = ({ item, teamId }) => {
             )}
             <br />
             {date}
+            <br />
+            <Btn onClick={toggleEditedFlg}>
+              {editedFlg ? ("更新しない") : ("更新する")}
+            </Btn>
           </li>
           <li>
             IMId: {item.id}

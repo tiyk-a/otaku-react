@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from 'react';
+import { Button } from '@material-ui/core';
+import styled from '@material-ui/styles/styled';
 import Item from '../components/Item';
 import ItemM from '../components/ItemM';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -6,6 +8,8 @@ import { DatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from 'date-fns/locale/ja';
 import ItemForm from '../containers/ItemForm';
+import axios from '../axios';
+import { ApiPath } from '../constants';
 
 /**
  *商品リストコンポーネント
@@ -26,9 +30,88 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
       setDate(e);
   };
 
+  // 対象Itemを一括でIM登録します
+  const bundleItem = async() => {
+    var elems = document.getElementsByClassName("target_item");
+    const data = [];
+
+    Array.from(elems).forEach((e) => {
+      const verArr = [];
+      if (e.dataset.verarr !== undefined && e.dataset.verarr !== null) {
+        var arr = e.dataset.verarr.split(",");
+        var i = 0;
+        while (arr[i]!== undefined) {
+          var innerArr = [];
+          innerArr = [arr[i], arr[i+1], arr[i+2]];
+          verArr.push(innerArr);
+          i = i + 3;
+        }
+      }
+
+      const item = {
+        item_id: e.id,
+        im_id: e.dataset.imId,
+        teamId: e.dataset.teamid,
+        title: e.dataset.title,
+        wp_id: "",
+        publication_date: e.dataset.date,
+        amazon_image: e.dataset.image,
+        del_flg: false,
+        vers: verArr,
+      }
+      data.push(item);
+    });
+
+    await axios
+      .post(ApiPath.IM + "bundle/new", data)
+      .then(response => {
+        console.log(response);
+        window.location.reload();
+      })
+      .catch(error => {});
+  }
+
+  // 対象IMを一括で更新します
+  const bundleIM = async() => {
+    var elems = document.getElementsByClassName("target_im");
+    const data = [];
+    Array.from(elems).forEach((e) => {
+      const verArr = [];
+      if (e.dataset.verarr !== undefined && e.dataset.verarr !== null) {
+        var arr = e.dataset.verarr.split(",");
+        var i = 0;
+        while (arr[i]!== undefined) {
+          var innerArr = [];
+          innerArr = [arr[i], arr[i+1], arr[i+2]];
+          verArr.push(innerArr);
+          i = i + 3;
+        }
+      }
+
+      const im = {
+        im_id: e.id,
+        title: e.dataset.title,
+        wp_id: e.dataset.wpid,
+        publication_date: e.dataset.date,
+        amazon_image: e.dataset.image,
+        del_flg: false,
+        vers: verArr,
+      } 
+      data.push(im);
+    });
+
+    await axios
+      .post(ApiPath.IM + "bundle/upd", data)
+      .then(response => {
+        console.log(response);
+        window.location.reload();
+      })
+      .catch(error => {});
+  }
+
   return (
     <div className="allItemsList">
-      <h3>未チェックItem</h3>
+      <h3>未チェックItem<Btn onClick={bundleItem}>一括処理</Btn></h3>
       {itemList !== undefined && itemList.length > 0 ? (
         itemList.map((e, index) => (
           <div className="itemBox" key={index}>
@@ -56,7 +139,7 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
           <h1>ErrorJsonはなし</h1>
         </div>
       )}
-      <h3>今後のItemM</h3>
+      <h3>今後のItemM<Btn onClick={bundleIM}>一括処理</Btn></h3>
       <p>期間指定</p>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
         <DatePicker
@@ -109,4 +192,12 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
   );
 };
 
+/**
+ * UI(ボタン)
+ */
+const Btn = styled(Button)({
+  marginLeft: '26px',
+  background: 'linear-gradient(to right bottom, #db36a4, #f7ff00)',
+  color: 'black',
+});
 export default ItemMList;

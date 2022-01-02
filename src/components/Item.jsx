@@ -21,7 +21,7 @@ import Select from '@mui/material/Select';
  * @param {object} item
  * @returns jsx
  */
-const Item = ({ item, teamId, itemMList }) => {
+const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const moment = require("moment");
   const [id, setId] = useState('');
   const [imId, setImId] = useState('');
@@ -37,6 +37,7 @@ const Item = ({ item, teamId, itemMList }) => {
   const [verArr, setVerArr] = useState([]);
   const [imKey, setImKey] = useState('');
   const [imSearchRes, setImSearchRes] = useState([]);
+  const [editedFlg, setEditedFlg] = useState(false);
 
   useEffect(() => {
     setId(item.id);
@@ -61,8 +62,10 @@ const Item = ({ item, teamId, itemMList }) => {
         publication_date: date,
         amazon_image: amazon_image,
         del_flg: false,
-        verArr: verArr,
+        vers: verArr,
       }
+      console.log(verArr);
+      console.log(data);
       await axios
         .post(ApiPath.IM, data)
         .then(response => {
@@ -75,14 +78,19 @@ const Item = ({ item, teamId, itemMList }) => {
 
   // 入力された検索ワードをSTATEに反映
   const handleChangeDate = e => {
-    console.log(e);
     setDate(e);
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
   };
 
   // 入力された検索ワードをSTATEに反映
   const handleChangeTitle = e => {
     const txt = e.target.value;
     setTitle(txt);
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
   };
 
   const handleChangeIMTitle = e => {
@@ -94,6 +102,9 @@ const Item = ({ item, teamId, itemMList }) => {
         setImId(item.id);
       }
     });
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
   };
 
   const handleChangeOtherIMTitle = e => {
@@ -108,16 +119,17 @@ const Item = ({ item, teamId, itemMList }) => {
   };
 
   const handleChangeAmazonImage = e => {
-    console.log(e);
     setAmazon_image(e.target.value);
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
   }
 
   const addVerArr = e => {
     if (e.keyCode === 13) {
-      setVerArr([...verArr, tmpVer]);
-      setTmpVer("");
+      setVerArr([...verArr, [null, tmpVer, null]]);
+      setTmpVer('');
     }
-    console.log(verArr[0]);
   }
 
   const searchImByKw = (e) => {
@@ -162,6 +174,9 @@ const Item = ({ item, teamId, itemMList }) => {
   const handleVerArr = e => {
     const txt = e.target.value;
     setTmpVer(txt);
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
   };
 
   const updImId = async (e) => {
@@ -183,10 +198,17 @@ const Item = ({ item, teamId, itemMList }) => {
       await axios
         .get(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId + "&teamId=" + teamId)
         .then(response => {
-          console.log(response);
           window.location.reload();
         })
         .catch(error => {});
+    }
+  }
+
+  const toggleEditedFlg = () => {
+    if (editedFlg) {
+      setEditedFlg(false);
+    } else {
+      setEditedFlg(true);
     }
   }
 
@@ -198,8 +220,15 @@ const Item = ({ item, teamId, itemMList }) => {
     background: "pink",
   };
 
+  const editedStyle = {
+    background: "blue",
+    color: "red",
+  };
+
   return (
-    <div className="itemContainer" className={item.masterId !== null && item.masterId !== undefined ? "postedStyle": "notPostedStyle"}>
+    <div className="itemContainer" className={item.masterId !== null && item.masterId !== undefined ? "postedStyle": editedFlg ? "editedStyle" : "notPostedStyle"}>
+      {editedFlg ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr}></div>) : (null)}
+      <p>flg: {editedFlg ? "true" : "false"}</p>
       <Text>
         <ul>
           <li>
@@ -223,6 +252,10 @@ const Item = ({ item, teamId, itemMList }) => {
                 autoOk={true}
               />
             </MuiPickersUtilsProvider>
+            <br />
+            <Btn onClick={toggleEditedFlg}>
+              {editedFlg ? ("更新しない") : ("更新する")}
+            </Btn>
           </li>
           <li>
             {item.id}
@@ -293,16 +326,17 @@ const Item = ({ item, teamId, itemMList }) => {
               )}
               </FormControl>
               <br />
-              <Btn onClick={registerIM}>IM新規登録・更新</Btn>
-              <Btn onClick={updFctChk}>IM設定</Btn>
               <Input
-              type="text"
-              name="amazon image"
-              value={amazon_image}
-              onChange={handleChangeAmazonImage}
-              placeholder="amazon_image"
-              className="titleInput"
+                type="text"
+                name="amazon image"
+                value={amazon_image}
+                onChange={handleChangeAmazonImage}
+                placeholder="amazon_image"
+                className="titleInput"
               />
+              <br />
+              <Btn onClick={registerIM}>IM登録・Ver追加</Btn>
+              <Btn onClick={updFctChk}>IM設定</Btn>
           </li>
           <li className="textBox">
             <p>記号は使用しないでください</p>
@@ -324,7 +358,7 @@ const Item = ({ item, teamId, itemMList }) => {
                       <Input
                         type="text"
                         name="ver"
-                        value={e}
+                        value={e[1]}
                         onChange={handleVerArr}
                         placeholder="ver"
                         className="titleInput"
