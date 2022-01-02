@@ -27,7 +27,13 @@ const Program = ({ program, teamId }) => {
     await axios
       .delete(ApiPath.TV + program.id)
       .then(response => {
-        window.location.reload();
+        // 処理が成功したらresponseにはstatus=200,data=trueを返却するようにしてる
+        if (response.data) {
+          window.location.reload();
+        } else {
+          window.alert("削除エラーです");
+          console.log(response);
+        }
       })
       .catch(error => {});
   };

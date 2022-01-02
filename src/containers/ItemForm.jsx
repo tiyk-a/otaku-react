@@ -153,8 +153,8 @@ const ItemForm = (teamIdObj) => {
     await axios
       .post(ApiPath.ITEM + "team/" + teamId, data)
       .then(response => {
-        history.push('/');
         clearItemStates();
+        window.location.reload();
       })
       .catch(error => {});
   };
@@ -176,7 +176,7 @@ const ItemForm = (teamIdObj) => {
       <div className="newItemForm">
         <h2>新規Item登録</h2>
         <p>
-          <b>Tiele</b>
+          <b>Title</b>
         </p>
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
           <TextField

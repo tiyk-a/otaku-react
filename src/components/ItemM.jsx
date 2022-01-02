@@ -61,6 +61,13 @@ const ItemM = ({ item, teamId }) => {
       await axios
         .delete(ApiPath.IM + id)
         .then(response => {
+          // 処理が成功したらresponseにはstatus=200,data=trueを返却するようにしてる
+          if (response.data) {
+            window.location.reload();
+          } else {
+            window.alert("削除エラーです");
+            console.log(response);
+          }
         })
         .catch(error => {});
     }
