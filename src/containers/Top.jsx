@@ -107,6 +107,7 @@ const Top = () => {
               wpId: wpId,
               ver: itemM.verList,
               relList: tmpRelList,
+              blog_not_updated: itemM.im.blog_not_updated,
             };
           imlist.push(m);
           });

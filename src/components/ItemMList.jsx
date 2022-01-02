@@ -65,8 +65,12 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
     await axios
       .post(ApiPath.IM + "bundle/new", data)
       .then(response => {
-        console.log(response);
-        window.location.reload();
+        if (response.data) {
+          window.location.reload();
+        } else {
+          window.alert("登録エラーです");
+          console.log(response);
+        }
       })
       .catch(error => {});
   }
@@ -103,8 +107,12 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
     await axios
       .post(ApiPath.IM + "bundle/upd", data)
       .then(response => {
-        console.log(response);
-        window.location.reload();
+        if (response.data) {
+          window.location.reload();
+        } else {
+          window.alert("登録エラーです");
+          console.log(response);
+        }
       })
       .catch(error => {});
   }

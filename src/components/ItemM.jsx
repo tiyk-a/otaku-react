@@ -50,7 +50,11 @@ const ItemM = ({ item, teamId }) => {
       await axios
         .get(ApiPath.IM + 'blog?imId=' + id + '&team=' + teamId, item)
         .then(response => {
-          window.location.reload();
+          if (response.data) {
+            window.location.reload();
+          } else {
+            window.alert("ブログ投稿エラーです");
+          }
         })
         .catch(error => {});
     }
@@ -135,22 +139,17 @@ const ItemM = ({ item, teamId }) => {
     del_flg: false,
     vers: verArr,
     }
-    console.log(data);
-    console.log(verArr);
+
     await axios
     .post(ApiPath.IM + "upd", data)
     .then(response => {
+      if (response.data) {
         window.location.reload();
+      } else {
+        window.alert("更新エラーです");
+      }
     })
     .catch(error => {});
-  };
-
-  const postedStyle = {
-    // background: "",
-  };
-
-  const notPostedStyle = {
-    background: "pink",
   };
 
   const toggleEditedFlg = () => {
@@ -159,6 +158,10 @@ const ItemM = ({ item, teamId }) => {
     } else {
       setEditedFlg(true);
     }
+  }
+
+  const selected = {
+    opacity: 0.5,
   }
 
   return (
@@ -247,7 +250,8 @@ const ItemM = ({ item, teamId }) => {
           <li>
             <Btn onClick={delIm}>DELETE</Btn>
           </li>
-          <li><Btn onClick={upBlog}>Blog更新</Btn></li>
+          <li>
+            <Btn onClick={upBlog} style={item.blog_not_updated ? null : selected}>Blog更新</Btn></li>
         </ul>
       </Text>
     </div>

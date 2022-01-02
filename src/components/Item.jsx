@@ -64,13 +64,16 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
         del_flg: false,
         vers: verArr,
       }
-      console.log(verArr);
-      console.log(data);
+
       await axios
         .post(ApiPath.IM, data)
         .then(response => {
-          console.log(response);
-          window.location.reload();
+          if (response.data) {
+            window.location.reload();
+          } else {
+            console.log(response);
+            window.alert("更新エラーです");
+          }
         })
         .catch(error => {});
     }
@@ -217,19 +220,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       setEditedFlg(true);
     }
   }
-
-  const postedStyle = {
-    // background: "",
-  };
-
-  const notPostedStyle = {
-    background: "pink",
-  };
-
-  const editedStyle = {
-    background: "blue",
-    color: "red",
-  };
 
   return (
     <div className="itemContainer" className={item.masterId !== null && item.masterId !== undefined ? "postedStyle": editedFlg ? "editedStyle" : "notPostedStyle"}>

@@ -21,14 +21,14 @@ html {
 }
 
 .displayFont {
-  font-family: 'Bowlby One', cursive;
+  /* font-family: 'Bowlby One', cursive; */
   cursor: pointer;
   color: black;
   font-weight: 600;
 }
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  /* font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", */
+    /* monospace; */
 }
 
 a {
@@ -143,8 +143,20 @@ ul {
   width: 50vw;
 }
 
+.postedStyle {
+  background: red;
+}
+
 .notPostedStyle {
-    background: pink;
+  background: pink;
+}
+
+.editedStyle {
+  background: rgba(204, 140, 246, 0.329);
+}
+
+.notEditedStyle {
+  background: green;
 }
 
 img {
