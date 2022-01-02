@@ -242,11 +242,6 @@ const ItemM = ({ item, teamId }) => {
             }
             <p>{item.url}</p>
           </li>
-          <li className="price">
-            <p>
-              <b>{item.price}</b>&nbsp;yen
-            </p>
-          </li>
           <li>
             <Btn onClick={delIm}>DELETE</Btn>
           </li>

@@ -1,11 +1,14 @@
 import { Box } from '@material-ui/core';
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
+import { Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-
-import { useHistory } from 'react-router-dom';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { DatePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import jaLocale from 'date-fns/locale/ja';
 
 /**
  *　TV１件を表示するコンポーネント
@@ -14,14 +17,37 @@ import { useHistory } from 'react-router-dom';
  * @returns jsx
  */
 const Program = ({ program, teamId }) => {
-  const history = useHistory();
   const moment = require("moment");
-  const date = moment(program.date).format('YYYY-MM-DD');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [date, setDate] = useState('');
 
-  const nl2br = require('react-nl2br');
+  useEffect(() => {
+    setTitle(program.title);
+    setDescription(program.description);
+    setDate(moment(program.date).format('YYYY-MM-DD'));
+  }, []);
 
-  // 編集ページに変遷
-  const editTv = () => history.push(`/tv/edit/${teamId}/${program.id}`);
+  // 既存商品の更新
+  const updTv = async() => {
+    const data = {
+      id: program.id,
+      title: title,
+      description: description,
+      on_air_date: date
+    }
+
+    await axios
+      .post(ApiPath.TV + teamId + '/' + program.id, data)
+      .then(response => {
+        if (response.data) {
+          window.location.reload();
+        } else {
+          window.alert("更新エラーです");
+        }
+      })
+      .catch(error => {});
+  };
 
   const delTv = async () => {
     await axios
@@ -38,26 +64,74 @@ const Program = ({ program, teamId }) => {
       .catch(error => {});
   };
 
+  // 入力された日付をSTATEに反映
+  const handleChangeDate = e => {
+      setDate(e);
+  };
+
+  // 各要素が入力されたらSTATEをアップデート
+  const handleChange = e => {
+    const txt = e.target.value;
+    console.log(e.target.name);
+
+    switch (e.target.name) {
+      case 'p_name':
+        setTitle(txt);
+        break;
+      case 'description':
+        setDescription(txt);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="itemContainer">
       <Text>
         <ul>
           <li>{program.id}</li>
-          <li>{date}</li>
+          <li>
+            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
+              <DatePicker
+                variant="inline"
+                inputVariant="standard"
+                format="yyyy/MM/dd"
+                id="date"
+                label="発売日"
+                value={date}
+                onChange={handleChangeDate}
+                className="dateForm"
+                autoOk={true}
+              />
+            </MuiPickersUtilsProvider>
+          </li>
           <li className="textBoxTitle">
-            <p>
-              <b>{program.title}</b>
-            </p>
+            <Input
+              type="text"
+              name="p_name"
+              value={title}
+              onChange={handleChange}
+              placeholder="title"
+              className="titleInput"
+          　/>
           </li>
-          <li className="textBox" onClick={editTv}>
-            <p>{nl2br(program.description)}</p>
-          </li>
-          <li className="price">
-            <p>
-              <b>{program.price}</b>
-            </p>
+          {/* <li className="textBox" onClick={editTv}> */}
+          <li className="textBox">
+            <TextField
+              required
+              name="description"
+              label="description"
+              value={description}
+              onChange={handleChange}
+              fullWidth={true}
+              multiline={true}
+              rows={3}
+              rowsMax={5}
+            />
           </li>
           <li>
+            <Btn onClick={updTv}>更新</Btn>
             <Btn onClick={delTv}>DELETE</Btn>
           </li>
         </ul>

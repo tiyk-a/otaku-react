@@ -29,11 +29,6 @@ const Header = styles => {
     history.push('/new');
   };
 
-  const linkItem = () => {
-    const url = `/item`;
-    history.push(url);
-  };
-
   // マスター商品画面に変遷
   const linkIm = () => {
     const url = `/`;
@@ -52,25 +47,17 @@ const Header = styles => {
     history.push(url);
   };
 
-  // マスター商品画面に変遷
-  const linkTeam = () => {
-    const url = `/`;
-    history.push(url);
-  };
-
   return (
     <HeaderBar>
       <div className="flexRowCenter">
         <NewItemIcon onClick={toNew} />
-          <p style={headerStyle} onClick={toTop}>フロント</p>
+          <p style={headerStyle} onClick={toTop}>ジャニ！</p>
           <p>Env:{process.env.NODE_ENV}</p>
       </div>
       <div>
-        <Btn onClick={linkTeam}>IM</Btn>
-        <Btn onClick={linkItem}>Item</Btn>
+        <Btn onClick={linkIm}>IM</Btn>
         <Btn onClick={linkTv}>TV</Btn>
         <Btn onClick={linkTw}>Twitter</Btn>
-        <Btn onClick={linkIm}>マスター商品</Btn>
       </div>
       <div className="flexRowCenter" style={headerStyle}>
         <Search />

@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Error from './components/Error';
 import Header from './components/Header';
-import Item from './containers/Item';
 import Tv from './containers/Tv';
 import Top from './containers/Top';
 import Twitter from './containers/Twitter';
@@ -63,9 +62,6 @@ class App extends Component {
         <Switch>
           <Route exact path="/">
             <Top />
-          </Route>
-          <Route exact path="/item">
-            <Item />
           </Route>
           <Route exact path="/tv">
             <Tv />
