@@ -3,7 +3,7 @@ import { Button, TextField } from '@material-ui/core';
 import { Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
-import TeamIdToName from '../functions/TeamIdToName';
+import exportFunction from '../functions/TeamIdToName';
 import axios from '../axios';
 import { ApiPath } from '../constants';
 
@@ -173,7 +173,7 @@ const ItemM = ({ item, teamId }) => {
           <li>
             {item.relList !== null && item.relList !== undefined ? (
               item.relList.map((e, index) => (
-                  <TeamIdToName teamId={e} />
+                  <p>{exportFunction.teamIdToName(e)}</p>
                 ))
             ) : (
               <></>

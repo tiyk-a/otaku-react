@@ -4,7 +4,7 @@ import { Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
-import TeamIdToName from '../functions/TeamIdToName';
+import exportFunction from '../functions/TeamIdToName';
 import { ApiPath } from '../constants';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { DatePicker } from '@material-ui/pickers';
@@ -97,7 +97,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   };
 
   const handleChangeIMTitle = e => {
-    console.log(e);
     const txt = e.target.value;
     setImTitle(txt);
     itemMList.forEach(item => {
@@ -111,7 +110,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   };
 
   const handleChangeOtherIMTitle = e => {
-    console.log(e);
     const txt = e.target.value;
     setOtherImTitle(txt);
     imSearchRes.forEach(item => {
@@ -230,7 +228,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
           <li>
             {item.relList !== null && item.relList !== undefined ? (
               item.relList.map((e, index) => (
-                  <TeamIdToName teamId={e} />
+                  <p>{exportFunction.teamIdToName(e)}</p>
                 ))
             ) : (
               <></>

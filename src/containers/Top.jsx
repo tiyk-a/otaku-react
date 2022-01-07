@@ -55,14 +55,11 @@ const Top = () => {
 
         // item(w/o IM)
         if (i !== null) {
-          const relList = [];
-          console.debug("soko");
           i.forEach(item => {
             const tmpRelList = [];
             item.teamIdList.forEach(rel => {
               tmpRelList.push(rel);
             });
-            relList.push(tmpRelList);
             const ele = {
               id: item.item.item_id,
               title: item.item.title,
@@ -74,14 +71,12 @@ const Top = () => {
             };
             ilist.push(ele);
           });
-          // setItemList(ilist);
         }
 
         // IM
         if (im !== null) {
           console.log("im nonaka");
           im.forEach(itemM => {
-            console.log(itemM.relList);
 
             // relListから必要な情報を抜き出す
             var wpId = '';
@@ -113,39 +108,36 @@ const Top = () => {
           });
         }
 
-          if (iim !== null) {
-            console.log("iim nonaka");
-            iim.forEach(item => {
-              console.log(item);
-              const iim = {
-                id: item.item.item_id,
-                title: item.item.title,
-                description: item.item.item_caption,
-                price: item.item.price,
-                pubDate: item.item.publication_date,
-                wpId: item.item.im_id,
-              };
-              iimlist.push(iim);
-            });
-          }
+        if (iim !== null) {
+          iim.forEach(item => {
+            const iim = {
+              id: item.item.item_id,
+              title: item.item.title,
+              description: item.item.item_caption,
+              price: item.item.price,
+              pubDate: item.item.publication_date,
+              wpId: item.item.im_id,
+            };
+            iimlist.push(iim);
+          });
+        }
 
-          if (errJ !== null) {
-            console.log("errJ nonaka");
-            errJ.forEach(j => {
-              console.log(j);
-              const ele = {
-                id: j.errj_id,
-                teamId: j.team_id,
-                json: j.json,
-              };
-              errlist.push(ele);
-            });
-          }
+        if (errJ !== null) {
+          errJ.forEach(j => {
+            console.log(j);
+            const ele = {
+              id: j.errj_id,
+              teamId: j.team_id,
+              json: j.json,
+            };
+            errlist.push(ele);
+          });
+        }
 
-          setItemList(ilist);
-          setItemMList(imlist);
-          setIimList(iimlist);
-          setErrJList(errlist);
+        setItemList(ilist);
+        setItemMList(imlist);
+        setIimList(iimlist);
+        setErrJList(errlist);
       }).catch(error => {});
   }, []);
 

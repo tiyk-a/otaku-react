@@ -5,6 +5,7 @@ import axios from '../axios';
 import Loading from '../components/Loading';
 import TvList from '../components/TvList';
 import { ApiPath } from '../constants';
+import history from '../history';
 
 /**
  * 商品全件取得（トップページ）のコンテナ
@@ -21,22 +22,40 @@ const All = () => {
   const getAllTv = useCallback(async (id) => {
     if (id !== undefined) {
       setTeamId(id);
+      setId(id);
     }
+
+    setTvList([]);
     const list = [];
+    var count = 0;
     await axios
-      .get(ApiPath.TV + 'team/' + id)
+      .get(ApiPath.TV + '?teamId=' + id)
       .then(response => {
         const apiData = response.data;
-        apiData.forEach(targetItem => {
+        apiData.forEach(data => {
           const program = {
-            id: targetItem.program_id,
-            title: targetItem.title,
-            description: targetItem.description,
-            date: targetItem.on_air_date,
+            id: data.program.program_id,
+            title: data.program.title,
+            description: data.program.description,
+            date: data.program.on_air_date,
+            prelList: data.prelList,
+            teamIdList: data.teamIdList,
           };
           list.push(program);
+          count = count + 1;
+        });
+
+        list.sort(function(first, second){
+          if (first.id > second.id){
+            return -1;
+          }else if (first.id < second.id){
+            return 1;
+          }else{
+            return 0;
+          }
         });
         setTvList(list);
+        window.alert(count);
         // setIsLoading(false);
       })
       .catch(error => {});
@@ -48,6 +67,7 @@ const All = () => {
   }, [getAllTv]);
 
   const handleChange = e => {
+    history.push('/tv?teamId=' + e);
     getAllTv(e);
   };
 
