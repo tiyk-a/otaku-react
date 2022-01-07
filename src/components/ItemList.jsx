@@ -19,7 +19,6 @@ const ItemList = ({itemList, teamId}) => {
       ) : (
         <div>
           <h1>IMデータが見つかりませんでした:(</h1>
-          <a href="/new">新しく商品を登録する？</a>
         </div>
       )}
     </div>

@@ -44,7 +44,7 @@ const Error = styles => {
           <p style={errorStyle}>{location.state.message}</p>
           {statusCode === '404' ? (
             <Btn className="focusButton" onClick={jumpToNewItem}>
-              新しく商品を登録する？
+              Null btn
             </Btn>
           ) : null}
         </div>

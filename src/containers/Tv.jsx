@@ -14,14 +14,13 @@ const All = () => {
   // TV一覧リストのSTATES
   const [tvList, setTvList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [h2, setH2] = useState('');
   const [teamId, setTeamId] = useState('');
+  const [id, setId] = useState('');
 
   // TV全件取得
   const getAllTv = useCallback(async (id) => {
     if (id !== undefined) {
       setTeamId(id);
-      setButton(id);
     }
     const list = [];
     await axios
@@ -52,60 +51,8 @@ const All = () => {
     getAllTv(e);
   };
 
-  const setButton = e => {
-    switch (e) {
-      case 6:
-        setH2('SnowMan');
-        break;
-      case 7:
-        setH2('関ジャニ∞');
-        break;
-      case 8:
-        setH2('SexyZone');
-        break;
-      case 9:
-        setH2('TOKIO');
-        break;
-      case 10:
-        setH2('V6');
-        break;
-      case 11:
-        setH2('嵐');
-        break;
-      case 12:
-        setH2('NEWS');
-        break;
-      case 13:
-        setH2('Kis-My-Ft2');
-        break;
-      case 14:
-        setH2('ABC-Z');
-        break;
-      case 15:
-        setH2('ジャニーズWEST');
-        break;
-      case 16:
-        setH2('King&Prince');
-        break;
-      case 17:
-        setH2('SixTONES');
-        break;
-      case 18:
-        setH2('なにわ男子');
-        break;
-      case 19:
-        setH2('Hey!Say!JUMP');
-        break;
-      case 20:
-        setH2('KAT-TUN');
-        break;
-      case 21:
-        setH2('Kinki Kids');
-        break;
-      default:
-        setH2('SnowMan');
-        break;
-    }
+  const selected = {
+    opacity: 0.5,
   }
 
   return (
@@ -116,24 +63,23 @@ const All = () => {
         </div>
       ) : (
         <div>
-          <Btn value="17" onClick={() => handleChange(17)}>SixTONES</Btn>
-          <Btn value="6" onClick={() => handleChange(6)}>SnowMan</Btn>
-          <Btn value="7" onClick={() => handleChange(7)}>関ジャニ∞</Btn>
-          <Btn value="8" onClick={() => handleChange(8)}>SexyZone</Btn>
-          <Btn value="9" onClick={() => handleChange(9)}>TOKIO</Btn>
-          <Btn value="10" onClick={() => handleChange(10)}>V6</Btn>
-          <Btn value="11" onClick={() => handleChange(11)}>嵐</Btn>
-          <Btn value="12" onClick={() => handleChange(12)}>NEWS</Btn>
-          <Btn value="13" onClick={() => handleChange(13)}>Kis-My-Ft2</Btn>
-          <Btn value="11" onClick={() => handleChange(14)}>ABC-Z</Btn>
-          <Btn value="11" onClick={() => handleChange(15)}>ジャニーズWEST</Btn>
-          <Btn value="11" onClick={() => handleChange(16)}>King&Prince</Btn>
-          <Btn value="11" onClick={() => handleChange(17)}>SixTONES</Btn>
-          <Btn value="11" onClick={() => handleChange(18)}>なにわ男子</Btn>
-          <Btn value="11" onClick={() => handleChange(19)}>Hey!Say!JUMP</Btn>
-          <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
-          <Btn value="11" onClick={() => handleChange(21)}>Kinki Kids</Btn>
-          <h2>{h2}</h2>
+          <Btn value="5" onClick={() => handleChange(5)} style={id === 5 ? selected : null}>All</Btn>
+          <Btn value="17" onClick={() => handleChange(17)} style={id === 17 ? selected : null}>SixTONES</Btn>
+          <Btn value="6" onClick={() => handleChange(6)} style={id === 6 ? selected : null}>SnowMan</Btn>
+          <Btn value="16" onClick={() => handleChange(16)} style={id === 16 ? selected : null}>King&Prince</Btn>
+          <Btn value="18" onClick={() => handleChange(18)} style={id === 18 ? selected : null}>なにわ男子</Btn>
+          <Btn value="8" onClick={() => handleChange(8)} style={id === 8 ? selected : null}>SexyZone</Btn>
+          <Btn value="7" onClick={() => handleChange(7)} style={id === 7 ? selected : null}>関ジャニ∞</Btn>
+          <Btn value="13" onClick={() => handleChange(13)} style={id === 13 ? selected : null}>Kis-My-Ft2</Btn>
+          <Btn value="15" onClick={() => handleChange(15)} style={id === 15 ? selected : null}>ジャニーズWEST</Btn>
+          <Btn value="19" onClick={() => handleChange(19)} style={id === 19 ? selected : null}>Hey!Say!JUMP</Btn>
+          <Btn value="14" onClick={() => handleChange(14)} style={id === 14 ? selected : null}>ABC-Z</Btn>
+          <Btn value="20" onClick={() => handleChange(20)} style={id === 20 ? selected : null}>KAT-TUN</Btn>
+          <Btn value="12" onClick={() => handleChange(12)} style={id === 12 ? selected : null}>NEWS</Btn>
+          <Btn value="21" onClick={() => handleChange(21)} style={id === 21 ? selected : null}>Kinki Kids</Btn>
+          <Btn value="9" onClick={() => handleChange(9)} style={id === 9 ? selected : null}>TOKIO</Btn>
+          <Btn value="10" onClick={() => handleChange(10)} style={id === 10 ? selected : null}>V6</Btn>
+          <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐</Btn>
           <TvList tvList={tvList} teamId={teamId} />
         </div>
       )}

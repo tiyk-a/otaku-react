@@ -20,7 +20,6 @@ const TvList = ({tvList, teamId}) => {
       ) : (
         <div>
           <h1>TVデータが見つかりませんでした:(</h1>
-          <a href="/new">新しく商品を登録する？</a>
         </div>
       )}
     </div>
