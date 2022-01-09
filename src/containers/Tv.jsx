@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react';
 import { Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from '../axios';
 import Loading from '../components/Loading';
 import TvList from '../components/TvList';
@@ -55,8 +55,6 @@ const All = () => {
           }
         });
         setTvList(list);
-        window.alert(count);
-        // setIsLoading(false);
       })
       .catch(error => {});
    }, []);
