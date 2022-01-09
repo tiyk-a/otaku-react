@@ -62,7 +62,7 @@ const All = () => {
    }, []);
 
   useEffect(() => {
-    getAllTv(6);
+    getAllTv(5);
     setIsLoading(false);
   }, [getAllTv]);
 
