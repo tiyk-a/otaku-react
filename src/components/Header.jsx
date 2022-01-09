@@ -1,10 +1,11 @@
 import { AppBar } from '@material-ui/core';
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import styled from '@material-ui/styles/styled';
-import React from 'react';
-import Search from '../containers/Search';
 import history from '../history';
+import React, { useState } from 'react';
+import { ApiPath } from '../constants';
+import axios from '../axios';
 
 /**
  * ヘッダーコンポーネント
@@ -12,6 +13,9 @@ import history from '../history';
  * @returns jsx
  */
 const Header = styles => {
+  const [sql, setSql] = useState('');
+  const [sqlResult, setSqlResult] = useState('');
+
   const headerStyle = {
     fontWeight: '900',
     fontSize: `${styles.styles.sidebarCollapsed ? 10 : 20}px`,
@@ -47,9 +51,43 @@ const Header = styles => {
     history.push(url);
   };
 
+  const handleChangeSql = e => {
+    const txt = e.target.value;
+    setSql(txt);
+  }
+
+  const pushToGetSqlResul = e => {
+    if (e.keyCode === 13) {
+      getSqlResult();
+    }
+  }
+
+  // SQLの結果をgetするためにpostします
+  const getSqlResult = async () => {
+    if (!sql.startsWith("select ")) {
+      window.alert("select文以外は打てません❌" + sql);
+      return;
+    } 
+    // TODO:機能ちゃんと動き始めたら以下Else文は削除する。Java未実装
+    else {
+      return;
+    }
+
+    const data = {
+      sql: sql
+    }
+    await axios
+      .post(ApiPath.SQL, data)
+      .then(response => {
+        console.log(response.data);
+        setSqlResult(response.data);
+      })
+      .catch(error => {});
+  };
+
   return (
     <HeaderBar>
-      <div className="flexRowCenter">
+      <div className="flexRowCenter ">
         <NewItemIcon onClick={toNew} />
           <p style={headerStyle} onClick={toTop}>ジャニ！</p>
           <p>Env:{process.env.NODE_ENV}</p>
@@ -59,8 +97,22 @@ const Header = styles => {
         <Btn onClick={linkTv}>TV</Btn>
         <Btn onClick={linkTw}>Twitter</Btn>
       </div>
-      <div className="flexRowCenter" style={headerStyle}>
-        <Search />
+      <div>
+        <TextField
+          required
+          name="selectSql"
+          label="セレクト文"
+          value={sql}
+          onChange={handleChangeSql}
+          // fullWidth={true}
+          // multiline={true}
+          rows={2}
+          // rowsMax={1}
+          onKeyDown={pushToGetSqlResul}
+        />
+      </div>
+      <div>
+        <p>SQLデータをどうやって取得するか検討中</p>
       </div>
     </HeaderBar>
   );
@@ -76,7 +128,7 @@ const HeaderBar = styled(AppBar)({
   opacity: '0.9',
   height: '100px',
   flexDirection: 'row',
-  justifyContent: 'space-between',
+  justifyContent: 'left',
   alignItems: 'center',
   padding: '12px 30px',
   position: 'absolute',
