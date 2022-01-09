@@ -8,7 +8,6 @@ import Tv from './containers/Tv';
 import Top from './containers/Top';
 import Twitter from './containers/Twitter';
 import TvForm from './containers/TvForm';
-import SearchResults from './containers/SearchResults';
 
 /**
  * ルーティングのみを行うApp.js
@@ -68,9 +67,6 @@ class App extends Component {
           </Route>
           <Route exact path="/tw">
             <Twitter />
-          </Route>
-          <Route path="/search">
-            <SearchResults />
           </Route>
           <Route exact path="/tv/edit/:teamId/:id">
             <TvForm />
