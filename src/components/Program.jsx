@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { DatePicker, DateTimePicker } from '@material-ui/pickers';
+import { DateTimePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from 'date-fns/locale/ja';
 import exportFunction from '../functions/TeamIdToName';
@@ -126,7 +126,7 @@ const Program = ({ program, teamId }) => {
           <li>
             {prel !== null && prel !== undefined ? (
               prel.map((e, index) => (
-                <div>{teamId + " 0:" + e[0] + " 1:" + e[1]}
+                <div>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"

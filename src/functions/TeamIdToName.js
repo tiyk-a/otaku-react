@@ -1,4 +1,5 @@
 const teamList = [
+    {id: 4, name: '未選択'},
     {id: 5, name: 'All'},
     {id: 6, name: 'SnowMan'},
     {id: 7, name: '関ジャニ∞'},
@@ -19,6 +20,7 @@ const teamList = [
 ];
 
 const memberList = [
+    {id: 30, name: '未選択', teamId: 4},
     {id: 31, name: '岩本照', teamId: 6},
     {id: 32, name: '深澤辰哉', teamId: 6},
     {id: 33, name: '渡辺翔太', teamId: 6},
@@ -114,6 +116,10 @@ exports.nameToTeamId = function(teamName) {
     return res;
 };
 
+exports.getAllTeam = function() {
+    return teamList;
+}
+
 exports.memberIdToName = function(memberId) {
     var res = memberList.find(m => m.id === memberId);
     if (res === undefined) {
@@ -133,3 +139,7 @@ exports.nameToMemberId = function(memberName) {
     }
     return res;
 };
+
+exports.getAllMember = function() {
+    return memberList;
+}

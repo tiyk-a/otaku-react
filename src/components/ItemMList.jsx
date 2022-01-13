@@ -48,10 +48,32 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
         }
       }
 
+      const teamArr = [];
+      if (e.dataset.irel !== undefined && e.dataset.irel !== null) {
+        var arr = e.dataset.irel.split(",");
+        var i = 0;
+        while (arr[i]!== undefined) {
+          teamArr.push(arr[i+2]);
+          i = i + 3;
+        }
+      }
+
+      const memArr = [];
+      if (e.dataset.irelm !== undefined && e.dataset.irelm !== null) {
+        var arr = e.dataset.irelm.split(",");
+        var i = 0;
+        while (arr[i]!== undefined) {
+          memArr.push(arr[i+2]);
+          i = i + 3;
+        }
+      }
+
       const item = {
         item_id: e.id,
         im_id: e.dataset.imId,
         teamId: e.dataset.teamid,
+        teamArr: teamArr,
+        memArr: memArr,
         title: e.dataset.title,
         wp_id: "",
         publication_date: e.dataset.date,

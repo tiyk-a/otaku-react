@@ -50,10 +50,6 @@ const Top = () => {
           const ilist = [];
         
           i.forEach(item => {
-            const tmpRelList = [];
-            item.teamIdList.forEach(rel => {
-              tmpRelList.push(rel);
-            });
 
             const tmpMemIdList = [];
             item.memIdList.forEach(rel => {
@@ -67,8 +63,10 @@ const Top = () => {
               price: item.item.price,
               pubDate: item.item.publication_date,
               wpId: item.item.im_id,
-              relList: tmpRelList,
-              memList: tmpMemIdList
+              relList: item.relList,
+              teamIdList: item.teamIdList,
+              relMList: item.relMemList,
+              memList: item.memIdList,
             };
             ilist.push(ele);
           });

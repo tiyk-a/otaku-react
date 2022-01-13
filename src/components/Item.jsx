@@ -35,17 +35,49 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const [otherImTitle, setOtherImTitle] = useState("");
   const [tmpVer, setTmpVer] = useState('');
   const [verArr, setVerArr] = useState([]);
-  const [tmpMem, setTmpMem] = useState('');
-  const [memArr, setMemArr] = useState([]);
   const [imKey, setImKey] = useState('');
   const [imSearchRes, setImSearchRes] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
+  const [irel, setIrel] = useState([]);
+  const [irelM, setIrelM] = useState([]);
+  const [teamIdList, setTeamIdList] = useState([]);
+  const [memberIdList, setMemberIdList] = useState([]);
+  const [addIrelFlg, setAddIrelFlg] = useState(false);
+  const [addIrelMFlg, setAddIrelMFlg] = useState(false);
 
   useEffect(() => {
+    // teamList
+    const outerArr = [];
+    if (item.relList !== null && item.relList !== undefined && item.relList.length > 0) {
+      item.relList.forEach((e) => {
+        const innerArr = [];
+        innerArr.push(e.i_rel_id, e.item_id, e.team_id);
+        outerArr.push(innerArr);
+      });
+      setIrel(outerArr);
+    } else {
+      setIrel([]);
+    }
+
+    // MemList
+    const outerArrM = [];
+    if (item.relMList !== null && item.relMList !== undefined && item.relMList.length > 0) {
+      item.relMList.forEach((e) => {
+        const innerArrM = [];
+        innerArrM.push(e.i_rel_mem_id, e.i_rel_id, e.member_id);
+        outerArrM.push(innerArrM);
+      });
+      setIrelM(outerArrM);
+    } else {
+      setIrelM([]);
+    }
+
     setId(item.id);
     setDate(moment(item.pubDate).format('YYYY-MM-DD'));
     setImId(0);
     setTitle(item.title);
+    setTeamIdList(exportFunction.getAllTeam());
+    setMemberIdList(exportFunction.getAllMember());
   }, [item.id, item.pubDate, item.title, moment]);
 
   const nl2br = require('react-nl2br');
@@ -55,10 +87,26 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       if (imId === 0) {
         setImId(undefined);
       }
+
+      const teamArr = [];
+      if (irel.length > 0) {
+        irel.forEach((e) => {
+          teamArr.push(e[2]);
+        })
+      }
+
+      const memArr = [];
+      if (irelM.length > 0) {
+        irelM.forEach((e) => {
+          memArr.push(e[2]);
+        })
+      }
+
       const data = {
         item_id: id,
         im_id: imId,
         teamId: teamId,
+        teamArr: teamArr,
         memArr: memArr,
         title: title,
         wp_id: "",
@@ -136,13 +184,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     }
   }
 
-  const addMemArr = e => {
-    if (e.keyCode === 13) {
-      setMemArr([...memArr, [null, tmpMem, null]]);
-      setTmpMem('');
-    }
-  }
-
   const searchImByKw = (e) => {
     if (e.keyCode === 13) {
       searchOtherIm(imKey);
@@ -187,19 +228,56 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     setImKey(txt);
   };
 
+  const handleChangeIrel = e => {
+    // var prelId = e.target.name;
+    var irelId = e.target.name;
+    // 1. Make a shallow copy of the items
+    let vers = [...irel];
+    // 2. Make a shallow copy of the item you want to mutate
+    let ver = {...vers[irelId]};
+    // 3. Replace the property you're intested in
+    ver[2] = exportFunction.nameToTeamId(e.target.value);
+    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    vers[irelId] = [ver[0], ver[1], ver[2]];
+    // 5. Set the state to our new copy
+    setIrel(vers);
+  }
+
+  const handleChangeIrelM = e => {
+    // var prelId = e.target.name;
+    var irelMId = e.target.name;
+    // 1. Make a shallow copy of the items
+    let vers = [...irelM];
+    // 2. Make a shallow copy of the item you want to mutate
+    let ver = {...vers[irelMId]};
+    // 3. Replace the property you're intested in
+    ver[2] = exportFunction.nameToMemberId(e.target.value);
+    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    vers[irelMId] = [ver[0], ver[1], ver[2]];
+    // 5. Set the state to our new copy
+    setIrelM(vers);
+  }
+
+  const handleChangeAddIrel = e => {
+    const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
+    let vers = [...irel];
+    vers.push([null, id, teamIdTmp]);
+    setIrel(vers);
+    setAddIrelFlg(false);
+  }
+
+  const handleChangeAddIrelM = e => {
+    const memIdTmp = exportFunction.nameToMemberId(e.target.value);
+    let vers = [...irelM];
+    vers.push([null, null, memIdTmp]);
+    setIrelM(vers);
+    setAddIrelMFlg(false);
+  }
+
   // 入力された検索ワードをSTATEに反映
   const handleVerArr = e => {
     const txt = e.target.value;
     setTmpVer(txt);
-    if (!editedFlg) {
-      setEditedFlg(true);
-    }
-  };
-
-  // 入力された検索ワードをSTATEに反映
-  const handleMemArr = e => {
-    const txt = e.target.value;
-    setTmpMem(txt);
     if (!editedFlg) {
       setEditedFlg(true);
     }
@@ -238,30 +316,123 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     }
   }
 
+  const toggleAddIrelFlg = () => {
+    if (addIrelFlg) {
+      setAddIrelFlg(false);
+    } else {
+      setAddIrelFlg(true);
+    }
+  }
+
+  const toggleAddIrelMFlg = () => {
+    if (addIrelMFlg) {
+      setAddIrelMFlg(false);
+    } else {
+      setAddIrelMFlg(true);
+    }
+  }
+
   return (
     <div className="itemContainer" className={item.masterId !== null && item.masterId !== undefined ? "postedStyle": editedFlg ? "editedStyle" : "notPostedStyle"}>
-      {editedFlg ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr}></div>) : (null)}
+      {editedFlg ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr} data-irel={irel} data-irelm={irelM}></div>) : (null)}
       <p>flg: {editedFlg ? "true" : "false"}</p>
       <Text>
         <ul>
           <li>
-            {item.relList !== null && item.relList !== undefined && item.relList.length > 0 ? (
-              item.relList.map((e, index) => (
+            {irel !== null && irel !== undefined ? (
+              irel.map((e, index) => (
                 <div>
-                  <p>{item.relList.size}</p>
-                  <p>{exportFunction.teamIdToName(e)}</p>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  defaultValue=""
+                  value={exportFunction.teamIdToName(e[2])}
+                  label="Age"
+                  onChange={handleChangeIrel}
+                  name={index}
+                >
+                {teamIdList !== null && teamIdList !== undefined ? (
+                  teamIdList.map((f, index) => (
+                    <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]}>{exportFunction.teamIdToName(f.id)}</MenuItem>
+                    ))
+                ) : (
+                  <></>
+                )}
+                </Select>
                 </div>
                 ))
             ) : (
-              <p>No Team</p>
-            )}
-            <br />
-            {item.memList !== null && item.memList !== undefined && item.memList.length > 0 ? (
-              item.memList.map((e, index) => (
-                  <p>{exportFunction.memberIdToName(e.id)}</p>
+              <></>
+            )
+          }
+          {addIrelFlg ? (
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              defaultValue=""
+              value={exportFunction.teamIdToName(4)}
+              label="Age"
+              onChange={handleChangeAddIrel}
+              name="tmpIrel"
+            >
+            {teamIdList !== null && teamIdList !== undefined ? (
+              teamIdList.map((f, index) => (
+                <MenuItem value={exportFunction.teamIdToName(f.id)} name={4}>{exportFunction.teamIdToName(f.id)}</MenuItem>
                 ))
             ) : (
-              <p>No Member</p>
+              <></>
+            )}
+            </Select>
+          ) : (
+            <Btn onClick={toggleAddIrelFlg}>+irel</Btn>
+          )}
+            <br />
+            {irelM !== null && irelM !== undefined ? (
+              irelM.map((e, index) => (
+                <div>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  defaultValue=""
+                  value={exportFunction.memberIdToName(e[2])}
+                  label="Age"
+                  onChange={handleChangeIrelM}
+                  name={index}
+                >
+                {memberIdList !== null && memberIdList !== undefined ? (
+                  memberIdList.map((f, index) => (
+                    <MenuItem value={exportFunction.memberIdToName(f.id)} name={e[2]}>{exportFunction.memberIdToName(f.id)}</MenuItem>
+                    ))
+                ) : (
+                  <></>
+                )}
+                </Select>
+                </div>
+                ))
+              ) : (
+                <></>
+              )
+            }
+            {addIrelMFlg ? (
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                defaultValue=""
+                value={exportFunction.memberIdToName(30)}
+                label="Age"
+                onChange={handleChangeAddIrelM}
+                name="tmpIrelM"
+              >
+              {memberIdList !== null && memberIdList !== undefined ? (
+                memberIdList.map((f, index) => (
+                  <MenuItem value={exportFunction.memberIdToName(f.id)} name={30}>{exportFunction.memberIdToName(f.id)}</MenuItem>
+                  ))
+              ) : (
+                <></>
+              )}
+              </Select>
+            ) : (
+              <Btn onClick={toggleAddIrelMFlg}>+irelM</Btn>
             )}
             <br />
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
