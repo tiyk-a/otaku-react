@@ -36,15 +36,6 @@ const Top = () => {
       path = 'api/' + id;
     }
 
-    // imのない未来のilist
-    const ilist = [];
-    // 未来のimlist
-    const imlist = [];
-    // imがある未来のilist
-    const iimlist = [];
-    // errorJsonのリスト
-    const errlist = [];
-
     await axios
       .get(path)
       .then(response => {
@@ -52,14 +43,23 @@ const Top = () => {
         const im = response.data.im;
         const iim = response.data.iim;
         const errJ = response.data.errJ;
-
+        
         // item(w/o IM)
         if (i !== null) {
+          // imのない未来のilist
+          const ilist = [];
+        
           i.forEach(item => {
             const tmpRelList = [];
             item.teamIdList.forEach(rel => {
               tmpRelList.push(rel);
             });
+
+            const tmpMemIdList = [];
+            item.memIdList.forEach(rel => {
+              tmpMemIdList.push(rel);
+            });
+
             const ele = {
               id: item.item.item_id,
               title: item.item.title,
@@ -67,15 +67,19 @@ const Top = () => {
               price: item.item.price,
               pubDate: item.item.publication_date,
               wpId: item.item.im_id,
-              relList: tmpRelList
+              relList: tmpRelList,
+              memList: tmpMemIdList
             };
             ilist.push(ele);
           });
+          setItemList(ilist);
         }
 
         // IM
         if (im !== null) {
-          console.log("im nonaka");
+          // 未来のimlist
+          const imlist = [];
+
           im.forEach(itemM => {
 
             // relListから必要な情報を抜き出す
@@ -92,6 +96,12 @@ const Top = () => {
                 tmpRelList.push(rel.team_id);
               }
             });
+            const tmpMemList = [];
+            itemM.relMemList.forEach(rel => {
+              if (!tmpMemList.includes(rel.member_id)) {
+                tmpMemList.push(rel.member_id);
+              }
+            });
 
             const m = {
               id: itemM.im.im_id,
@@ -102,13 +112,18 @@ const Top = () => {
               wpId: wpId,
               ver: itemM.verList,
               relList: tmpRelList,
+              memList: tmpMemList,
               blog_not_updated: itemM.im.blog_not_updated,
             };
           imlist.push(m);
           });
+          setItemMList(imlist);
         }
 
         if (iim !== null) {
+          // imがある未来のilist
+          const iimlist = [];
+
           iim.forEach(item => {
             const iim = {
               id: item.item.item_id,
@@ -120,9 +135,13 @@ const Top = () => {
             };
             iimlist.push(iim);
           });
+          setIimList(iimlist);
         }
 
         if (errJ !== null) {
+          // errorJsonのリスト
+          const errlist = [];
+          
           errJ.forEach(j => {
             console.log(j);
             const ele = {
@@ -132,12 +151,8 @@ const Top = () => {
             };
             errlist.push(ele);
           });
+          setErrJList(errlist);
         }
-
-        setItemList(ilist);
-        setItemMList(imlist);
-        setIimList(iimlist);
-        setErrJList(errlist);
       }).catch(error => {});
   }, []);
 
@@ -206,7 +221,6 @@ const Top = () => {
                         <div>
                           <ItemMList itemList={itemList} itemMList={itemMList} iimList={iimList} teamId={id} errJList={errJList} />
                         </div>
-                        // <p>{itemList}{itemMList}{iimList}{id}{errJList}</p>
                       )
                     } else {
                       return (

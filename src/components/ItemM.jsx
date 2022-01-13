@@ -179,6 +179,14 @@ const ItemM = ({ item, teamId }) => {
               <></>
             )}
             <br />
+            {item.memList !== null && item.memList !== undefined ? (
+              item.memList.map((e, index) => (
+                  <p>{exportFunction.memberIdToName(e.member_id)}</p>
+                ))
+            ) : (
+              <></>
+            )}
+            <br />
             {date}
             <br />
             <Btn onClick={toggleEditedFlg}>

@@ -35,6 +35,8 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const [otherImTitle, setOtherImTitle] = useState("");
   const [tmpVer, setTmpVer] = useState('');
   const [verArr, setVerArr] = useState([]);
+  const [tmpMem, setTmpMem] = useState('');
+  const [memArr, setMemArr] = useState([]);
   const [imKey, setImKey] = useState('');
   const [imSearchRes, setImSearchRes] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
@@ -57,6 +59,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
         item_id: id,
         im_id: imId,
         teamId: teamId,
+        memArr: memArr,
         title: title,
         wp_id: "",
         publication_date: date,
@@ -133,6 +136,13 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     }
   }
 
+  const addMemArr = e => {
+    if (e.keyCode === 13) {
+      setMemArr([...memArr, [null, tmpMem, null]]);
+      setTmpMem('');
+    }
+  }
+
   const searchImByKw = (e) => {
     if (e.keyCode === 13) {
       searchOtherIm(imKey);
@@ -186,6 +196,15 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     }
   };
 
+  // 入力された検索ワードをSTATEに反映
+  const handleMemArr = e => {
+    const txt = e.target.value;
+    setTmpMem(txt);
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
+  };
+
   const updImId = async (e) => {
     if (e.keyCode === 13) {
       await axios
@@ -226,13 +245,25 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       <Text>
         <ul>
           <li>
-            {item.relList !== null && item.relList !== undefined ? (
+            {item.relList !== null && item.relList !== undefined && item.relList.length > 0 ? (
               item.relList.map((e, index) => (
+                <div>
+                  <p>{item.relList.size}</p>
                   <p>{exportFunction.teamIdToName(e)}</p>
+                </div>
                 ))
             ) : (
-              <></>
+              <p>No Team</p>
             )}
+            <br />
+            {item.memList !== null && item.memList !== undefined && item.memList.length > 0 ? (
+              item.memList.map((e, index) => (
+                  <p>{exportFunction.memberIdToName(e.id)}</p>
+                ))
+            ) : (
+              <p>No Member</p>
+            )}
+            <br />
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
               <DatePicker
                 variant="inline"
