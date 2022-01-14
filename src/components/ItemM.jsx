@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react';
 import exportFunction from '../functions/TeamIdToName';
 import axios from '../axios';
 import { ApiPath } from '../constants';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 /**
  *　商品１件を表示するコンポーネント
@@ -23,8 +25,40 @@ const ItemM = ({ item, teamId }) => {
   const [verArr, setVerArr] = useState([]);
   const [tmpVer, setTmpVer] = useState('');
   const [editedFlg, setEditedFlg] = useState(false);
+  const [imrel, setIMrel] = useState([]);
+  const [imrelM, setIMrelM] = useState([]);
+  const [teamIdList, setTeamIdList] = useState([]);
+  const [memberIdList, setMemberIdList] = useState([]);
+  const [addIMrelFlg, setAddIMrelFlg] = useState(false);
+  const [addIMrelMFlg, setAddIMrelMFlg] = useState(false);
 
   useEffect(() => {
+    // teamList
+    const outerArr = [];
+    if (item.relList !== null && item.relList !== undefined && item.relList.length > 0) {
+      item.relList.forEach((e) => {
+        const innerArr = [];
+        innerArr.push(e.im_rel_id, e.im_id, e.team_id);
+        outerArr.push(innerArr);
+      });
+      setIMrel(outerArr);
+    } else {
+      setIMrel([]);
+    }
+
+    // MemList
+    const outerArrM = [];
+    if (item.memList !== null && item.memList !== undefined && item.memList.length > 0) {
+      item.memList.forEach((e) => {
+        const innerArrM = [];
+        innerArrM.push(e.im_rel_mem_id, e.im_rel_id, e.member_id);
+        outerArrM.push(innerArrM);
+      });
+      setIMrelM(outerArrM);
+    } else {
+      setIMrelM([]);
+    }
+
     setTitle(item.title);
 
     // verを登録する（im_v_idとver_name, im_idを配列にして入れる）
@@ -32,6 +66,8 @@ const ItemM = ({ item, teamId }) => {
 
     setId(item.id);
     setImage(item.image);
+    setTeamIdList(exportFunction.getAllTeam());
+    setMemberIdList(exportFunction.getAllMember());
   }, [item.id]);
 
   const setVerArrFunc = (ver) => {
@@ -152,11 +188,73 @@ const ItemM = ({ item, teamId }) => {
     .catch(error => {});
   };
 
+  const handleChangeAddIMrel = e => {
+    const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
+    let vers = [...imrel];
+    vers.push([null, id, teamIdTmp]);
+    setIMrel(vers);
+    setAddIMrelFlg(false);
+  }
+
+  const handleChangeAddIMrelM = e => {
+    const memIdTmp = exportFunction.nameToMemberId(e.target.value);
+    let vers = [...imrelM];
+    vers.push([null, null, memIdTmp]);
+    setIMrelM(vers);
+    setAddIMrelMFlg(false);
+  }
+
   const toggleEditedFlg = () => {
     if (editedFlg) {
       setEditedFlg(false);
     } else {
       setEditedFlg(true);
+    }
+  }
+
+  const handleChangeIMrel = e => {
+    // var prelId = e.target.name;
+    var imrelId = e.target.name;
+    // 1. Make a shallow copy of the items
+    let vers = [...imrel];
+    // 2. Make a shallow copy of the item you want to mutate
+    let ver = {...vers[imrelId]};
+    // 3. Replace the property you're intested in
+    ver[2] = exportFunction.nameToTeamId(e.target.value);
+    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    vers[imrelId] = [ver[0], ver[1], ver[2]];
+    // 5. Set the state to our new copy
+    setIMrel(vers);
+  }
+
+  const handleChangeIMrelM = e => {
+    // var prelId = e.target.name;
+    var imrelMId = e.target.name;
+    // 1. Make a shallow copy of the items
+    let vers = [...imrelM];
+    // 2. Make a shallow copy of the item you want to mutate
+    let ver = {...vers[imrelMId]};
+    // 3. Replace the property you're intested in
+    ver[2] = exportFunction.nameToMemberId(e.target.value);
+    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    vers[imrelMId] = [ver[0], ver[1], ver[2]];
+    // 5. Set the state to our new copy
+    setIMrelM(vers);
+  }
+
+  const toggleAddIMrelFlg = () => {
+    if (addIMrelFlg) {
+      setAddIMrelFlg(false);
+    } else {
+      setAddIMrelFlg(true);
+    }
+  }
+
+  const toggleAddIMrelMFlg = () => {
+    if (addIMrelMFlg) {
+      setAddIMrelMFlg(false);
+    } else {
+      setAddIMrelMFlg(true);
     }
   }
 
@@ -171,21 +269,102 @@ const ItemM = ({ item, teamId }) => {
       <Text>
         <ul>
           <li>
-            {item.relList !== null && item.relList !== undefined ? (
-              item.relList.map((e, index) => (
-                  <p>{exportFunction.teamIdToName(e)}</p>
+            {imrel !== null && imrel !== undefined ? (
+              imrel.map((e, index) => (
+                <div>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  defaultValue=""
+                  value={exportFunction.teamIdToName(e[2])}
+                  label="Age"
+                  onChange={handleChangeIMrel}
+                  name={index}
+                >
+                {teamIdList !== null && teamIdList !== undefined ? (
+                  teamIdList.map((f, index) => (
+                    <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]}>{exportFunction.teamIdToName(f.id)}</MenuItem>
+                    ))
+                ) : (
+                  <></>
+                )}
+                </Select>
+                </div>
+                ))
+            ) : (
+              <></>
+            )
+          }
+
+          {addIMrelFlg ? (
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              defaultValue=""
+              value={exportFunction.teamIdToName(4)}
+              label="Age"
+              onChange={handleChangeAddIMrel}
+              name="tmpIrel"
+            >
+            {teamIdList !== null && teamIdList !== undefined ? (
+              teamIdList.map((f, index) => (
+                <MenuItem value={exportFunction.teamIdToName(f.id)} name={4}>{exportFunction.teamIdToName(f.id)}</MenuItem>
                 ))
             ) : (
               <></>
             )}
-            <br />
-            {item.memList !== null && item.memList !== undefined ? (
-              item.memList.map((e, index) => (
-                  <p>{exportFunction.memberIdToName(e.member_id)}</p>
+            </Select>
+          ) : (
+            <Btn onClick={toggleAddIMrelFlg}>+irelM</Btn>
+          )}
+          <br />
+          {imrelM !== null && imrelM !== undefined ? (
+            imrelM.map((e, index) => (
+              <div>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                defaultValue=""
+                value={exportFunction.memberIdToName(e[2])}
+                label="Age"
+                onChange={handleChangeIMrelM}
+                name={index}
+              >
+              {memberIdList !== null && memberIdList !== undefined ? (
+                memberIdList.map((f, index) => (
+                  <MenuItem value={exportFunction.memberIdToName(f.id)} name={e[2]}>{exportFunction.memberIdToName(f.id)}</MenuItem>
+                  ))
+              ) : (
+                <></>
+              )}
+              </Select>
+              </div>
+              ))
+            ) : (
+              <></>
+            )
+          }
+          {addIMrelMFlg ? (
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              defaultValue=""
+              value={exportFunction.memberIdToName(30)}
+              label="Age"
+              onChange={handleChangeAddIMrelM}
+              name="tmpIrelM"
+            >
+            {memberIdList !== null && memberIdList !== undefined ? (
+              memberIdList.map((f, index) => (
+                <MenuItem value={exportFunction.memberIdToName(f.id)} name={30}>{exportFunction.memberIdToName(f.id)}</MenuItem>
                 ))
             ) : (
               <></>
             )}
+            </Select>
+          ) : (
+            <Btn onClick={toggleAddIMrelMFlg}>+irelM</Btn>
+          )}
             <br />
             {date}
             <br />

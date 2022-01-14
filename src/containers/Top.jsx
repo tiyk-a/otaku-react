@@ -82,22 +82,10 @@ const Top = () => {
 
             // relListから必要な情報を抜き出す
             var wpId = '';
-            const tmpRelList = [];
             itemM.relList.forEach(rel => {
               // wpIdを取得したい
               if (rel.team_id === id) {
                 wpId = rel.wp_id;
-              }
-
-              // teamIdListを作る
-              if (!tmpRelList.includes(rel.team_id)) {
-                tmpRelList.push(rel.team_id);
-              }
-            });
-            const tmpMemList = [];
-            itemM.relMemList.forEach(rel => {
-              if (!tmpMemList.includes(rel.member_id)) {
-                tmpMemList.push(rel.member_id);
               }
             });
 
@@ -109,8 +97,8 @@ const Top = () => {
               image: itemM.im.amazon_image,
               wpId: wpId,
               ver: itemM.verList,
-              relList: tmpRelList,
-              memList: tmpMemList,
+              relList: itemM.relList,
+              memList: itemM.relMemList,
               blog_not_updated: itemM.im.blog_not_updated,
             };
           imlist.push(m);
