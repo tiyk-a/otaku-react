@@ -16,6 +16,7 @@ const Twitter = () => {
         <a className="twitter-timeline" data-height="1000" data-width="300" href="https://twitter.com/snowmanhayainfo?ref_src=twsrc%5Etfw">snowmanhayainfo</a>
         <a className="twitter-timeline" data-height="1000" data-width="300" data-theme="dark" href="https://twitter.com/sexyz0neinfo?ref_src=twsrc%5Etfw">sexyz0neinfo</a>
         <a className="twitter-timeline" data-height="1000" data-width="300" href="https://twitter.com/naniwa_hayainfo?ref_src=twsrc%5Etfw">sexyz0neinfo</a>
+        <a className="twitter-timeline" data-height="1000" data-width="300" data-theme="dark" href="https://twitter.com/princehayainfo?ref_src=twsrc%5Etfw">princehayainfo</a>
     </div>
   );
 };
