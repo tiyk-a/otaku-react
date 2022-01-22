@@ -48,8 +48,8 @@ const ItemM = ({ item, teamId }) => {
 
     // MemList
     const outerArrM = [];
-    if (item.memList !== null && item.memList !== undefined && item.memList.length > 0) {
-      item.memList.forEach((e) => {
+    if (item.relMList !== null && item.relMList !== undefined && item.relMList.length > 0) {
+      item.relMList.forEach((e) => {
         const innerArrM = [];
         innerArrM.push(e.im_rel_mem_id, e.im_rel_id, e.member_id);
         outerArrM.push(innerArrM);

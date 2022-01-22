@@ -48,32 +48,9 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   useEffect(() => {
     // irel(team)を入れます
     extractAndSetIrel(item);
-    // const outerArr = [];
-    // if (item.relList !== null && item.relList !== undefined && item.relList.length > 0) {
-    //   item.relList.forEach((e) => {
-    //     const innerArr = [];
-    //     // [imrelですかフラグ, irelId, itemId, teamId]
-    //     innerArr.push(0, e.i_rel_id, e.item_id, e.team_id);
-    //     outerArr.push(innerArr);
-    //   });
-    //   setIrel(outerArr);
-    // } else {
-    //   setIrel([]);
-    // }
 
     // irelM(member)を入れます
-    const outerArrM = [];
-    if (item.relMList !== null && item.relMList !== undefined && item.relMList.length > 0) {
-      item.relMList.forEach((e) => {
-        const innerArrM = [];
-        // [iremlId, irelId, memberId, imrelmですかフラグ]
-        innerArrM.push(e.i_rel_mem_id, e.i_rel_id, e.member_id, 0);
-        outerArrM.push(innerArrM);
-      });
-      setIrelM(outerArrM);
-    } else {
-      setIrelM([]);
-    }
+    extractAndSetIrelM(item);
 
     setId(item.id);
     setDate(moment(item.pubDate).format('YYYY-MM-DD'));
@@ -104,6 +81,27 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       setIrel(outerArr);
     } else {
       setIrel([]);
+    }
+  }
+
+  // itemもimも受け付けます。irel/imrelを引き抜いてirelMに入れます
+  const extractAndSetIrelM = (item) => {
+    const outerArrM = [];
+    if (item.relMList !== null && item.relMList !== undefined && item.relMList.length > 0) {
+      item.relMList.forEach((e) => {
+        const innerArrM = [];
+        if (e.i_rel_mem_id !== undefined) {
+          // [iremlId, irelId, memberId, imrelmですかフラグ]
+          innerArrM.push(e.i_rel_mem_id, e.i_rel_id, e.member_id, 0);
+        } else {
+          // [iremlId, irelId, memberId, imrelmですかフラグ]
+          innerArrM.push(e.im_rel_mem_id, e.im_rel_id, e.member_id, 1);
+        }
+        outerArrM.push(innerArrM);
+      });
+      setIrelM(outerArrM);
+    } else {
+      setIrelM([]);
     }
   }
 
@@ -167,6 +165,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
         setImId(im.id);
         // relも変更する
         extractAndSetIrel(im);
+        extractAndSetIrelM(im);
       }
     });
     if (!editedFlg) {
