@@ -46,25 +46,28 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const [addIrelMFlg, setAddIrelMFlg] = useState(false);
 
   useEffect(() => {
-    // teamList
-    const outerArr = [];
-    if (item.relList !== null && item.relList !== undefined && item.relList.length > 0) {
-      item.relList.forEach((e) => {
-        const innerArr = [];
-        innerArr.push(e.i_rel_id, e.item_id, e.team_id);
-        outerArr.push(innerArr);
-      });
-      setIrel(outerArr);
-    } else {
-      setIrel([]);
-    }
+    // irel(team)を入れます
+    extractAndSetIrel(item);
+    // const outerArr = [];
+    // if (item.relList !== null && item.relList !== undefined && item.relList.length > 0) {
+    //   item.relList.forEach((e) => {
+    //     const innerArr = [];
+    //     // [imrelですかフラグ, irelId, itemId, teamId]
+    //     innerArr.push(0, e.i_rel_id, e.item_id, e.team_id);
+    //     outerArr.push(innerArr);
+    //   });
+    //   setIrel(outerArr);
+    // } else {
+    //   setIrel([]);
+    // }
 
-    // MemList
+    // irelM(member)を入れます
     const outerArrM = [];
     if (item.relMList !== null && item.relMList !== undefined && item.relMList.length > 0) {
       item.relMList.forEach((e) => {
         const innerArrM = [];
-        innerArrM.push(e.i_rel_mem_id, e.i_rel_id, e.member_id);
+        // [iremlId, irelId, memberId, imrelmですかフラグ]
+        innerArrM.push(e.i_rel_mem_id, e.i_rel_id, e.member_id, 0);
         outerArrM.push(innerArrM);
       });
       setIrelM(outerArrM);
@@ -82,32 +85,40 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
 
   const nl2br = require('react-nl2br');
 
+  // itemもimも受け付けます。irel/imrelを引き抜いてirelに入れます
+  const extractAndSetIrel = (item) => {
+    const outerArr = [];
+    if (item.relList !== null && item.relList !== undefined && item.relList.length > 0) {
+      item.relList.forEach((e) => {
+        const innerArr = [];
+        // irel/imrelで分岐
+        if (e.irel_id !== undefined) {
+          // [irelId, itemId, teamId, imrelですかフラグ]
+          innerArr.push(e.i_rel_id, e.item_id, e.team_id, 0);
+        } else {
+          // [irelId, itemId, teamId, imrelですかフラグ]
+          innerArr.push(e.im_rel_id, e.im_id, e.team_id, 1);
+        }
+        outerArr.push(innerArr);
+      });
+      setIrel(outerArr);
+    } else {
+      setIrel([]);
+    }
+  }
+
   const registerIM = async () => {
     if (teamId !== undefined) {
       if (imId === 0) {
         setImId(undefined);
       }
 
-      const teamArr = [];
-      if (irel.length > 0) {
-        irel.forEach((e) => {
-          teamArr.push(e[2]);
-        })
-      }
-
-      const memArr = [];
-      if (irelM.length > 0) {
-        irelM.forEach((e) => {
-          memArr.push(e[2]);
-        })
-      }
-
       const data = {
         item_id: id,
         im_id: imId,
         teamId: teamId,
-        teamArr: teamArr,
-        memArr: memArr,
+        imrel: irel,
+        imrel: irelM,
         title: title,
         wp_id: "",
         publication_date: date,
@@ -116,6 +127,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
         vers: verArr,
       }
 
+      console.log(data);
       await axios
         .post(ApiPath.IM, data)
         .then(response => {
@@ -150,9 +162,11 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const handleChangeIMTitle = e => {
     const txt = e.target.value;
     setImTitle(txt);
-    itemMList.forEach(item => {
-      if (item.title === txt) {
-        setImId(item.id);
+    itemMList.forEach(im => {
+      if (im.title === txt) {
+        setImId(im.id);
+        // relも変更する
+        extractAndSetIrel(im);
       }
     });
     if (!editedFlg) {
@@ -298,7 +312,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const updFctChk = async (e) => {
     if (imId === null || imId === undefined || imId === 0) {
     } else {
-      console.log(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId + "&teamId=" + teamId);
       await axios
         .get(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId + "&teamId=" + teamId)
         .then(response => {
