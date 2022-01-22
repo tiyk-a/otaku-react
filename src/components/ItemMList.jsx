@@ -10,6 +10,7 @@ import jaLocale from 'date-fns/locale/ja';
 import ItemForm from '../containers/ItemForm';
 import axios from '../axios';
 import { ApiPath } from '../constants';
+import exportFunctionRel from '../functions/RelManage';
 
 /**
  *商品リストコンポーネント
@@ -58,6 +59,8 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
         }
       }
 
+      var irelDistinct = exportFunctionRel.getDistinctRel(irel);
+
       const irelm = [];
       if (e.dataset.irelm !== undefined && e.dataset.irelm !== null) {
         var arr = e.dataset.irelm.split(",");
@@ -68,12 +71,14 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
         }
       }
 
+      var irelMDistinct = exportFunctionRel.getDistinctRel(irelm);
+      
       const item = {
         item_id: e.id,
         im_id: e.dataset.imId,
         teamId: e.dataset.teamid,
-        imrel: irel,
-        imrelm: irelm,
+        imrel: irelDistinct,
+        imrelm: irelMDistinct,
         title: e.dataset.title,
         wp_id: "",
         publication_date: e.dataset.date,

@@ -1,20 +1,18 @@
-import { Box } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import { Input } from '@material-ui/core';
+import DateFnsUtils from '@date-io/date-fns';
+import { Box, Button, Input } from '@material-ui/core';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import styled from '@material-ui/styles/styled';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import jaLocale from 'date-fns/locale/ja';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
-import exportFunction from '../functions/TeamIdToName';
 import { ApiPath } from '../constants';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { DatePicker } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import jaLocale from 'date-fns/locale/ja';
+import exportFunctionRel from '../functions/RelManage';
+import exportFunction from '../functions/TeamIdToName';
 
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 /**
  *　商品１件を表示するコンポーネント
@@ -112,12 +110,15 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
         setImId(undefined);
       }
 
+      var irelDistinct = exportFunctionRel.getDistinctRel(irel);
+      var irelMDistinct = exportFunctionRel.getDistinctRel(irelM);
+
       const data = {
         item_id: id,
         im_id: imId,
         teamId: teamId,
-        imrel: irel,
-        imrelm: irelM,
+        imrel: irelDistinct,
+        imrelm: irelMDistinct,
         title: title,
         wp_id: "",
         publication_date: date,
