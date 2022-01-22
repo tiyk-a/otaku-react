@@ -14,6 +14,7 @@ import jaLocale from 'date-fns/locale/ja';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 /**
  *　商品１件を表示するコンポーネント
@@ -283,6 +284,16 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     setAddIrelFlg(false);
   }
 
+  // そのチームをirelから抜きます
+  const minusIrel = (index) => {
+    let vers = [...irel];
+    // imrelデータでなく、irelが最低1つあれば削除可能。imrelデータだったら未選択のままにして、ポストしてdel_flg=trueにしましょう
+    if (vers[index][3] !== 1 && vers.length > 1) {
+      vers.splice(index, 1);
+    }
+    setIrel(vers);
+  }
+
   const handleChangeAddIrelM = e => {
     const memIdTmp = exportFunction.nameToMemberId(e.target.value);
     let vers = [...irelM];
@@ -290,6 +301,16 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     vers.push([null, null, memIdTmp, 0]);
     setIrelM(vers);
     setAddIrelMFlg(false);
+  }
+
+  // そのチームをirelMから抜きます
+  const minusIrelM = (index) => {
+    let vers = [...irelM];
+    // imrelMデータでなければ削除可能。imrelMデータだったら未選択のままにして、ポストしてdel_flg=trueにしましょう
+    if (vers[index][3] !== 1) {
+      vers.splice(index, 1);
+    }
+    setIrelM(vers);
   }
 
   // 入力された検索ワードをSTATEに反映
@@ -359,23 +380,27 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
             {irel !== null && irel !== undefined ? (
               irel.map((e, index) => (
                 <div>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  defaultValue=""
-                  value={exportFunction.teamIdToName(e[2])}
-                  label="Age"
-                  onChange={handleChangeIrel}
-                  name={index}
-                >
-                {teamIdList !== null && teamIdList !== undefined ? (
-                  teamIdList.map((f, index) => (
-                    <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]}>{exportFunction.teamIdToName(f.id)}</MenuItem>
-                    ))
-                ) : (
-                  <></>
-                )}
-                </Select>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    defaultValue=""
+                    value={exportFunction.teamIdToName(e[2])}
+                    label="Age"
+                    onChange={handleChangeIrel}
+                    name={index}
+                  >
+                  {teamIdList !== null && teamIdList !== undefined ? (
+                    teamIdList.map((f, index) => (
+                      <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]}>{exportFunction.teamIdToName(f.id)}</MenuItem>
+                      ))
+                  ) : (
+                    <></>
+                  )}
+                  </Select>
+                  {e[2] === 4 ? (
+                    <RemoveIcon onClick={() => minusIrel(index)} />
+                  ) : (null)
+                  }
                 </div>
                 ))
             ) : (
@@ -406,24 +431,28 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
             <br />
             {irelM !== null && irelM !== undefined ? (
               irelM.map((e, index) => (
-                <div>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  defaultValue=""
-                  value={exportFunction.memberIdToName(e[2])}
-                  label="Age"
-                  onChange={handleChangeIrelM}
-                  name={index}
-                >
-                {memberIdList !== null && memberIdList !== undefined ? (
-                  memberIdList.map((f, index) => (
-                    <MenuItem value={exportFunction.memberIdToName(f.id)} name={e[2]}>{exportFunction.memberIdToName(f.id)}</MenuItem>
-                    ))
-                ) : (
-                  <></>
-                )}
-                </Select>
+                <div className='flex'>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    defaultValue=""
+                    value={exportFunction.memberIdToName(e[2])}
+                    label="Age"
+                    onChange={handleChangeIrelM}
+                    name={index}
+                  >
+                  {memberIdList !== null && memberIdList !== undefined ? (
+                    memberIdList.map((f, index) => (
+                      <MenuItem value={exportFunction.memberIdToName(f.id)} name={e[2]}>{exportFunction.memberIdToName(f.id)}</MenuItem>
+                      ))
+                  ) : (
+                    <></>
+                  )}
+                  </Select>
+                  {e[2] === 30 ? (
+                    <RemoveIcon onClick={() => minusIrelM(index)} />
+                  ) : (null)
+                  }
                 </div>
                 ))
               ) : (
@@ -632,6 +661,15 @@ const Btn = styled(Button)({
   background: 'linear-gradient(to right bottom, #db36a4, #f7ff00)',
   margin: '10px 0',
   color: 'black',
+});
+
+const RemoveIcon = styled(RemoveCircleOutlineIcon)({
+  // TODO:高さがselectorsと一緒になるように揃えたい
+  cursor: 'pointer',
+  '&:hover': {
+    opacity: '0.5',
+    transition: 'opacity 0.5s',
+  },
 });
 
 export default Item;
