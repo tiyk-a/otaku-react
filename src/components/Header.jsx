@@ -1,6 +1,5 @@
 import { AppBar } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
-import CreateIcon from '@material-ui/icons/Create';
 import styled from '@material-ui/styles/styled';
 import history from '../history';
 import React, { useState } from 'react';
@@ -26,11 +25,6 @@ const Header = styles => {
   // トップ画面に変遷
   const toTop = () => {
     history.push('/');
-  };
-
-  // 新規商品作成画面に変遷
-  const toNew = () => {
-    history.push('/new');
   };
 
   // マスター商品画面に変遷
@@ -88,7 +82,6 @@ const Header = styles => {
   return (
     <HeaderBar>
       <div className="flexRowCenter ">
-        <NewItemIcon onClick={toNew} />
           <p style={headerStyle} onClick={toTop}>ジャニ！</p>
           <p>Env:{process.env.NODE_ENV}</p>
       </div>
@@ -132,19 +125,6 @@ const HeaderBar = styled(AppBar)({
   alignItems: 'center',
   padding: '12px 30px',
   position: 'absolute',
-});
-
-const NewItemIcon = styled(CreateIcon)({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: '0 20px 0 5px',
-  cursor: 'pointer',
-  '&:hover': {
-    opacity: '0.5',
-    transition: 'opacity 0.5s',
-  },
 });
 
 /**
