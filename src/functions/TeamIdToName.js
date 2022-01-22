@@ -143,3 +143,9 @@ exports.nameToMemberId = function(memberName) {
 exports.getAllMember = function() {
     return memberList;
 }
+
+// 引数のmemberIdのteamIdを返します
+exports.getTeamIdOfMember = function(memberId) {
+    var memObject = memberList.find(m => m.id === memberId);
+    return memObject.teamId;
+}

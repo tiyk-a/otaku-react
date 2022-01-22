@@ -272,6 +272,9 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     vers[irelMId] = [ver[0], ver[1], ver[2], ver[3]];
     // 5. Set the state to our new copy
     setIrelM(vers);
+
+    // そのmemberのチームがirelに入ってなかったら自動で入れます
+    addTeamByMember(ver[2]);
   }
 
   // 新しいirelを配列に追加します(新規not更新)
@@ -301,6 +304,9 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     vers.push([null, null, memIdTmp, 0]);
     setIrelM(vers);
     setAddIrelMFlg(false);
+
+    // そのmemberのチームがirelに入ってなかったら自動で入れます
+    addTeamByMember(memIdTmp);
   }
 
   // そのチームをirelMから抜きます
@@ -311,6 +317,25 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       vers.splice(index, 1);
     }
     setIrelM(vers);
+  }
+
+  // そのmemberのチームがirelに入ってなかったら自動で入れます
+  const addTeamByMember = (memberId) => {
+      var teamOfMem = exportFunction.getTeamIdOfMember(memberId);
+      let addFlg = true;
+      irel.forEach(rel => {
+        if (rel[2] === teamOfMem) {
+          addFlg = false;
+        }
+      });
+      if (addFlg) {
+        let vers = [...irel];
+        const innerArr = [];
+        // [irelId, itemId, teamId, imrelですかフラグ]
+        innerArr.push(null, id, teamOfMem, 0);
+        vers.push(innerArr);
+        setIrel(vers);
+      }
   }
 
   // 入力された検索ワードをSTATEに反映
