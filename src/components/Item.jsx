@@ -69,7 +69,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       item.relList.forEach((e) => {
         const innerArr = [];
         // irel/imrelで分岐
-        if (e.irel_id !== undefined) {
+        if (e.i_rel_id !== undefined) {
           // [irelId, itemId, teamId, imrelですかフラグ]
           innerArr.push(e.i_rel_id, e.item_id, e.team_id, 0);
         } else {
@@ -116,7 +116,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
         im_id: imId,
         teamId: teamId,
         imrel: irel,
-        imrel: irelM,
+        imrelm: irelM,
         title: title,
         wp_id: "",
         publication_date: date,
@@ -241,6 +241,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     setImKey(txt);
   };
 
+  // 手入力で変更したirelを反映します。IDはそのまま使う（not新規but更新)
   const handleChangeIrel = e => {
     // var prelId = e.target.name;
     var irelId = e.target.name;
@@ -251,11 +252,12 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     // 3. Replace the property you're intested in
     ver[2] = exportFunction.nameToTeamId(e.target.value);
     // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    vers[irelId] = [ver[0], ver[1], ver[2]];
+    vers[irelId] = [ver[0], ver[1], ver[2], ver[3]];
     // 5. Set the state to our new copy
     setIrel(vers);
   }
 
+  // 手入力で変更したirelを反映します。IDはそのまま使う（not新規but更新)
   const handleChangeIrelM = e => {
     // var prelId = e.target.name;
     var irelMId = e.target.name;
@@ -266,15 +268,17 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     // 3. Replace the property you're intested in
     ver[2] = exportFunction.nameToMemberId(e.target.value);
     // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    vers[irelMId] = [ver[0], ver[1], ver[2]];
+    vers[irelMId] = [ver[0], ver[1], ver[2], ver[3]];
     // 5. Set the state to our new copy
     setIrelM(vers);
   }
 
+  // 新しいirelを配列に追加します(新規not更新)
   const handleChangeAddIrel = e => {
     const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
     let vers = [...irel];
-    vers.push([null, id, teamIdTmp]);
+    // [irelId, itemId, teamId, imrelですかフラグ]
+    vers.push([null, id, teamIdTmp, 0]);
     setIrel(vers);
     setAddIrelFlg(false);
   }
@@ -282,7 +286,8 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const handleChangeAddIrelM = e => {
     const memIdTmp = exportFunction.nameToMemberId(e.target.value);
     let vers = [...irelM];
-    vers.push([null, null, memIdTmp]);
+    // [irelMId, irelId, memberId, imrelMですかフラグ]
+    vers.push([null, null, memIdTmp, 0]);
     setIrelM(vers);
     setAddIrelMFlg(false);
   }

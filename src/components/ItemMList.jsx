@@ -48,22 +48,22 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
         }
       }
 
-      const teamArr = [];
+      const irel = [];
       if (e.dataset.irel !== undefined && e.dataset.irel !== null) {
         var arr = e.dataset.irel.split(",");
         var i = 0;
         while (arr[i]!== undefined) {
-          teamArr.push(arr[i+2]);
+          irel.push(arr[i], arr[i+1], arr[i+2]);
           i = i + 3;
         }
       }
 
-      const memArr = [];
+      const irelm = [];
       if (e.dataset.irelm !== undefined && e.dataset.irelm !== null) {
         var arr = e.dataset.irelm.split(",");
         var i = 0;
         while (arr[i]!== undefined) {
-          memArr.push(arr[i+2]);
+          irelm.push(arr[i], arr[i+1], arr[i+2]);
           i = i + 3;
         }
       }
@@ -72,8 +72,8 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
         item_id: e.id,
         im_id: e.dataset.imId,
         teamId: e.dataset.teamid,
-        teamArr: teamArr,
-        memArr: memArr,
+        imrel: irel,
+        imrelm: irelm,
         title: e.dataset.title,
         wp_id: "",
         publication_date: e.dataset.date,
@@ -114,6 +114,26 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
         }
       }
 
+      const imrel = [];
+      if (e.dataset.imrel !== undefined && e.dataset.imrel !== null) {
+        var arr = e.dataset.imrel.split(",");
+        var i = 0;
+        while (arr[i]!== undefined) {
+          imrel.push(arr[i], arr[i+1], arr[i+2]);
+          i = i + 3;
+        }
+      }
+
+      const imrelm = [];
+      if (e.dataset.imrelm !== undefined && e.dataset.imrelm !== null) {
+        var arr = e.dataset.imrelm.split(",");
+        var i = 0;
+        while (arr[i]!== undefined) {
+          imrelm.push(arr[i], arr[i+1], arr[i+2]);
+          i = i + 3;
+        }
+      }
+
       const im = {
         im_id: e.id,
         title: e.dataset.title,
@@ -122,6 +142,8 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
         amazon_image: e.dataset.image,
         del_flg: false,
         vers: verArr,
+        imrel: imrel,
+        imrelm: imrelm
       } 
       data.push(im);
     });

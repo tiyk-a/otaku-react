@@ -174,6 +174,8 @@ const ItemM = ({ item, teamId }) => {
     amazon_image: image,
     del_flg: false,
     vers: verArr,
+    imrel: imrel,
+    imrelM: imrelM
     }
 
     await axios
@@ -264,7 +266,7 @@ const ItemM = ({ item, teamId }) => {
 
   return (
     <div className="itemContainer" className={item.wpId !== null && item.wpId !== undefined ? "postedStyle": editedFlg ? "editedStyle" : "notPostedStyle"}>
-      {editedFlg ? (<div className="target_im" id={item.id} data-title={title} data-wpid={item.wpId} data-date={date} data-image={image} data-verarr={verArr}></div>) : (null)}
+      {editedFlg ? (<div className="target_im" id={item.id} data-title={title} data-wpid={item.wpId} data-date={date} data-image={image} data-verarr={verArr} data-imrel={imrel} data-imrelm={imrelM}></div>) : (null)}
       <p>flg: {editedFlg ? "true" : "false"}</p>
       <Text>
         <ul>
