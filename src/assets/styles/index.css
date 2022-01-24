@@ -2,10 +2,6 @@
 
 body {
   margin: 0;
-  /* background-color: #000000; */
-  background: #9796f0;  /* fallback for old browsers */
-  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  Chrome 10-25, Safari 5.1-6 */
-  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: black;
   font-weight: 600;
   -webkit-font-smoothing: antialiased;
@@ -13,22 +9,14 @@ body {
 }
 
 html {
-  /* background: "#EDBFC6"; */
-  /* background: #000000; */
-  background: #9796f0;  /* fallback for old browsers */
-  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  Chrome 10-25, Safari 5.1-6 */
-  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .displayFont {
-  /* font-family: 'Bowlby One', cursive; */
   cursor: pointer;
   color: black;
   font-weight: 600;
 }
 code {
-  /* font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", */
-    /* monospace; */
 }
 
 a {
@@ -79,10 +67,6 @@ ul {
  }
 
 .header {
-  /* background-color: #FAFAFA; */
-  background: #9796f0;  /* fallback for old browsers */
-  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  Chrome 10-25, Safari 5.1-6 */
-  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -105,35 +89,16 @@ ul {
 }
 
 .itemBox, .itemBoxL, .itemBoxLForm {
-  /* background-color: #FAFAFA; */
-  /* background-color: #000000; */
-  background: #9796f0;  /* fallback for old browsers */
-  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  Chrome 10-25, Safari 5.1-6 */
-  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
   color: black;
   font-weight: 600;
-  /* margin: 40px; */
   align-items: center;
-  /* padding: 50px 20px 30px 20px; */
-  /* width: 30vw; */
   text-align: center;
   cursor: pointer;
 }
 
-/* .itemBox:hover {
-  opacity: 0.8;
-  transition: opacity 0.5s;
-} */
-
 .imageBox {
   width: 15vw;
   height: 15vh;
-  /* background-color: black; */
-  /* background-color: #000000; */
-  background: #9796f0;  /* fallback for old browsers */
-  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  Chrome 10-25, Safari 5.1-6 */
-  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   text-align: center;
   margin: 0 auto;
   margin-bottom: 20px;
@@ -166,7 +131,6 @@ img {
 
 button {
     margin-left: 26px;
-    /* background: #f7ff00; */
     background: -webkit-linear-gradient(to right bottom, #db36a4, #f7ff00);
     background: linear-gradient(to right bottom, #db36a4, #f7ff00);
     margin: 10px 0;
@@ -184,7 +148,6 @@ input[type=text], textarea {
   font-size: 1rem;
   font-weight: 100;
   padding: 5px;
-  /* color: #666666; */
   color: black;
   font-weight: 600;
   margin: 10px 0;
@@ -211,11 +174,6 @@ textarea {
 }
 
 .imageButton {
-  /* background: black; */
-  /* background-color: #000000; */
-  background: #9796f0;  /*fallback for old browsers*/
-  /* background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  /* Chrome 10-25, Safari 5.1-6 */
-  /* background: linear-gradient(to right, #fbc7d4, #9796f0); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   height: 3vh;
   width: 15vh;
   box-shadow: 5px 5px 10px #666666;
@@ -234,7 +192,6 @@ p {
 
 .textBox {
   overflow: hidden;
-  /* width: 100%; */
   text-align: left;
   flex-basis:  500px;
 }
@@ -244,11 +201,9 @@ ul li:nth-child(1){
 }
 
 .textBoxTitle {
-  /* flex-basis:  200px; */
   overflow: hidden;
   width: 40%;
   text-align: left;
-  /* font-size: 22px; */
 }
 
 p b {
@@ -261,12 +216,9 @@ p b {
 }
 
 .price {
-  /* width: 100%; */
   text-align: right;
-  /* padding: 20px; */
   flex-basis:  100px;
 }
-
 
 .editPrice {
   width: 100%;

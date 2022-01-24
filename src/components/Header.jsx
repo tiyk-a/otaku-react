@@ -117,7 +117,7 @@ const Header = styles => {
  */
 const HeaderBar = styled(AppBar)({
   width: '100%',
-  background: '#9796f0',  /* fallback for old browsers */
+  background: 'white',
   opacity: '0.9',
   height: '100px',
   flexDirection: 'row',
