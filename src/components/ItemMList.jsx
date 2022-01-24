@@ -51,11 +51,11 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
 
       const irel = [];
       if (e.dataset.irel !== undefined && e.dataset.irel !== null) {
-        var arr = e.dataset.irel.split(",");
-        var i = 0;
-        while (arr[i]!== undefined) {
-          irel.push(arr[i], arr[i+1], arr[i+2]);
-          i = i + 3;
+        var arrIrel = e.dataset.irel.split(",");
+        var j = 0;
+        while (arrIrel[j]!== undefined) {
+          irel.push(arrIrel[j], arrIrel[j+1], arrIrel[j+2]);
+          j = j + 3;
         }
       }
 
@@ -63,11 +63,11 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
 
       const irelm = [];
       if (e.dataset.irelm !== undefined && e.dataset.irelm !== null) {
-        var arr = e.dataset.irelm.split(",");
-        var i = 0;
-        while (arr[i]!== undefined) {
-          irelm.push(arr[i], arr[i+1], arr[i+2]);
-          i = i + 3;
+        var arrIrelM = e.dataset.irelm.split(",");
+        var k = 0;
+        while (arrIrelM[k]!== undefined) {
+          irelm.push(arrIrelM[k], arrIrelM[k+1], arrIrelM[k+2]);
+          k = k + 3;
         }
       }
 
