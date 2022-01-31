@@ -37,60 +37,91 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
     const data = [];
 
     Array.from(elems).forEach((e) => {
-      const verArr = [];
-      if (e.dataset.verarr !== undefined && e.dataset.verarr !== null) {
-        var arr = e.dataset.verarr.split(",");
-        var i = 0;
-        while (arr[i]!== undefined) {
-          var innerArr = [];
-          innerArr = [arr[i], arr[i+1], arr[i+2]];
-          verArr.push(innerArr);
-          i = i + 3;
+      if (e.dataset.imid === null) {
+        const verArr = [];
+        if (e.dataset.verarr !== undefined && e.dataset.verarr !== null) {
+          var arr = e.dataset.verarr.split(",");
+          var i = 0;
+          while (arr[i]!== undefined) {
+            var innerArr = [];
+            innerArr = [arr[i], arr[i+1], arr[i+2]];
+            verArr.push(innerArr);
+            i = i + 3;
+          }
         }
-      }
 
-      const irel = [];
-      if (e.dataset.irel !== undefined && e.dataset.irel !== null) {
-        var arrIrel = e.dataset.irel.split(",");
-        var j = 0;
-        while (arrIrel[j]!== undefined) {
-          irel.push(arrIrel[j], arrIrel[j+1], arrIrel[j+2]);
-          j = j + 3;
+        const irel = [];
+        if (e.dataset.irel !== undefined && e.dataset.irel !== null) {
+          var arrIrel = e.dataset.irel.split(",");
+          var j = 0;
+          while (arrIrel[j]!== undefined) {
+            irel.push(arrIrel[j], arrIrel[j+1], arrIrel[j+2]);
+            j = j + 3;
+          }
         }
-      }
 
-      var irelDistinct = exportFunctionRel.getDistinctRel(irel);
+        var irelDistinct = exportFunctionRel.getDistinctRel(irel);
 
-      const irelm = [];
-      if (e.dataset.irelm !== undefined && e.dataset.irelm !== null) {
-        var arrIrelM = e.dataset.irelm.split(",");
-        var k = 0;
-        while (arrIrelM[k]!== undefined) {
-          irelm.push(arrIrelM[k], arrIrelM[k+1], arrIrelM[k+2]);
-          k = k + 3;
+        const irelm = [];
+        if (e.dataset.irelm !== undefined && e.dataset.irelm !== null) {
+          var arrIrelM = e.dataset.irelm.split(",");
+          var k = 0;
+          while (arrIrelM[k]!== undefined) {
+            irelm.push(arrIrelM[k], arrIrelM[k+1], arrIrelM[k+2]);
+            k = k + 3;
+          }
         }
-      }
 
-      var irelMDistinct = exportFunctionRel.getDistinctRel(irelm);
-      
-      const item = {
-        item_id: e.id,
-        im_id: e.dataset.imId,
-        teamId: e.dataset.teamid,
-        imrel: irelDistinct,
-        imrelm: irelMDistinct,
-        title: e.dataset.title,
-        wp_id: "",
-        publication_date: e.dataset.date,
-        amazon_image: e.dataset.image,
-        del_flg: false,
-        vers: verArr,
+        var irelMDistinct = exportFunctionRel.getDistinctRel(irelm);
+        
+        const item = {
+          item_id: e.id,
+          im_id: e.dataset.imid,
+          teamId: e.dataset.teamid,
+          imrel: irelDistinct,
+          imrelm: irelMDistinct,
+          title: e.dataset.title,
+          wp_id: "",
+          publication_date: e.dataset.date,
+          amazon_image: e.dataset.image,
+          del_flg: false,
+          vers: verArr,
+        }
+        data.push(item);
       }
-      data.push(item);
     });
 
     await axios
       .post(ApiPath.IM + "bundle/new", data)
+      .then(response => {
+        if (response.data) {
+          window.location.reload();
+        } else {
+          window.alert("登録エラーです");
+          console.log(response);
+        }
+      })
+      .catch(error => {});
+  }
+
+  // 対象Itemを一括でIM設定します
+  const bundleItemManage = async() => {
+    var elems = document.getElementsByClassName("target_item");
+    const data = [];
+
+    Array.from(elems).forEach((e) => {  
+      if (e.dataset.imid !== null) {
+        const item = {
+          item_id: e.id,
+          im_id: e.dataset.imid,
+          teamId: e.dataset.teamid
+        }
+        data.push(item);
+      }
+    });
+
+    await axios
+      .post(ApiPath.IM + "bundle/chk", data)
       .then(response => {
         if (response.data) {
           window.location.reload();
@@ -168,7 +199,10 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
 
   return (
     <div className="allItemsList">
-      <h3>未チェックItem<Btn onClick={bundleItem}>一括処理</Btn></h3>
+      <h3>未チェックItem<Btn onClick={bundleItem}>一括登録</Btn>
+        <br />
+        <Btn onClick={bundleItemManage}>一括設定</Btn>
+      </h3>
       {itemList !== undefined && itemList.length > 0 ? (
         itemList.map((e, index) => (
           <div className="itemBox" key={index}>
