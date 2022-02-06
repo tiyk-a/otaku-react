@@ -25,6 +25,8 @@ const Program = ({ program, teamId }) => {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
   const [prel, setPrel] = useState([]);
+  const [prelM, setPrelM] = useState([]);
+  const [memberIdList, setMemberIdList] = useState([]);
   const [id, setId] = useState('');
 
   useEffect(() => {
@@ -44,6 +46,16 @@ const Program = ({ program, teamId }) => {
       outerArr.push(innerArr);
     });
     setPrel(outerArr);
+
+    const outerArrM = [];
+    program.prelMList.forEach((e) => {
+      const innerArrM = [];
+      innerArrM.push(e.p_rel_mem_id, e.p_rel_id, e.member_id);
+      outerArrM.push(innerArrM);
+    });
+    setPrelM(outerArrM);
+
+    setMemberIdList(exportFunction.getAllMember());
   }, []);
 
   // 既存商品の更新
@@ -53,7 +65,8 @@ const Program = ({ program, teamId }) => {
       title: title,
       description: description,
       on_air_date: date,
-      prel: prel
+      prel: prel,
+      prelM: prelM
     }
 
     await axios
@@ -120,6 +133,21 @@ const Program = ({ program, teamId }) => {
     setPrel(vers);
   }
 
+  const handleChangePrelM = e => {
+    // var prelId = e.target.name;
+    var prelMId = e.target.name;
+    // 1. Make a shallow copy of the items
+    let vers = [...prelM];
+    // 2. Make a shallow copy of the item you want to mutate
+    let ver = {...vers[prelMId]};
+    // 3. Replace the property you're intested in
+    ver[2] = exportFunction.nameToMemberId(e.target.value);
+    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    vers[prelMId] = [ver[0], ver[1], ver[2]];
+    // 5. Set the state to our new copy
+    setPrelM(vers);
+  }
+
   return (
     <div className="itemContainer">
       <Text>
@@ -132,28 +160,59 @@ const Program = ({ program, teamId }) => {
             {prel !== null && prel !== undefined ? (
               prel.map((e, index) => (
                 <div>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  defaultValue=""
-                  value={exportFunction.teamIdToName(e[2])}
-                  label="Age"
-                  onChange={handleChangePrel}
-                  name={index.toString()}
-                >
-                {program.teamIdList !== null && program.teamIdList !== undefined ? (
-                  program.teamIdList.map((f, index) => (
-                    <MenuItem value={exportFunction.teamIdToName(f)} name={e[2]} key={f} >{exportFunction.teamIdToName(f)}</MenuItem>
-                    ))
-                ) : (
-                  <></>
-                )}
-                </Select>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    defaultValue=""
+                    value={exportFunction.teamIdToName(e[2])}
+                    label="Age"
+                    onChange={handleChangePrel}
+                    name={index.toString()}
+                  >
+                  {program.teamIdList !== null && program.teamIdList !== undefined ? (
+                    program.teamIdList.map((f, index) => (
+                      <MenuItem value={exportFunction.teamIdToName(f)} name={e[2]} key={f} >{exportFunction.teamIdToName(f)}</MenuItem>
+                      ))
+                  ) : (
+                    <></>
+                  )}
+                  </Select>
                 </div>
-                ))
+              ))
             ) : (
               <></>
             )}
+            <br />
+            {prelM !== null && prelM !== undefined ? (
+              prelM.map((e, index) => (
+                <div className='flex'>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    defaultValue=""
+                    value={exportFunction.memberIdToName(e[2])}
+                    label="Age"
+                    onChange={handleChangePrelM}
+                    name={index}
+                  >
+                  {memberIdList !== null && memberIdList !== undefined ? (
+                    memberIdList.map((f, index) => (
+                      <MenuItem value={exportFunction.memberIdToName(f.id)} name={e[2]}>{exportFunction.memberIdToName(f.id)}</MenuItem>
+                      ))
+                  ) : (
+                    <></>
+                  )}
+                  </Select>
+                  {/* {e[2] === 30 ? (
+                    <RemoveIcon onClick={() => minusIrelM(index)} />
+                  ) : (null)
+                  } */}
+                </div>
+                ))
+              ) : (
+                <></>
+              )
+            }
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
               <DateTimePicker
                 label="on_air_date"

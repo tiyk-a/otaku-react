@@ -44,6 +44,7 @@ const All = () => {
             description: data.program.description,
             date: data.program.on_air_date,
             prelList: data.prelList,
+            prelMList: data.prelMList,
             teamIdList: data.teamIdList,
           };
           list.push(program);

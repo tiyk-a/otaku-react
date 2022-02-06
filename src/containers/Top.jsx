@@ -56,6 +56,7 @@ const Top = () => {
               tmpMemIdList.push(rel);
             });
 
+            // teamIdListが単にteamEnumから全レコードのidを取ってきている場合、各itemで取得する必要ないのでは
             const ele = {
               id: item.item.item_id,
               title: item.item.title,
