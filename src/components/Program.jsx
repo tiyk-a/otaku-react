@@ -2,6 +2,7 @@ import { Box } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
 import { Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
@@ -209,6 +210,23 @@ const Program = ({ program, teamId }) => {
       }
   }
 
+  // そのチームをirelから抜きます
+  const minusPrel = (index) => {
+    let vers = [...prel];
+    // prelが最低1つあれば削除可能
+    if (vers.length > 1) {
+      vers.splice(index, 1);
+    }
+    setPrel(vers);
+  }
+
+  // そのチームをprelMから抜きます
+  const minusPrelM = (index) => {
+    let vers = [...prelM];
+    vers.splice(index, 1);
+    setPrelM(vers);
+  }
+
   return (
     <div className="itemContainer">
       <Text>
@@ -238,6 +256,10 @@ const Program = ({ program, teamId }) => {
                     <></>
                   )}
                   </Select>
+                  {e[2] === 4 ? (
+                    <RemoveIcon onClick={() => minusPrel(index)} />
+                  ) : (null)
+                  }
                 </div>
               ))
             ) : (
@@ -285,10 +307,10 @@ const Program = ({ program, teamId }) => {
                     <></>
                   )}
                   </Select>
-                  {/* {e[2] === 30 ? (
-                    <RemoveIcon onClick={() => minusIrelM(index)} />
+                  {e[2] === 30 ? (
+                    <RemoveIcon onClick={() => minusPrelM(index)} />
                   ) : (null)
-                  } */}
+                  }
                 </div>
                 ))
               ) : (
@@ -378,3 +400,12 @@ const Btn = styled(Button)({
 });
 
 export default Program;
+
+const RemoveIcon = styled(RemoveCircleOutlineIcon)({
+  // TODO:高さがselectorsと一緒になるように揃えたい
+  cursor: 'pointer',
+  '&:hover': {
+    opacity: '0.5',
+    transition: 'opacity 0.5s',
+  },
+});
