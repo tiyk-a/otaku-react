@@ -14,7 +14,7 @@ const TvList = ({tvList, teamId}) => {
       {tvList !== undefined && tvList.length > 0 ? (
         tvList.map((e, index) => (
           <div className="itemBox" key={index}>
-            <Program program={e} teamId={teamId} />
+            <Program program={e} teamId={teamId} key={e.id} />
           </div>
         ))
       ) : (

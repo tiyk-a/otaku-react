@@ -8,7 +8,7 @@ import { ApiPath } from '../constants';
 import history from '../history';
 
 /**
- * 商品全件取得（トップページ）のコンテナ
+ * TVトップページコンテナ
  *
  */
 const All = () => {
@@ -20,7 +20,12 @@ const All = () => {
 
   // TV全件取得
   const getAllTv = useCallback(async (id) => {
-    if (id !== undefined) {
+    // 引数のidがない場合、allと見做して5を入れる
+    if (id === null || id === undefined || id === 5) {
+      setTeamId(5);
+      setId(5);
+    } else {
+      // 引数に適切に数字が入っていたらそれを入れてあげて取得しに行く
       setTeamId(id);
       setId(id);
     }

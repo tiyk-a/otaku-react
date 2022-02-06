@@ -30,7 +30,12 @@ const Program = ({ program, teamId }) => {
   useEffect(() => {
     setId(program.id);
     setTitle(program.title);
-    setDescription(program.description);
+    if (program.description !== null && program.description !== undefined) {
+      setDescription(program.description);
+    } else {
+      setDescription("");
+    }
+    
     setDate(moment(program.date).format('YYYY-MM-DD HH:mm'));
     const outerArr = [];
     program.prelList.forEach((e) => {
@@ -134,11 +139,11 @@ const Program = ({ program, teamId }) => {
                   value={exportFunction.teamIdToName(e[2])}
                   label="Age"
                   onChange={handleChangePrel}
-                  name={index}
+                  name={index.toString()}
                 >
                 {program.teamIdList !== null && program.teamIdList !== undefined ? (
                   program.teamIdList.map((f, index) => (
-                    <MenuItem value={exportFunction.teamIdToName(f)} name={e[2]}>{exportFunction.teamIdToName(f)}</MenuItem>
+                    <MenuItem value={exportFunction.teamIdToName(f)} name={e[2]} key={f} >{exportFunction.teamIdToName(f)}</MenuItem>
                     ))
                 ) : (
                   <></>
@@ -178,8 +183,8 @@ const Program = ({ program, teamId }) => {
               onChange={handleChange}
               fullWidth={true}
               multiline={true}
-              rows={3}
-              rowsMax={5}
+              minRows={3}
+              maxRows={5}
             />
           </li>
           <li>
