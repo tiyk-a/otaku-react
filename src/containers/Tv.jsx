@@ -45,7 +45,6 @@ const All = () => {
             date: data.program.on_air_date,
             prelList: data.prelList,
             prelMList: data.prelMList,
-            teamIdList: data.teamIdList,
           };
           list.push(program);
           count = count + 1;

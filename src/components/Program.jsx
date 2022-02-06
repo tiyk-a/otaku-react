@@ -26,6 +26,7 @@ const Program = ({ program, teamId }) => {
   const [date, setDate] = useState('');
   const [prel, setPrel] = useState([]);
   const [prelM, setPrelM] = useState([]);
+  const [teamIdList, setTeamIdList] = useState([]);
   const [memberIdList, setMemberIdList] = useState([]);
   const [id, setId] = useState('');
 
@@ -55,6 +56,7 @@ const Program = ({ program, teamId }) => {
     });
     setPrelM(outerArrM);
 
+    setTeamIdList(exportFunction.getAllTeam());
     setMemberIdList(exportFunction.getAllMember());
   }, []);
 
@@ -169,9 +171,9 @@ const Program = ({ program, teamId }) => {
                     onChange={handleChangePrel}
                     name={index.toString()}
                   >
-                  {program.teamIdList !== null && program.teamIdList !== undefined ? (
-                    program.teamIdList.map((f, index) => (
-                      <MenuItem value={exportFunction.teamIdToName(f)} name={e[2]} key={f} >{exportFunction.teamIdToName(f)}</MenuItem>
+                  {teamIdList !== null && teamIdList !== undefined ? (
+                    teamIdList.map((f, index) => (
+                      <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]} key={f} >{exportFunction.teamIdToName(f.id)}</MenuItem>
                       ))
                   ) : (
                     <></>

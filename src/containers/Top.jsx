@@ -65,7 +65,6 @@ const Top = () => {
               pubDate: item.item.publication_date,
               wpId: item.item.im_id,
               relList: item.relList,
-              teamIdList: item.teamIdList,
               relMList: item.relMemList,
               memList: item.memIdList,
             };
