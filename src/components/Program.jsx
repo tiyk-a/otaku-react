@@ -29,6 +29,8 @@ const Program = ({ program, teamId }) => {
   const [teamIdList, setTeamIdList] = useState([]);
   const [memberIdList, setMemberIdList] = useState([]);
   const [id, setId] = useState('');
+  const [addPrelFlg, setAddPrelFlg] = useState(false);
+  const [addPrelMFlg, setAddPrelMFlg] = useState(false);
 
   useEffect(() => {
     setId(program.id);
@@ -150,6 +152,63 @@ const Program = ({ program, teamId }) => {
     setPrelM(vers);
   }
 
+  // 新しいprelを配列に追加します(新規not更新)
+  const handleChangeAddPrel = e => {
+    const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
+    let vers = [...prel];
+    // [prelId, programId, teamId]
+    vers.push([null, id, teamIdTmp]);
+    setPrel(vers);
+    setAddPrelFlg(false);
+  }
+
+  const toggleAddPrelFlg = () => {
+    if (addPrelFlg) {
+      setAddPrelFlg(false);
+    } else {
+      setAddPrelFlg(true);
+    }
+  }
+
+  const handleChangeAddPrelM = e => {
+    const memIdTmp = exportFunction.nameToMemberId(e.target.value);
+    let vers = [...prelM];
+    // [prelMId, prelId, memberId]
+    vers.push([null, null, memIdTmp]);
+    setPrelM(vers);
+    setAddPrelMFlg(false);
+
+    // そのmemberのチームがprelに入ってなかったら自動で入れます
+    addTeamByMember(memIdTmp);
+  }
+
+  const toggleAddPrelMFlg = () => {
+    if (addPrelMFlg) {
+      setAddPrelMFlg(false);
+    } else {
+      setAddPrelMFlg(true);
+    }
+  }
+
+  // そのmemberのチームがprelに入ってなかったら自動で入れます
+  const addTeamByMember = (memberId) => {
+      var teamOfMem = exportFunction.getTeamIdOfMember(memberId);
+      let addFlg = true;
+      prel.forEach(rel => {
+        if (rel[2] === teamOfMem) {
+          addFlg = false;
+        }
+      });
+      if (addFlg) {
+        let vers = [...prel];
+        const innerArr = [];
+        // [prelId, programId, teamId]
+        innerArr.push(null, id, teamOfMem);
+        vers.push(innerArr);
+        setPrel(vers);
+      }
+  }
+
   return (
     <div className="itemContainer">
       <Text>
@@ -184,6 +243,27 @@ const Program = ({ program, teamId }) => {
             ) : (
               <></>
             )}
+            {addPrelFlg ? (
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                defaultValue=""
+                value={exportFunction.teamIdToName(4)}
+                label="Age"
+                onChange={handleChangeAddPrel}
+                name="tmpPrel"
+              >
+              {teamIdList !== null && teamIdList !== undefined ? (
+                teamIdList.map((f, index) => (
+                  <MenuItem value={exportFunction.teamIdToName(f.id)} name={4} key={f.id} >{exportFunction.teamIdToName(f.id)}</MenuItem>
+                  ))
+              ) : (
+                <></>
+              )}
+              </Select>
+            ) : (
+              <Btn onClick={toggleAddPrelFlg}>+prel</Btn>
+            )}
             <br />
             {prelM !== null && prelM !== undefined ? (
               prelM.map((e, index) => (
@@ -215,6 +295,28 @@ const Program = ({ program, teamId }) => {
                 <></>
               )
             }
+            {addPrelMFlg ? (
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                defaultValue=""
+                value={exportFunction.memberIdToName(30)}
+                label="Age"
+                onChange={handleChangeAddPrelM}
+                name="tmpPrelM"
+              >
+              {memberIdList !== null && memberIdList !== undefined ? (
+                memberIdList.map((f, index) => (
+                  <MenuItem value={exportFunction.memberIdToName(f.id)} name={30} key={f.id} >{exportFunction.memberIdToName(f.id)}</MenuItem>
+                  ))
+              ) : (
+                <></>
+              )}
+              </Select>
+            ) : (
+              <Btn onClick={toggleAddPrelMFlg}>+prelM</Btn>
+            )}
+            <br />
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
               <DateTimePicker
                 label="on_air_date"
@@ -234,7 +336,6 @@ const Program = ({ program, teamId }) => {
               className="titleInput"
           　/>
           </li>
-          {/* <li className="textBox" onClick={editTv}> */}
           <li className="textBox">
             <TextField
               required
