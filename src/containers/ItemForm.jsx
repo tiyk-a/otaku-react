@@ -199,8 +199,8 @@ const ItemForm = (teamIdObj) => {
             onChange={handleChange}
             fullWidth={true}
             multiline={true}
-            rows={3}
-            rowsMax={5}
+            minRows={3}
+            maxRows={5}
           />
           <br />
           <TextField
