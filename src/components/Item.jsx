@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
 import exportFunctionRel from '../functions/RelManage';
-import exportFunction from '../functions/TeamIdToName';
+import exportFunction, { getMemberObjListOfTeam } from '../functions/TeamIdToName';
 
 
 /**
@@ -396,6 +396,27 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     }
   }
 
+  const irelMIncludesId = (memberId) => {
+    irelM.forEach((e) => {
+      if (e[2] === memberId) {
+        console.log("***************");
+        return true;
+      }
+    })
+    return false;
+  }
+
+  // メンバーがirelMに入っていなかったら追加、入っていたら抜く
+  const toggleIrelM = (memberId) => {
+    let vers = [...irelM];
+    let ver2 = vers.filter(rel => rel[2] !== memberId);
+
+    if (vers.length === ver2.length) {
+      ver2.push([null, null, memberId, 0]);
+    }
+    setIrelM(ver2);
+  }
+
   return (
     <div className="itemContainer" className={item.masterId !== null && item.masterId !== undefined ? "postedStyle": editedFlg ? "editedStyle" : "notPostedStyle"}>
       {editedFlg ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr} data-irel={irel} data-irelm={irelM}></div>) : (null)}
@@ -427,6 +448,56 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
                     <RemoveIcon onClick={() => minusIrel(index)} />
                   ) : (null)
                   }
+                  {memberIdList !== null && memberIdList !== undefined ? (
+                    memberIdList.map((g, index) => (
+                      <div>
+                        {function() {
+                          if (g.teamId === e[2]) {
+                            return (
+                              <div>
+                                {function() {
+                                  return (
+                                    <div>
+                                      {irelM.map((e, index) => (
+                                        <div>
+                                          {function() {
+                                            if (e[2] === g.id) {
+                                              return (
+                                                <p className="colorRed" onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                              )
+                                            } else {
+                                              return (
+                                                <div>
+                                                  {function() {
+                                                    if (index === 0) {
+                                                      return (
+                                                        <p onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                                      )
+                                                    }
+                                                  }()}
+                                                </div>
+                                              )
+                                            }
+                                          }()}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )
+                                }()}
+                                </div>
+                            )
+                          } else {
+                            return (
+                              <p></p>
+                            )
+                          }
+                          }()
+                        }
+                      </div>
+                      ))
+                  ) : (
+                    <></>
+                  )}
                 </div>
                 ))
             ) : (
@@ -454,58 +525,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
           ) : (
             <Btn onClick={toggleAddIrelFlg}>+irel</Btn>
           )}
-            <br />
-            {irelM !== null && irelM !== undefined ? (
-              irelM.map((e, index) => (
-                <div className='flex'>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    defaultValue=""
-                    value={exportFunction.memberIdToName(e[2])}
-                    label="Age"
-                    onChange={handleChangeIrelM}
-                    name={index}
-                  >
-                  {memberIdList !== null && memberIdList !== undefined ? (
-                    memberIdList.map((f, index) => (
-                      <MenuItem value={exportFunction.memberIdToName(f.id)} name={e[2]}>{exportFunction.memberIdToName(f.id)}</MenuItem>
-                      ))
-                  ) : (
-                    <></>
-                  )}
-                  </Select>
-                  {e[2] === 30 ? (
-                    <RemoveIcon onClick={() => minusIrelM(index)} />
-                  ) : (null)
-                  }
-                </div>
-                ))
-              ) : (
-                <></>
-              )
-            }
-            {addIrelMFlg ? (
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                defaultValue=""
-                value={exportFunction.memberIdToName(30)}
-                label="Age"
-                onChange={handleChangeAddIrelM}
-                name="tmpIrelM"
-              >
-              {memberIdList !== null && memberIdList !== undefined ? (
-                memberIdList.map((f, index) => (
-                  <MenuItem value={exportFunction.memberIdToName(f.id)} name={30}>{exportFunction.memberIdToName(f.id)}</MenuItem>
-                  ))
-              ) : (
-                <></>
-              )}
-              </Select>
-            ) : (
-              <Btn onClick={toggleAddIrelMFlg}>+irelM</Btn>
-            )}
             <br />
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
               <DatePicker

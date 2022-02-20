@@ -363,3 +363,7 @@ color: #ff4444;
 .MuiPickersSlideTransition-transitionContainer > * {
   color: black;
 }
+
+.colorRed {
+  color: red;
+}

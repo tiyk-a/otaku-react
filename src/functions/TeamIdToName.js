@@ -144,6 +144,16 @@ exports.getAllMember = function() {
     return memberList;
 }
 
+exports.getMemberObjListOfTeam = function(teamIdArg) {
+    const tmpList = [];
+    memberList.forEach((e) => {
+        if (e.teamId === teamIdArg) {
+            tmpList.push(e);
+        }
+    })
+    return tmpList;
+}
+
 // 引数のmemberIdのteamIdを返します
 exports.getTeamIdOfMember = function(memberId) {
     var memObject = memberList.find(m => m.id === memberId);

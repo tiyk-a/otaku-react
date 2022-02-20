@@ -297,7 +297,7 @@ const Program = ({ program, teamId }) => {
                     value={exportFunction.memberIdToName(e[2])}
                     label="Age"
                     onChange={handleChangePrelM}
-                    name={index}
+                    name={index.toString()}
                   >
                   {memberIdList !== null && memberIdList !== undefined ? (
                     memberIdList.map((f, index) => (

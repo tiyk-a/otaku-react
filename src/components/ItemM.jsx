@@ -281,7 +281,7 @@ const ItemM = ({ item, teamId }) => {
                   value={exportFunction.teamIdToName(e[2])}
                   label="Age"
                   onChange={handleChangeIMrel}
-                  name={index}
+                  name={index.toString()}
                 >
                 {teamIdList !== null && teamIdList !== undefined ? (
                   teamIdList.map((f, index) => (
@@ -330,7 +330,7 @@ const ItemM = ({ item, teamId }) => {
                 value={exportFunction.memberIdToName(e[2])}
                 label="Age"
                 onChange={handleChangeIMrelM}
-                name={index}
+                name={index.toString()}
               >
               {memberIdList !== null && memberIdList !== undefined ? (
                 memberIdList.map((f, index) => (
