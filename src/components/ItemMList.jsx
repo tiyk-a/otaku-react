@@ -199,6 +199,7 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
 
   return (
     <div className="allItemsList">
+      <p>登録に失敗する場合、amazon_imageを空にしてみてください</p>
       <h3>未チェックItem<Btn onClick={bundleItem}>一括登録</Btn><Btn onClick={bundleItemManage}>一括設定</Btn></h3>
       {itemList !== undefined && itemList.length > 0 ? (
         itemList.map((e, index) => (

@@ -208,7 +208,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
 
   const searchOtherIm = async (key) => {
     await axios
-      .get(ApiPath.IM + 'search?key=' + key + '&excludeTeamId=' + teamId)
+      .get(ApiPath.IM + 'search?key=' + key)
       .then(response => {
         setImSearchRes(response.data);
       })
