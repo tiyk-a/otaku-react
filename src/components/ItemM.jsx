@@ -8,6 +8,7 @@ import axios from '../axios';
 import { ApiPath } from '../constants';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 /**
  *　商品１件を表示するコンポーネント
@@ -260,6 +261,27 @@ const ItemM = ({ item, teamId }) => {
     }
   }
 
+  // そのチームをirelMから抜きます
+  const minusImrel = (index) => {
+    let vers = [...imrel];
+    // imrelが最低1つあれば削除可能
+    if (vers[index][3] !== 1 && vers.length > 1) {
+      vers.splice(index, 1);
+    }
+    setIMrel(vers);
+  }
+
+  // メンバーがirelMに入っていなかったら追加、入っていたら抜く
+  const toggleImrelM = (memberId) => {
+    let vers = [...imrelM];
+    let ver2 = vers.filter(rel => rel[2] !== memberId);
+
+    if (vers.length === ver2.length) {
+      ver2.push([null, null, memberId, 0]);
+    }
+    setIMrelM(ver2);
+  }
+
   const selected = {
     opacity: 0.5,
   }
@@ -274,23 +296,85 @@ const ItemM = ({ item, teamId }) => {
             {imrel !== null && imrel !== undefined ? (
               imrel.map((e, index) => (
                 <div>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  defaultValue=""
-                  value={exportFunction.teamIdToName(e[2])}
-                  label="Age"
-                  onChange={handleChangeIMrel}
-                  name={index.toString()}
-                >
-                {teamIdList !== null && teamIdList !== undefined ? (
-                  teamIdList.map((f, index) => (
-                    <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]}>{exportFunction.teamIdToName(f.id)}</MenuItem>
-                    ))
-                ) : (
-                  <></>
-                )}
-                </Select>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    defaultValue=""
+                    value={exportFunction.teamIdToName(e[2])}
+                    label="Age"
+                    onChange={handleChangeIMrel}
+                    name={index.toString()}
+                  >
+                  {teamIdList !== null && teamIdList !== undefined ? (
+                    teamIdList.map((f, index) => (
+                      <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]}>{exportFunction.teamIdToName(f.id)}</MenuItem>
+                      ))
+                  ) : (
+                    <></>
+                  )}
+                  </Select>
+                  {e[2] === 4 ? (
+                    <RemoveIcon onClick={() => minusImrel(index)} />
+                  ) : (null)
+                  }
+                  {memberIdList !== null && memberIdList !== undefined ? (
+                    memberIdList.map((g, index) => (
+                      <div>
+                        {function() {
+                          if (g.teamId === e[2]) {
+                            return (
+                              <div>
+                                {function() {
+                                  if (imrelM !== null && imrelM !== undefined && imrelM.length > 0) {
+                                    return (
+                                      <div>
+                                        {imrelM.map((e, index) => (
+                                          <div>
+                                            {function() {
+                                              if (e[2] === g.id) {
+                                                return (
+                                                  <p className="colorRed" onClick={() => toggleImrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                                )
+                                              } else {
+                                                return (
+                                                  <div>
+                                                    {function() {
+                                                      if (index === 0) {
+                                                        return (
+                                                          <p onClick={() => toggleImrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                                        )
+                                                      }
+                                                    }()}
+                                                  </div>
+                                                )
+                                              }
+                                            }()}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )
+                                  } else {
+                                    return (
+                                      <div>
+                                        <p onClick={() => toggleImrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                      </div>
+                                    )
+                                  }
+                                }()}
+                                </div>
+                            )
+                          } else {
+                            return (
+                              <p></p>
+                            )
+                          }
+                          }()
+                        }
+                      </div>
+                      ))
+                  ) : (
+                    <></>
+                  )}
                 </div>
                 ))
             ) : (
@@ -317,62 +401,15 @@ const ItemM = ({ item, teamId }) => {
             )}
             </Select>
           ) : (
-            <Btn onClick={toggleAddIMrelFlg}>+irelM</Btn>
+            <Btn onClick={toggleAddIMrelFlg}>+imrel</Btn>
           )}
           <br />
-          {imrelM !== null && imrelM !== undefined ? (
-            imrelM.map((e, index) => (
-              <div>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                defaultValue=""
-                value={exportFunction.memberIdToName(e[2])}
-                label="Age"
-                onChange={handleChangeIMrelM}
-                name={index.toString()}
-              >
-              {memberIdList !== null && memberIdList !== undefined ? (
-                memberIdList.map((f, index) => (
-                  <MenuItem value={exportFunction.memberIdToName(f.id)} name={e[2]}>{exportFunction.memberIdToName(f.id)}</MenuItem>
-                  ))
-              ) : (
-                <></>
-              )}
-              </Select>
-              </div>
-              ))
-            ) : (
-              <></>
-            )
-          }
-          {addIMrelMFlg ? (
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              defaultValue=""
-              value={exportFunction.memberIdToName(30)}
-              label="Age"
-              onChange={handleChangeAddIMrelM}
-              name="tmpIrelM"
-            >
-            {memberIdList !== null && memberIdList !== undefined ? (
-              memberIdList.map((f, index) => (
-                <MenuItem value={exportFunction.memberIdToName(f.id)} name={30}>{exportFunction.memberIdToName(f.id)}</MenuItem>
-                ))
-            ) : (
-              <></>
-            )}
-            </Select>
-          ) : (
-            <Btn onClick={toggleAddIMrelMFlg}>+irelM</Btn>
-          )}
-            <br />
-            {date}
-            <br />
-            <Btn onClick={toggleEditedFlg}>
-              {editedFlg ? ("更新しない") : ("更新する")}
-            </Btn>
+          <br />
+          {date}
+          <br />
+          <Btn onClick={toggleEditedFlg}>
+            {editedFlg ? ("更新しない") : ("更新する")}
+          </Btn>
           </li>
           <li>
             IMId: {item.id}
@@ -458,6 +495,15 @@ const Btn = styled(Button)({
   background: 'linear-gradient(to right bottom, #db36a4, #f7ff00)',
   margin: '10px 0',
   color: 'black',
+});
+
+const RemoveIcon = styled(RemoveCircleOutlineIcon)({
+  // TODO:高さがselectorsと一緒になるように揃えたい
+  cursor: 'pointer',
+  '&:hover': {
+    opacity: '0.5',
+    transition: 'opacity 0.5s',
+  },
 });
 
 export default ItemM;
