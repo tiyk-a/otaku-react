@@ -426,7 +426,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
           <li>
             {irel !== null && irel !== undefined ? (
               irel.map((e, index) => (
-                <div>
+                <div class="flex_row">
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -448,17 +448,18 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
                     <RemoveIcon onClick={() => minusIrel(index)} />
                   ) : (null)
                   }
+                  <div class="flex_column">
                   {memberIdList !== null && memberIdList !== undefined ? (
                     memberIdList.map((g, index) => (
                       <div>
                         {function() {
                           if (g.teamId === e[2]) {
                             return (
-                              <div>
+                              <>
                                 {function() {
                                   if (irelM !== null && irelM !== undefined && irelM.length > 0) {
                                     return (
-                                      <div>
+                                      <>
                                         {irelM.map((e, index) => (
                                           <div>
                                             {function() {
@@ -468,7 +469,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
                                                 )
                                               } else {
                                                 return (
-                                                  <div>
+                                                  <>
                                                     {function() {
                                                       if (index === 0) {
                                                         return (
@@ -476,13 +477,13 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
                                                         )
                                                       }
                                                     }()}
-                                                  </div>
+                                                  </>
                                                 )
                                               }
                                             }()}
                                           </div>
                                         ))}
-                                      </div>
+                                      </>
                                     )
                                   } else {
                                     return (
@@ -492,7 +493,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
                                     )
                                   }
                                 }()}
-                                </div>
+                              </>
                             )
                           } else {
                             return (
@@ -506,6 +507,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
                   ) : (
                     <></>
                   )}
+                  </div>
                 </div>
                 ))
             ) : (

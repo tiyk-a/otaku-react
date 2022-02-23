@@ -295,7 +295,7 @@ const ItemM = ({ item, teamId }) => {
           <li>
             {imrel !== null && imrel !== undefined ? (
               imrel.map((e, index) => (
-                <div>
+                <div class="flex_row">
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -317,17 +317,18 @@ const ItemM = ({ item, teamId }) => {
                     <RemoveIcon onClick={() => minusImrel(index)} />
                   ) : (null)
                   }
+                  <div class="flex_column">
                   {memberIdList !== null && memberIdList !== undefined ? (
                     memberIdList.map((g, index) => (
                       <div>
                         {function() {
                           if (g.teamId === e[2]) {
                             return (
-                              <div>
+                              <>
                                 {function() {
                                   if (imrelM !== null && imrelM !== undefined && imrelM.length > 0) {
                                     return (
-                                      <div>
+                                      <>
                                         {imrelM.map((e, index) => (
                                           <div>
                                             {function() {
@@ -351,7 +352,7 @@ const ItemM = ({ item, teamId }) => {
                                             }()}
                                           </div>
                                         ))}
-                                      </div>
+                                      </>
                                     )
                                   } else {
                                     return (
@@ -361,7 +362,7 @@ const ItemM = ({ item, teamId }) => {
                                     )
                                   }
                                 }()}
-                                </div>
+                              </>
                             )
                           } else {
                             return (
@@ -375,6 +376,7 @@ const ItemM = ({ item, teamId }) => {
                   ) : (
                     <></>
                   )}
+                  </div>
                 </div>
                 ))
             ) : (

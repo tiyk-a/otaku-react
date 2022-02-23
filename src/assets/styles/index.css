@@ -367,3 +367,19 @@ color: #ff4444;
 .colorRed {
   color: red;
 }
+
+.flex_row {
+  display: flex;
+}
+
+.flex_column {
+  display: flex;
+  flex-direction: column;
+  width: 6rem;
+}
+
+.MuiOutlinedInput-root {
+  height: 3rem;
+  width: 9rem;
+  margin-right: 1rem;
+}
