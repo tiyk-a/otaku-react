@@ -456,33 +456,41 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
                             return (
                               <div>
                                 {function() {
-                                  return (
-                                    <div>
-                                      {irelM.map((e, index) => (
-                                        <div>
-                                          {function() {
-                                            if (e[2] === g.id) {
-                                              return (
-                                                <p className="colorRed" onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
-                                              )
-                                            } else {
-                                              return (
-                                                <div>
-                                                  {function() {
-                                                    if (index === 0) {
-                                                      return (
-                                                        <p onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
-                                                      )
-                                                    }
-                                                  }()}
-                                                </div>
-                                              )
-                                            }
-                                          }()}
-                                        </div>
-                                      ))}
-                                    </div>
-                                  )
+                                  if (irelM !== null && irelM !== undefined && irelM.length > 0) {
+                                    return (
+                                      <div>
+                                        {irelM.map((e, index) => (
+                                          <div>
+                                            {function() {
+                                              if (e[2] === g.id) {
+                                                return (
+                                                  <p className="colorRed" onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                                )
+                                              } else {
+                                                return (
+                                                  <div>
+                                                    {function() {
+                                                      if (index === 0) {
+                                                        return (
+                                                          <p onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                                        )
+                                                      }
+                                                    }()}
+                                                  </div>
+                                                )
+                                              }
+                                            }()}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )
+                                  } else {
+                                    return (
+                                      <div>
+                                        <p onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                      </div>
+                                    )
+                                  }
                                 }()}
                                 </div>
                             )
