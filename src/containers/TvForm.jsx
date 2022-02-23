@@ -162,7 +162,7 @@ const TvForm = () => {
  */
 const Btn = styled(Button)({
   marginTop: '20px',
-  background: 'linear-gradient(to right bottom, #db36a4, #f7ff00)',
+  background: '#db36a4',
   display: 'block',
   color: 'black',
 });

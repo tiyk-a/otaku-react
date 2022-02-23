@@ -131,8 +131,7 @@ img {
 
 button {
     margin-left: 26px;
-    background: -webkit-linear-gradient(to right bottom, #db36a4, #f7ff00);
-    background: linear-gradient(to right bottom, #db36a4, #f7ff00);
+    background: #db36a4;
     margin: 10px 0;
 }
 
@@ -309,7 +308,7 @@ p b {
 
 .MuiInput-underline:after {
   border-bottom: 6px solid　!important;
-  border-image: linear-gradient(to right, #db36a4 30%, #f7ff00 100%) !important;
+  background: #db36a4;
   border-image-slice: 1 !important;
 }
 

@@ -115,7 +115,7 @@ const All = () => {
  */
 const Btn = styled(Button)({
   marginLeft: '26px',
-  background: 'linear-gradient(to right bottom, #db36a4, #f7ff00)',
+  background: '#db36a4',
   margin: '10px 0',
   color: 'black',
 });
