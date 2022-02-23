@@ -199,10 +199,7 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
 
   return (
     <div className="allItemsList">
-      <h3>未チェックItem<Btn onClick={bundleItem}>一括登録</Btn>
-        <br />
-        <Btn onClick={bundleItemManage}>一括設定</Btn>
-      </h3>
+      <h3>未チェックItem<Btn onClick={bundleItem}>一括登録</Btn><Btn onClick={bundleItemManage}>一括設定</Btn></h3>
       {itemList !== undefined && itemList.length > 0 ? (
         itemList.map((e, index) => (
           <div className="itemBox" key={index}>
@@ -214,6 +211,7 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
           <h1>未チェックItemが見つかりませんでした:(</h1>
         </div>
       )}
+      <h3>未チェックItem<Btn onClick={bundleItem}>一括登録</Btn><Btn onClick={bundleItemManage}>一括設定</Btn></h3>
       <h3>ErrorJson</h3>
       <ItemForm teamIdObj={teamId} />
       {errJList !== undefined && errJList.length > 0 ? (

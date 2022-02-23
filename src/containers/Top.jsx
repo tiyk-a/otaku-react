@@ -183,14 +183,6 @@ const Top = () => {
           } else {
             return (
               <div>
-                <p>osigoto</p>
-                <form action="test" method="POST">
-                  <input type="text"
-                  inputMode='numeric'
-                  autoComplete='one-time-code'
-                  pattern="\d{6}"
-                  required />
-                </form>
                 <Btn value="5" onClick={() => handleChange(5)} style={id === 5 ? selected : null}>All</Btn>
                 <Btn value="17" onClick={() => handleChange(17)} style={id === 17 ? selected : null}>SixTONES</Btn>
                 <Btn value="6" onClick={() => handleChange(6)} style={id === 6 ? selected : null}>SnowMan</Btn>
