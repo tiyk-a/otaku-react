@@ -419,10 +419,13 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
 
   return (
     <div className="itemContainer" className={item.masterId !== null && item.masterId !== undefined ? "postedStyle": editedFlg ? "editedStyle" : "notPostedStyle"}>
-      {editedFlg ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr} data-irel={irel} data-irelm={irelM}></div>) : (null)}
+      {editedFlg
+        ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr} data-irel={irel} data-irelm={irelM}></div>)
+        : (<div id={item.id} data-teamid={teamId}></div>)}
       <p>flg: {editedFlg ? "true" : "false"}</p>
       <Text>
         <ul>
+          <li><input type="checkbox" name="add_item" value={id} /></li>
           <li>
             {irel !== null && irel !== undefined ? (
               irel.map((e, index) => (

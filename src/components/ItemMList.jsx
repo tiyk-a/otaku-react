@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Button } from '@material-ui/core';
+import { Button, Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import Item from '../components/Item';
 import ItemM from '../components/ItemM';
@@ -11,6 +11,9 @@ import ItemForm from '../containers/ItemForm';
 import axios from '../axios';
 import { ApiPath } from '../constants';
 import exportFunctionRel from '../functions/RelManage';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 /**
  *商品リストコンポーネント
@@ -21,6 +24,10 @@ import exportFunctionRel from '../functions/RelManage';
 const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
   const moment = require("moment");
   const [date, setDate] = useState('');
+  const [imId, setImId] = useState(0);
+  const [imKey, setImKey] = useState('');
+  const [imSearchRes, setImSearchRes] = useState([]);
+  const [otherImTitle, setOtherImTitle] = useState("");
 
   useEffect(() => {
     setDate(moment('2020-01-01').format('YYYY-MM-DD'));
@@ -133,6 +140,39 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
       .catch(error => {});
   }
 
+  // 対象Itemを一括でIM設定します
+  const bundleItemManage2 = async() => {
+    const data = [];
+    const itemIdList = document.getElementsByName("add_item");
+
+    if (imId === 0) {
+      window.alert("IMを選択してください！");
+    } else {
+      for (let i = 0; i < itemIdList.length; i++) {
+        if (itemIdList[i].checked) {
+          const e = document.getElementById(itemIdList[i].value);
+          const item = {
+            item_id: e.id,
+            im_id: imId,
+            teamId: e.dataset.teamid
+          }
+          data.push(item);
+        }
+      }
+      await axios
+      .post(ApiPath.IM + "bundle/chk", data)
+      .then(response => {
+        if (response.data) {
+          window.location.reload();
+        } else {
+          window.alert("登録エラーです");
+          console.log(response);
+        }
+      })
+      .catch(error => {});
+    }
+  }
+
   // 対象IMを一括で更新します
   const bundleIM = async() => {
     var elems = document.getElementsByClassName("target_im");
@@ -197,10 +237,72 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
       .catch(error => {});
   }
 
+  const handleChangeImKey = e => {
+    const txt = e.target.value;
+    setImKey(txt);
+  };
+
+  const searchImByKw = (e) => {
+    if (e.keyCode === 13) {
+      searchOtherIm(imKey);
+      setImKey("");
+    }
+  }
+
+  const searchOtherIm = async (key) => {
+    await axios
+      .get(ApiPath.IM + 'search?key=' + key)
+      .then(response => {
+        setImSearchRes(response.data);
+      })
+      .catch(error => {});
+  }
+
+  const handleChangeOtherIMTitle = e => {
+    const txt = e.target.value;
+    setOtherImTitle(txt);
+    imSearchRes.forEach(item => {
+      if (item.title === txt) {
+        setImId(item.im_id);
+      }
+    });
+  };
+
   return (
     <div className="allItemsList">
       <p>登録に失敗する場合、amazon_imageを空にしてみてください</p>
-      <h3>未チェックItem<Btn onClick={bundleItem}>一括登録</Btn><Btn onClick={bundleItemManage}>一括設定</Btn></h3>
+      <h3>未チェックItem
+        <Btn onClick={bundleItem}>一括登録</Btn>
+        <Btn onClick={bundleItemManage2}>一括設定２</Btn>
+        <FormControl fullWidth>
+          <p>IM検索: {imId}</p>
+          <Input
+            type="text"
+            name="IM search"
+            value={imKey}
+            onChange={handleChangeImKey}
+            placeholder="im keyword"
+            className="titleInput"
+            onKeyDown={searchImByKw}
+        　/>
+        {imSearchRes.length > 0 ? (
+          <Select
+            labelId="demo-simple-select-label"
+            id="other-team-im"
+            defaultValue="他チームID"
+            value={otherImTitle}
+            label="他チームID"
+            onChange={handleChangeOtherIMTitle}
+          >
+          {imSearchRes.map((e, index) => (
+            <MenuItem value={e.title}>{e.title}</MenuItem>
+          ))}
+          </Select>
+        ) : (
+          ""
+        )}
+        </FormControl>
+      </h3>
       {itemList !== undefined && itemList.length > 0 ? (
         itemList.map((e, index) => (
           <div className="itemBox" key={index}>
@@ -212,7 +314,10 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
           <h1>未チェックItemが見つかりませんでした:(</h1>
         </div>
       )}
-      <h3>未チェックItem<Btn onClick={bundleItem}>一括登録</Btn><Btn onClick={bundleItemManage}>一括設定</Btn></h3>
+      <h3>未チェックItem
+        <Btn onClick={bundleItem}>一括登録</Btn>
+        <Btn onClick={bundleItemManage2}>一括設定２</Btn>
+      </h3>
       <h3>ErrorJson</h3>
       <ItemForm teamIdObj={teamId} />
       {errJList !== undefined && errJList.length > 0 ? (
