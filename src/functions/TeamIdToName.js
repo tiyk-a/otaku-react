@@ -93,7 +93,20 @@ const memberList = [
     {id: 100, name: '高橋恭平', teamId: 18},
     {id: 101, name: '長尾謙杜', teamId: 18},
     {id: 102, name: '藤原丈一郎', teamId: 18},
-    {id: 103, name: '大橋和也', teamId: 18}
+    {id: 103, name: '大橋和也', teamId: 18},
+    {id: 104, name: '山田涼介', teamId: 19},
+    {id: 105, name: '知念侑李', teamId: 19},
+    {id: 106, name: '中島裕翔', teamId: 19},
+    {id: 107, name: '有岡大貴', teamId: 19},
+    {id: 108, name: '高木雄也', teamId: 19},
+    {id: 109, name: '伊野尾慧', teamId: 19},
+    {id: 110, name: '八乙女光', teamId: 19},
+    {id: 111, name: '薮宏太', teamId: 19},
+    {id: 112, name: '亀梨和也', teamId: 20},
+    {id: 113, name: '上田竜也', teamId: 20},
+    {id: 114, name: '中丸雄一', teamId: 20},
+    {id: 114, name: '堂本光一', teamId: 21},
+    {id: 114, name: '堂本剛', teamId: 21}
 ];
 
 exports.teamIdToName = function(teamId) {
