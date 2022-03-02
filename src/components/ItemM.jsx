@@ -289,7 +289,6 @@ const ItemM = ({ item, teamId }) => {
   return (
     <div className="itemContainer" className={item.wpId !== null && item.wpId !== undefined ? "postedStyle": editedFlg ? "editedStyle" : "notPostedStyle"}>
       {editedFlg ? (<div className="target_im" id={item.id} data-title={title} data-wpid={item.wpId} data-date={date} data-image={image} data-verarr={verArr} data-imrel={imrel} data-imrelm={imrelM}></div>) : (null)}
-      <p>flg: {editedFlg ? "true" : "false"}</p>
       <Text>
         <ul>
           <li>

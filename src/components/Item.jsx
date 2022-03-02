@@ -422,7 +422,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       {editedFlg
         ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr} data-irel={irel} data-irelm={irelM}></div>)
         : (<div id={item.id} data-teamid={teamId}></div>)}
-      <p>flg: {editedFlg ? "true" : "false"}</p>
       <Text>
         <ul>
           <li><input type="checkbox" name="add_item" value={id} /></li>
