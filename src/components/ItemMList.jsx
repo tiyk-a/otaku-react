@@ -29,6 +29,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
   const [imKey, setImKey] = useState('');
   const [imSearchRes, setImSearchRes] = useState([]);
   const [otherImTitle, setOtherImTitle] = useState("");
+  const [dispCal, setDispCal] = useState(false);
 
   useEffect(() => {
     setDate(moment('2020-01-01').format('YYYY-MM-DD'));
@@ -269,6 +270,15 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
     });
   };
 
+  // カレンダー表示・非表示切り替え
+  const toggleCalendar = () => {
+    if (dispCal) {
+      setDispCal(false);
+    } else {
+      setDispCal(true);
+    }
+  }
+
   return (
     <div className="allItemsList">
       <p>登録に失敗する場合、amazon_imageを空にしてみてください</p>
@@ -360,17 +370,29 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         />
       </MuiPickersUtilsProvider>
       {itemMList !== undefined && itemMList.length > 0 ? (
-        itemMList.map((e, index) => (
-        <div className="itemBox" key={index}>
-            <ItemM item={e} teamId={teamId} />
-        </div>
-        ))
-      ) : (
         <div>
-        <h1>今後のIMが見つかりませんでした:(</h1>
+          {itemMList.map((e, index) => (
+            <div className="itemBox" key={index}>
+                <ItemM item={e} teamId={teamId} />
+            </div>
+          ))}
+          <Btn onClick={toggleCalendar}>カレンダー</Btn>
+          <div>
+            {dispCal ? (
+                <div>
+                  <div dangerouslySetInnerHTML={{__html: exportFunction.getCal(teamId)}}></div>
+                </div>
+              ) : (
+                <></>
+              )
+            }
+          </div>
+        </div>
+      ):(
+        <div>
+          <div dangerouslySetInnerHTML={{__html: exportFunction.getCal(teamId)}}></div>
         </div>
       )}
-      <div dangerouslySetInnerHTML={{__html: exportFunction.getCal(teamId)}}></div>
     </div>
   );
 };
