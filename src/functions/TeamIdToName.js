@@ -105,8 +105,8 @@ const memberList = [
     {id: 112, name: '亀梨和也', teamId: 20},
     {id: 113, name: '上田竜也', teamId: 20},
     {id: 114, name: '中丸雄一', teamId: 20},
-    {id: 114, name: '堂本光一', teamId: 21},
-    {id: 114, name: '堂本剛', teamId: 21}
+    {id: 115, name: '堂本光一', teamId: 21},
+    {id: 116, name: '堂本剛', teamId: 21}
 ];
 
 exports.teamIdToName = function(teamId) {
