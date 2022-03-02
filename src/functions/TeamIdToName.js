@@ -1,22 +1,22 @@
 const teamList = [
-    {id: 4, name: '未選択'},
-    {id: 5, name: 'All'},
-    {id: 6, name: 'SnowMan'},
-    {id: 7, name: '関ジャニ∞'},
-    {id: 8, name: 'SexyZone'},
-    {id: 9, name: 'TOKIO'},
-    {id: 10, name: 'V6'},
-    {id: 11, name: '嵐'},
-    {id: 12, name: 'NEWS'},
-    {id: 13, name: 'Kis-My-Ft2'},
-    {id: 14, name: 'ABC-Z'},
-    {id: 15, name: 'ジャニーズWEST'},
-    {id: 16, name: 'King&Prince'},
-    {id: 17, name: 'SixTONES'},
-    {id: 18, name: 'なにわ男子'},
-    {id: 19, name: 'Hey!Say!JUMP'},
-    {id: 20, name: 'KAT-TUN'},
-    {id: 21, name: 'Kinki Kids'}
+    {id: 4, name: '未選択', cal: '<iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FTokyo&showTitle=1&title=%E5%85%A8%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E4%BA%88%E5%AE%9A&src=b2Y1bnE5bzlnNGs1cGoxMWJ2dDFycjUxNjhAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=cGpsb2pzbXBpNnZqaG11NHYzdmU2YTVqbG9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=MW1vbDRhcjcwbjljaDQ3MzdyZzhzNmJzM2tAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=OTN2NDJqZDNtNXRrZjJlN2s0MmZhMWlkMzRAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=MTZvMm1yZ2pmc2NwdGk0cGliOXN0bWEwYjhAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=bjM1ZnJzY2o2ZHMxcDZuZm9wa2RvNjB2bWtAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dnVuaDZzNmYzbjVlbWluMmtiM2NndjEyNzhAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=a21pa2oxaXVzZDNqOHJxdXRhNDBhZHFqZWtAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=a2FuNzFycm1iNDJsMm1oMXFucDVicjFoYjBAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=Z2ZiNnJzOTE0MHRkN2V0bWJ1cDRxZXU5NWNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=ampyN250bTcyYmhtMmtwbXU3aW00cDhkZTBAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=aml2Zm5kYjV0bDJqaHJpZTNqajBtZzNyZjRAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=ZW5mNjQ3cTBrYTJpamozNW45aWJ2bWRiYmdAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=aWNvNHQ5bWxoOWZkNHNtYzQ3cHRmMmczaDhAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=ZmRiNGw1YXA0YzkwYWxhdHZpa3FxcDZkZm9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=MXNiOGZiMG5sdTJsN3Q4aGMxZnNuY2F1MmdAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%23A79B8E&color=%234285F4&color=%238E24AA&color=%23F4511E&color=%23D81B60&color=%23B39DDB&color=%23B39DDB&color=%23B39DDB&color=%239E69AF&color=%23AD1457&color=%23795548&color=%237986CB&color=%23F6BF26&color=%23EF6C00&color=%23B39DDB&color=%23C0CA33" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 5, name: 'All', cal: '<iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Asia%2FTokyo&showTitle=1&title=%E5%85%A8%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%E4%BA%88%E5%AE%9A&src=b2Y1bnE5bzlnNGs1cGoxMWJ2dDFycjUxNjhAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=cGpsb2pzbXBpNnZqaG11NHYzdmU2YTVqbG9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=MW1vbDRhcjcwbjljaDQ3MzdyZzhzNmJzM2tAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=OTN2NDJqZDNtNXRrZjJlN2s0MmZhMWlkMzRAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=MTZvMm1yZ2pmc2NwdGk0cGliOXN0bWEwYjhAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=bjM1ZnJzY2o2ZHMxcDZuZm9wa2RvNjB2bWtAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dnVuaDZzNmYzbjVlbWluMmtiM2NndjEyNzhAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=a21pa2oxaXVzZDNqOHJxdXRhNDBhZHFqZWtAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=a2FuNzFycm1iNDJsMm1oMXFucDVicjFoYjBAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=Z2ZiNnJzOTE0MHRkN2V0bWJ1cDRxZXU5NWNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=ampyN250bTcyYmhtMmtwbXU3aW00cDhkZTBAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=aml2Zm5kYjV0bDJqaHJpZTNqajBtZzNyZjRAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=ZW5mNjQ3cTBrYTJpamozNW45aWJ2bWRiYmdAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=aWNvNHQ5bWxoOWZkNHNtYzQ3cHRmMmczaDhAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=ZmRiNGw1YXA0YzkwYWxhdHZpa3FxcDZkZm9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=MXNiOGZiMG5sdTJsN3Q4aGMxZnNuY2F1MmdAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%23A79B8E&color=%234285F4&color=%238E24AA&color=%23F4511E&color=%23D81B60&color=%23B39DDB&color=%23B39DDB&color=%23B39DDB&color=%239E69AF&color=%23AD1457&color=%23795548&color=%237986CB&color=%23F6BF26&color=%23EF6C00&color=%23B39DDB&color=%23C0CA33" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 6, name: 'SnowMan', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=gfb6rs9140td7etmbup4qeu95c%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 7, name: '関ジャニ∞', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=1sb8fb0nlu2l7t8hc1fsncau2g%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 8, name: 'SexyZone', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=kmikj1iusd3j8rquta40adqjek%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 9, name: 'TOKIO', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=jjr7ntm72bhm2kpmu7im4p8de0%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 10, name: 'V6', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=jivfndb5tl2jhrie3jj0mg3rf4%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 11, name: '嵐', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=fdb4l5ap4c90alatvikqqp6dfo%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 12, name: 'NEWS', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=vunh6s6f3n5emin2kb3cgv1278%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 13, name: 'Kis-My-Ft2', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=n35frscj6ds1p6nfopkdo60vmk%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 14, name: 'ABC-Z', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=of5nq9o9g4k5pj11bvt1rr5168%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 15, name: 'ジャニーズWEST', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=ico4t9mlh9fd4smc47ptf2g3h8%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 16, name: 'King&Prince', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=93v42jd3m5tkf2e7k42fa1id34%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 17, name: 'SixTONES', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=kan71rrmb42l2mh1qnp5br1hb0%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 18, name: 'なにわ男子', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=enf647q0ka2ijj35n9ibvmdbbg%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 19, name: 'Hey!Say!JUMP', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=pjlojsmpi6vjhmu4v3ve6a5jlo%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 20, name: 'KAT-TUN', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=1mol4ar70n9ch4737rg8s6bs3k%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'},
+    {id: 21, name: 'Kinki Kids', cal: '<iframe src="https://calendar.google.com/calendar/embed?src=16o2mrgjfscpti4pib9stma0b8%40group.calendar.google.com&ctz=Asia%2FTokyo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>'}
 ];
 
 const memberList = [
@@ -171,4 +171,10 @@ exports.getMemberObjListOfTeam = function(teamIdArg) {
 exports.getTeamIdOfMember = function(memberId) {
     var memObject = memberList.find(m => m.id === memberId);
     return memObject.teamId;
+}
+
+// カレンダーhtmlを返します
+exports.getCal = function(teamId) {
+    var teamObject = teamList.find(t => t.id === teamId);
+    return teamObject.cal;
 }

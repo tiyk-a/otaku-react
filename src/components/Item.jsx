@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
 import exportFunctionRel from '../functions/RelManage';
-import exportFunction, { getMemberObjListOfTeam } from '../functions/TeamIdToName';
+import exportFunction from '../functions/TeamIdToName';
 
 
 /**

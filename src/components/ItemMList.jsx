@@ -14,6 +14,7 @@ import exportFunctionRel from '../functions/RelManage';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import exportFunction from '../functions/TeamIdToName';
 
 /**
  *商品リストコンポーネント
@@ -270,6 +271,7 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
 
   return (
     <div className="allItemsList">
+      <div dangerouslySetInnerHTML={{__html: exportFunction.getCal(teamId)}}></div>
       <p>登録に失敗する場合、amazon_imageを空にしてみてください</p>
       <h3>未チェックItem
         <Btn onClick={bundleItem}>一括登録</Btn>
