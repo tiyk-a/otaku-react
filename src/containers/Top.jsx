@@ -18,7 +18,6 @@ const Top = () => {
   // 商品一覧リストのSTATES
   const [itemList, setItemList] = useState([]);
   const [itemMList, setItemMList] = useState([]);
-  const [iimList, setIimList] = useState([]);
   const [errJList, setErrJList] = useState([]);
   const [id, setId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +40,6 @@ const Top = () => {
       .then(response => {
         const i = response.data.i;
         const im = response.data.im;
-        const iim = response.data.iim;
         const errJ = response.data.errJ;
         
         // item(w/o IM)
@@ -104,24 +102,6 @@ const Top = () => {
           imlist.push(m);
           });
           setItemMList(imlist);
-        }
-
-        if (iim !== null) {
-          // imがある未来のilist
-          const iimlist = [];
-
-          iim.forEach(item => {
-            const iim = {
-              id: item.item.item_id,
-              title: item.item.title,
-              description: item.item.item_caption,
-              price: item.item.price,
-              pubDate: item.item.publication_date,
-              wpId: item.item.im_id,
-            };
-            iimlist.push(iim);
-          });
-          setIimList(iimlist);
         }
 
         if (errJ !== null) {
@@ -205,12 +185,12 @@ const Top = () => {
                     if (id === 5) {
                       return (
                         <div>
-                          <ItemMList itemList={itemList} itemMList={itemMList} iimList={iimList} teamId={id} errJList={errJList} />
+                          <ItemMList itemList={itemList} itemMList={itemMList} teamId={id} errJList={errJList} />
                         </div>
                       )
                     } else {
                       return (
-                        <ItemMList itemList={itemList} itemMList={itemMList} iimList={iimList} teamId={id} errJList={errJList} />
+                        <ItemMList itemList={itemList} itemMList={itemMList} teamId={id} errJList={errJList} />
                       )
                     }
                   }()

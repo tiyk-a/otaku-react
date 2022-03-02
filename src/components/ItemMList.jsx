@@ -22,7 +22,7 @@ import exportFunction from '../functions/TeamIdToName';
  * @param {array} itemList
  * @returns jsx
  */
-const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
+const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
   const moment = require("moment");
   const [date, setDate] = useState('');
   const [imId, setImId] = useState(0);
@@ -271,7 +271,6 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
 
   return (
     <div className="allItemsList">
-      <div dangerouslySetInnerHTML={{__html: exportFunction.getCal(teamId)}}></div>
       <p>登録に失敗する場合、amazon_imageを空にしてみてください</p>
       <h3>未チェックItem
         <Btn onClick={bundleItem}>一括登録</Btn>
@@ -336,55 +335,42 @@ const ItemMList = ({itemList, itemMList, iimList, teamId, errJList}) => {
           <h1>ErrorJsonはなし</h1>
         </div>
       )}
-      <h3>今後のItemM<Btn onClick={bundleIM}>一括処理</Btn></h3>
+      <h3>今後のIM<Btn onClick={bundleIM}>一括処理</Btn></h3>
       <p>期間指定</p>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
         <DatePicker
-            variant="inline"
-            inputVariant="standard"
-            format="yyyy/MM"
-            id="date"
-            value={date}
-            onChange={handleChangeDate}
-            className="dateForm"
-            autoOk={true}
-            />
+          variant="inline"
+          inputVariant="standard"
+          format="yyyy/MM"
+          id="date"
+          value={date}
+          onChange={handleChangeDate}
+          className="dateForm"
+          autoOk={true}
+        />
         <DatePicker
-            variant="inline"
-            inputVariant="standard"
-            format="yyyy/MM"
-            id="date"
-            value={date}
-            onChange={handleChangeDate}
-            className="dateForm"
-            autoOk={true}
-            />
-        </MuiPickersUtilsProvider>
-        {itemMList !== undefined && itemMList.length > 0 ? (
-            itemMList.map((e, index) => (
-            <div className="itemBox" key={index}>
-                <ItemM item={e} teamId={teamId} />
-            </div>
-            ))
-        ) : (
-            <div>
-            <h1>今後のItemMが見つかりませんでした:(</h1>
-            </div>
-        )}
-      <h3>チェック済み今後のItem</h3>
-      <p>今表示なし</p>
-      {/* {iimList !== undefined && iimList.length > 0 ? (
-        iimList.map((e, index) => (
-          <div className="itemBox" key={index}>
-            <Item item={e} teamId={teamId} />
-          </div>
+          variant="inline"
+          inputVariant="standard"
+          format="yyyy/MM"
+          id="date"
+          value={date}
+          onChange={handleChangeDate}
+          className="dateForm"
+          autoOk={true}
+        />
+      </MuiPickersUtilsProvider>
+      {itemMList !== undefined && itemMList.length > 0 ? (
+        itemMList.map((e, index) => (
+        <div className="itemBox" key={index}>
+            <ItemM item={e} teamId={teamId} />
+        </div>
         ))
       ) : (
         <div>
-          <h1>IMデータが見つかりませんでした:(</h1>
-          <a href="/new">新しく商品を登録する？</a>
+        <h1>今後のIMが見つかりませんでした:(</h1>
         </div>
-      )} */}
+      )}
+      <div dangerouslySetInnerHTML={{__html: exportFunction.getCal(teamId)}}></div>
     </div>
   );
 };
