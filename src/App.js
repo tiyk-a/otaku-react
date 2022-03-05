@@ -7,7 +7,6 @@ import Header from './components/Header';
 import Tv from './containers/Tv';
 import Top from './containers/Top';
 import Twitter from './containers/Twitter';
-import TvForm from './containers/TvForm';
 
 /**
  * ルーティングのみを行うApp.js
@@ -67,9 +66,6 @@ class App extends Component {
           </Route>
           <Route exact path="/tw">
             <Twitter />
-          </Route>
-          <Route exact path="/tv/edit/:teamId/:id">
-            <TvForm />
           </Route>
           <Route exact path="/error/">
             <Error styles={styles} />

@@ -27,8 +27,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const [intoId, setIntoId] = useState('');
   const [date, setDate] = useState('');
   const [amazon_image, setAmazon_image] = useState('');
-  const [fromIM, setFromIM] = useState('');
-  const [toIM, setToIM] = useState('');
   const [title, setTitle] = useState('');
   const [imTitle, setImTitle] = useState("");
   const [otherImTitle, setOtherImTitle] = useState("");
@@ -42,7 +40,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const [teamIdList, setTeamIdList] = useState([]);
   const [memberIdList, setMemberIdList] = useState([]);
   const [addIrelFlg, setAddIrelFlg] = useState(false);
-  const [addIrelMFlg, setAddIrelMFlg] = useState(false);
 
   useEffect(() => {
     // irel(team)を入れます
@@ -127,14 +124,12 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
         vers: verArr,
       }
 
-      console.log(data);
       await axios
         .post(ApiPath.IM, data)
         .then(response => {
           if (response.data) {
             window.location.reload();
           } else {
-            console.log(response);
             window.alert("更新エラーです");
           }
         })
@@ -259,25 +254,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     setIrel(vers);
   }
 
-  // 手入力で変更したirelを反映します。IDはそのまま使う（not新規but更新)
-  const handleChangeIrelM = e => {
-    // var prelId = e.target.name;
-    var irelMId = e.target.name;
-    // 1. Make a shallow copy of the items
-    let vers = [...irelM];
-    // 2. Make a shallow copy of the item you want to mutate
-    let ver = {...vers[irelMId]};
-    // 3. Replace the property you're intested in
-    ver[2] = exportFunction.nameToMemberId(e.target.value);
-    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    vers[irelMId] = [ver[0], ver[1], ver[2], ver[3]];
-    // 5. Set the state to our new copy
-    setIrelM(vers);
-
-    // そのmemberのチームがirelに入ってなかったら自動で入れます
-    addTeamByMember(ver[2]);
-  }
-
   // 新しいirelを配列に追加します(新規not更新)
   const handleChangeAddIrel = e => {
     const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
@@ -296,47 +272,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       vers.splice(index, 1);
     }
     setIrel(vers);
-  }
-
-  const handleChangeAddIrelM = e => {
-    const memIdTmp = exportFunction.nameToMemberId(e.target.value);
-    let vers = [...irelM];
-    // [irelMId, irelId, memberId, imrelMですかフラグ]
-    vers.push([null, null, memIdTmp, 0]);
-    setIrelM(vers);
-    setAddIrelMFlg(false);
-
-    // そのmemberのチームがirelに入ってなかったら自動で入れます
-    addTeamByMember(memIdTmp);
-  }
-
-  // そのチームをirelMから抜きます
-  const minusIrelM = (index) => {
-    let vers = [...irelM];
-    // imrelMデータでなければ削除可能。imrelMデータだったら未選択のままにして、ポストしてdel_flg=trueにしましょう
-    if (vers[index][3] !== 1) {
-      vers.splice(index, 1);
-    }
-    setIrelM(vers);
-  }
-
-  // そのmemberのチームがirelに入ってなかったら自動で入れます
-  const addTeamByMember = (memberId) => {
-      var teamOfMem = exportFunction.getTeamIdOfMember(memberId);
-      let addFlg = true;
-      irel.forEach(rel => {
-        if (rel[2] === teamOfMem) {
-          addFlg = false;
-        }
-      });
-      if (addFlg) {
-        let vers = [...irel];
-        const innerArr = [];
-        // [irelId, itemId, teamId, imrelですかフラグ]
-        innerArr.push(null, id, teamOfMem, 0);
-        vers.push(innerArr);
-        setIrel(vers);
-      }
   }
 
   // 入力された検索ワードをSTATEに反映
@@ -386,24 +321,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     } else {
       setAddIrelFlg(true);
     }
-  }
-
-  const toggleAddIrelMFlg = () => {
-    if (addIrelMFlg) {
-      setAddIrelMFlg(false);
-    } else {
-      setAddIrelMFlg(true);
-    }
-  }
-
-  const irelMIncludesId = (memberId) => {
-    irelM.forEach((e) => {
-      if (e[2] === memberId) {
-        console.log("***************");
-        return true;
-      }
-    })
-    return false;
   }
 
   // メンバーがirelMに入っていなかったら追加、入っていたら抜く
@@ -584,19 +501,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
                   <MenuItem value={e.title}>{e.title}</MenuItem>
                 ))}
                 </Select>
-                {/* <p>他チームのIMをチーム絞ってみたい</p>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="other-team"
-                  defaultValue="他チームID"
-                  value={otherTeamId}
-                  label="他チームID"
-                  onChange={handleOtherTeamId}
-                >
-                {otherTeamIdList[0].map((e, index) => (
-                  <MenuItem value={e}>{e}</MenuItem>
-                ))}
-                </Select> */}
                 <p>IM検索</p>
                 <Input
                   type="text"

@@ -114,35 +114,6 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
   }
 
   // 対象Itemを一括でIM設定します
-  const bundleItemManage = async() => {
-    var elems = document.getElementsByClassName("target_item");
-    const data = [];
-
-    Array.from(elems).forEach((e) => {  
-      if (e.dataset.imid !== null) {
-        const item = {
-          item_id: e.id,
-          im_id: e.dataset.imid,
-          teamId: e.dataset.teamid
-        }
-        data.push(item);
-      }
-    });
-
-    await axios
-      .post(ApiPath.IM + "bundle/chk", data)
-      .then(response => {
-        if (response.data) {
-          window.location.reload();
-        } else {
-          window.alert("登録エラーです");
-          console.log(response);
-        }
-      })
-      .catch(error => {});
-  }
-
-  // 対象Itemを一括でIM設定します
   const bundleItemManage2 = async() => {
     const data = [];
     const itemIdList = document.getElementsByName("add_item");
@@ -320,7 +291,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
             placeholder="im keyword"
             className="titleInput"
             onKeyDown={searchImByKw}
-        　/>
+          />
         {imSearchRes.length > 0 ? (
           <Select
             labelId="demo-simple-select-label"

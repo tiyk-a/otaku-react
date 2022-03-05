@@ -37,7 +37,6 @@ const ItemForm = (teamIdObj) => {
   const [wpId, setWpId] = useState('');
 
   useEffect(() => {
-    console.log(teamId);
     if (id) {
       findData();
     } else {

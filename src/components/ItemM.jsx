@@ -20,7 +20,6 @@ const ItemM = ({ item, teamId }) => {
   const moment = require("moment");
   const date = moment(item.pubDate).format('YYYY-MM-DD');
   const [id, setId] = useState('');
-  const [intoId, setIntoId] = useState('');
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
   const [verArr, setVerArr] = useState([]);
@@ -199,14 +198,6 @@ const ItemM = ({ item, teamId }) => {
     setAddIMrelFlg(false);
   }
 
-  const handleChangeAddIMrelM = e => {
-    const memIdTmp = exportFunction.nameToMemberId(e.target.value);
-    let vers = [...imrelM];
-    vers.push([null, null, memIdTmp]);
-    setIMrelM(vers);
-    setAddIMrelMFlg(false);
-  }
-
   const toggleEditedFlg = () => {
     if (editedFlg) {
       setEditedFlg(false);
@@ -230,34 +221,11 @@ const ItemM = ({ item, teamId }) => {
     setIMrel(vers);
   }
 
-  const handleChangeIMrelM = e => {
-    // var prelId = e.target.name;
-    var imrelMId = e.target.name;
-    // 1. Make a shallow copy of the items
-    let vers = [...imrelM];
-    // 2. Make a shallow copy of the item you want to mutate
-    let ver = {...vers[imrelMId]};
-    // 3. Replace the property you're intested in
-    ver[2] = exportFunction.nameToMemberId(e.target.value);
-    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    vers[imrelMId] = [ver[0], ver[1], ver[2]];
-    // 5. Set the state to our new copy
-    setIMrelM(vers);
-  }
-
   const toggleAddIMrelFlg = () => {
     if (addIMrelFlg) {
       setAddIMrelFlg(false);
     } else {
       setAddIMrelFlg(true);
-    }
-  }
-
-  const toggleAddIMrelMFlg = () => {
-    if (addIMrelMFlg) {
-      setAddIMrelMFlg(false);
-    } else {
-      setAddIMrelMFlg(true);
     }
   }
 

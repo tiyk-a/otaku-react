@@ -97,8 +97,6 @@ const Header = styles => {
           label="セレクト文"
           value={sql}
           onChange={handleChangeSql}
-          // fullWidth={true}
-          // multiline={true}
           rows={2}
           // rowsMax={1}
           onKeyDown={pushToGetSqlResul}

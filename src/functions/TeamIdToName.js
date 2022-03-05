@@ -137,6 +137,10 @@ exports.getAllTeam = function() {
 }
 
 exports.memberIdToName = function(memberId) {
+    if (typeof memberId === 'string') {
+        memberId = Number(memberId)
+    }
+
     var res = memberList.find(m => m.id === memberId);
     if (res === undefined) {
         res = 'Null';
