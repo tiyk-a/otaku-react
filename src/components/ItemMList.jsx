@@ -281,6 +281,31 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
 
   return (
     <div className="allItemsList">
+      {function() {
+        if (teamId === 5 && itemList !== undefined && itemList.length > 0) {
+          var teamIdList = {};
+          itemList.forEach((item) => {
+            var rel = item.relList;
+            var one = 1;
+            rel.forEach((e) => {
+              if (e.team_id in teamIdList) {
+                let current = teamIdList[e.team_id];
+                teamIdList[e.team_id] = current + 1;
+              } else {
+                teamIdList[e.team_id] = one;
+              }
+            })
+          });
+
+          return (
+            <ul className='flex_column'>
+              {Object.keys(teamIdList).map(key => 
+                <li>{exportFunction.teamIdToName(key)} : {teamIdList[key]}</li>
+              )}
+            </ul>
+          )
+        }
+      }()}
       <p>登録に失敗する場合、amazon_imageを空にしてみてください</p>
       <h3>未チェックItem
         <Btn onClick={bundleItem}>一括登録</Btn>

@@ -371,10 +371,13 @@ color: #ff4444;
   display: flex;
 }
 
+.width_6rem {
+  width: 6rem;
+}
+
 .flex_column {
   display: flex;
   flex-direction: column;
-  width: 6rem;
 }
 
 .MuiOutlinedInput-root {

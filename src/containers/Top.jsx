@@ -5,7 +5,6 @@ import { NumberParam, useQueryParam } from 'use-query-params';
 import axios from '../axios';
 import ItemMList from '../components/ItemMList';
 import Loading from '../components/Loading';
-// import GoogleCal from '../GoogleCal'
 import history from '../history';
 
 /**
@@ -123,15 +122,6 @@ const Top = () => {
   }, []);
 
   useEffect(() => {
-    // const googleCal = new GoogleCal;
-    // googleCal.connect()
-    // .then(() => {
-    //   return googleCal.getTodayEvents(); // 誕生日や祝日のカレンダーは取得対象から除外
-    // })
-    // .then(val => {
-    //   console.log(val);
-
-    // });
 
     if (teamId === undefined) {
       setTeamId(5);
@@ -182,17 +172,11 @@ const Top = () => {
                 <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐</Btn>
                 {
                   function() {
-                    if (id === 5) {
-                      return (
-                        <div>
-                          <ItemMList itemList={itemList} itemMList={itemMList} teamId={id} errJList={errJList} />
-                        </div>
-                      )
-                    } else {
-                      return (
+                    return (
+                      <div>
                         <ItemMList itemList={itemList} itemMList={itemMList} teamId={id} errJList={errJList} />
-                      )
-                    }
+                      </div>
+                    )
                   }()
                 }
               </div>

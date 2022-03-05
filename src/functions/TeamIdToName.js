@@ -110,6 +110,9 @@ const memberList = [
 ];
 
 exports.teamIdToName = function(teamId) {
+    if (typeof teamId === 'string') {
+        teamId = Number(teamId)
+    }
     var res = teamList.find(t => t.id === teamId);
     if (res === undefined) {
         res = 'Null';

@@ -316,7 +316,7 @@ const ItemM = ({ item, teamId }) => {
                     <RemoveIcon onClick={() => minusImrel(index)} />
                   ) : (null)
                   }
-                  <div class="flex_column">
+                  <div class="flex_column width_6rem">
                   {memberIdList !== null && memberIdList !== undefined ? (
                     memberIdList.map((g, index) => (
                       <div>
