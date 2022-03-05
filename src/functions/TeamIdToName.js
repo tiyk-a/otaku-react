@@ -182,6 +182,12 @@ exports.getTeamIdOfMember = function(memberId) {
 
 // カレンダーhtmlを返します
 exports.getCal = function(teamId) {
+    if (typeof teamId === 'string') {
+        teamId = Number(teamId)
+    }
     var teamObject = teamList.find(t => t.id === teamId);
+    if (teamObject === null || teamObject == undefined) {
+        teamObject = teamList.find(t => t.id === 5);
+    }
     return teamObject.cal;
 }

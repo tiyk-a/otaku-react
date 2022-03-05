@@ -24,7 +24,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const moment = require("moment");
   const [id, setId] = useState('');
   const [imId, setImId] = useState('');
-  const [intoId, setIntoId] = useState('');
   const [date, setDate] = useState('');
   const [amazon_image, setAmazon_image] = useState('');
   const [title, setTitle] = useState('');
@@ -227,12 +226,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     }
   };
 
-  // 入力された検索ワードをSTATEに反映
-  const handleChangeImId = e => {
-    const txt = e.target.value;
-    setIntoId(txt);
-  };
-
   const handleChangeImKey = e => {
     const txt = e.target.value;
     setImKey(txt);
@@ -283,18 +276,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     }
   };
 
-  const updImId = async (e) => {
-    if (e.keyCode === 13) {
-      await axios
-        .get(ApiPath.IM + 'merge?ord=' + id + '&into=' + intoId)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {});
-      setIntoId('');
-    }
-  };
-
   const updFctChk = async (e) => {
     if (imId === null || imId === undefined || imId === 0) {
     } else {
@@ -304,14 +285,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
           window.location.reload();
         })
         .catch(error => {});
-    }
-  }
-
-  const toggleEditedFlg = () => {
-    if (editedFlg) {
-      setEditedFlg(false);
-    } else {
-      setEditedFlg(true);
     }
   }
 
@@ -468,10 +441,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
                 autoOk={true}
               />
             </MuiPickersUtilsProvider>
-            <br />
-            <Btn onClick={toggleEditedFlg}>
-              {editedFlg ? ("更新しない") : ("更新する")}
-            </Btn>
           </li>
           <li>
             {item.id}
@@ -587,17 +556,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
             <p>
               <b>{item.price}</b>&nbsp;yen
             </p>
-          </li>
-          <li>
-            <Input
-              type="text"
-              name="Merge imId"
-              value={intoId}
-              onChange={handleChangeImId}
-              placeholder="imId"
-              onKeyDown={updImId}
-            />
-            <br />
             <Btn onClick={delIm}>DELETE</Btn>
           </li>
         </ul>

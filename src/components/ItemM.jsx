@@ -30,7 +30,6 @@ const ItemM = ({ item, teamId }) => {
   const [teamIdList, setTeamIdList] = useState([]);
   const [memberIdList, setMemberIdList] = useState([]);
   const [addIMrelFlg, setAddIMrelFlg] = useState(false);
-  const [addIMrelMFlg, setAddIMrelMFlg] = useState(false);
 
   useEffect(() => {
     // teamList
@@ -196,14 +195,6 @@ const ItemM = ({ item, teamId }) => {
     vers.push([null, id, teamIdTmp]);
     setIMrel(vers);
     setAddIMrelFlg(false);
-  }
-
-  const toggleEditedFlg = () => {
-    if (editedFlg) {
-      setEditedFlg(false);
-    } else {
-      setEditedFlg(true);
-    }
   }
 
   const handleChangeIMrel = e => {
@@ -375,10 +366,6 @@ const ItemM = ({ item, teamId }) => {
           <br />
           <br />
           {date}
-          <br />
-          <Btn onClick={toggleEditedFlg}>
-            {editedFlg ? ("更新しない") : ("更新する")}
-          </Btn>
           </li>
           <li>
             IMId: {item.id}
@@ -439,8 +426,6 @@ const ItemM = ({ item, teamId }) => {
           </li>
           <li>
             <Btn onClick={delIm}>DELETE</Btn>
-          </li>
-          <li>
             <Btn onClick={upBlog} style={item.blog_not_updated ? null : selected}>Blog更新</Btn></li>
         </ul>
       </Text>
