@@ -37,22 +37,23 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const [irel, setIrel] = useState([]);
   const [irelM, setIrelM] = useState([]);
   const [teamIdList, setTeamIdList] = useState([]);
-  const [memberIdList, setMemberIdList] = useState([]);
   const [addIrelFlg, setAddIrelFlg] = useState(false);
+  // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
+  const [irelObj, setIrelObj] = useState([]);
 
   useEffect(() => {
     // irel(team)を入れます
-    extractAndSetIrel(item);
+    var outerArr = extractAndSetIrel(item);
 
     // irelM(member)を入れます
-    extractAndSetIrelM(item);
+    var outerArrM = extractAndSetIrelM(item);
 
     setId(item.id);
     setDate(moment(item.pubDate).format('YYYY-MM-DD'));
     setImId(0);
     setTitle(item.title);
     setTeamIdList(exportFunction.getAllTeam());
-    setMemberIdList(exportFunction.getAllMember());
+    insertIrelObj(outerArr, outerArrM);
   }, [item.id, item.pubDate, item.title, moment]);
 
   const nl2br = require('react-nl2br');
@@ -77,6 +78,8 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     } else {
       setIrel([]);
     }
+
+    return outerArr;
   }
 
   // itemもimも受け付けます。irel/imrelを引き抜いてirelMに入れます
@@ -98,6 +101,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     } else {
       setIrelM([]);
     }
+    return outerArrM;
   }
 
   const registerIM = async () => {
@@ -305,6 +309,83 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       ver2.push([null, null, memberId, 0]);
     }
     setIrelM(ver2);
+    insertIrelObj(irel, ver2);
+  }
+
+  // member関連objectを全て設定
+  // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
+  const insertIrelObj = (irel, irelM) => {
+    var allMemList = exportFunction.getAllMember();
+
+    // このitemが持ってるteamidlistを作る
+    var tmpTeamIdList = [];
+
+    if (irel !== null && irel !== undefined && irel.length > 0) {
+      irel.forEach((rel) => {
+        if (!tmpTeamIdList.includes(rel[2])) {
+          tmpTeamIdList.push(rel[2]);
+        }
+      });
+
+      var objArr = [];
+      // itemが持ってるteamIdを全部オブジェクトに突っ込む
+      tmpTeamIdList.forEach((teamId) => {
+        var addFlg = true;
+        objArr.forEach((obj) => {
+          if (obj.teamId === teamId) {
+            addFlg = false;
+          }
+        });
+
+        if (addFlg && teamId !== undefined) {
+          var mList = [];
+          allMemList.forEach((g, index) => {
+            if (g.teamId === teamId) {
+              mList.push(g.id);
+            }
+          });
+
+          var elem = {
+            teamId : teamId,
+            list : mList,
+            redList : []
+          };
+          objArr.push(elem);
+        }
+      });
+
+      if (irelM !== null && irelM !== undefined) {
+        irelM.forEach((relM) => {
+          var elem = {};
+          var index_obj_var = null;
+          objArr.forEach((obj, index_obj) => {
+            var tId = exportFunction.getTeamIdOfMember(relM[2]);
+            if (obj.teamId === tId) {
+              elem = obj;
+              index_obj_var = index_obj;
+            }
+          });
+
+          var list = elem.list;
+          var index = list.indexOf(relM[2]);
+          var redList = elem.redList;        
+
+          if (index > -1) {
+            list.splice(index, 1);
+          }
+
+          if (!redList.includes(relM[2])) {
+            redList.push(relM[2]);
+          }
+
+          elem.teamId = elem.teamId;
+          elem.list = list;
+          elem.redList = redList;
+          objArr[index_obj_var] = elem;
+        });
+        setIrelObj(objArr);
+      }
+    }
   }
 
   return (
@@ -341,64 +422,32 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
                   ) : (null)
                   }
                   <div class="flex_column width_6rem">
-                  {memberIdList !== null && memberIdList !== undefined ? (
-                    memberIdList.map((g, index) => (
-                      <div>
-                        {function() {
-                          if (g.teamId === e[2]) {
-                            return (
-                              <>
+                    {function() {
+                      if (irelObj !== null && irelObj !== undefined) {
+                        return (
+                          <div>
+                            {irelObj.map((g, index) => (
+                              <div>
                                 {function() {
-                                  if (irelM !== null && irelM !== undefined && irelM.length > 0) {
-                                    return (
-                                      <>
-                                        {irelM.map((e, index) => (
-                                          <div>
-                                            {function() {
-                                              if (e[2] === g.id) {
-                                                return (
-                                                  <p className="colorRed" onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
-                                                )
-                                              } else {
-                                                return (
-                                                  <>
-                                                    {function() {
-                                                      if (index === 0) {
-                                                        return (
-                                                          <p onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
-                                                        )
-                                                      }
-                                                    }()}
-                                                  </>
-                                                )
-                                              }
-                                            }()}
-                                          </div>
-                                        ))}
-                                      </>
-                                    )
-                                  } else {
+                                  if (g.teamId === e[2]) {
                                     return (
                                       <div>
-                                        <p onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                        {g.list.map((l, i) => (
+                                          <p onClick={() => toggleIrelM(l)}>{exportFunction.memberIdToName(l)}</p>
+                                        ))}
+                                        {g.redList.map((l, i) => (
+                                          <p className="colorRed" onClick={() => toggleIrelM(l)}>{exportFunction.memberIdToName(l)}</p>
+                                        ))}
                                       </div>
                                     )
                                   }
                                 }()}
-                              </>
-                            )
-                          } else {
-                            return (
-                              <p></p>
-                            )
-                          }
-                          }()
-                        }
-                      </div>
-                      ))
-                  ) : (
-                    <></>
-                  )}
+                              </div>
+                            ))}
+                          </div>
+                        )
+                      }
+                    }()}
                   </div>
                 </div>
                 ))

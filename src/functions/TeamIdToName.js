@@ -176,6 +176,9 @@ exports.getMemberObjListOfTeam = function(teamIdArg) {
 
 // 引数のmemberIdのteamIdを返します
 exports.getTeamIdOfMember = function(memberId) {
+    if (typeof memberId === 'string') {
+        memberId = Number(memberId)
+    }
     var memObject = memberList.find(m => m.id === memberId);
     return memObject.teamId;
 }
