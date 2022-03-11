@@ -326,7 +326,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         <Btn onClick={bundleItemManage2}>一括設定２</Btn>
       </h3>
       <h3>ErrorJson</h3>
-      <ItemForm teamIdObj={teamId} />
+      <ItemForm />
       {errJList !== undefined && errJList.length > 0 ? (
         errJList.map((e, index) => (
           <div className="itemBox" key={index}>

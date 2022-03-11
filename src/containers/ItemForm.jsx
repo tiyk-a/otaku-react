@@ -1,253 +1,449 @@
-import { Button, TextField } from '@material-ui/core';
+import { Box, Button, TextField, Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { DatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from 'date-fns/locale/ja';
 import axios from '../axios';
 import { ApiPath } from '../constants';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import exportFunctionRel from '../functions/RelManage';
+import exportFunction from '../functions/TeamIdToName';
 
 /**
  * 新規商品登録or商品情報アップデート時のフォーム
  */
-const ItemForm = (teamIdObj) => {
-
-  const teamId = teamIdObj.teamIdObj;
-
-  // 商品のID
-  const { id } = useParams();
-
-  const history = useHistory();
+const ItemForm = () => {
 
   // 【商品データ用のSTATES】
+  const [id, setId] = useState('');
   // 商品タイトルのSTATE
   const [title, setTitle] = useState('');
-  // 商品コードのSTATE
-  const [itemCode, setItemCode] = useState('');
-  // 商品説明文のSTATE
-  const [description, setDescription] = useState('');
   // 商品価格のSTATE
   const [price, setPrice] = useState(0);
   // 発売日のSTATE
   const [date, setDate] = useState('');
-  // Itemを登録する元となるErrorJsonIdのSTATE
-  const [ejId, setEjId] = useState('');
-  const [wpId, setWpId] = useState('');
+
+  const [teamId, setTeamId] = useState('');
+  const [imId, setImId] = useState('');
+  const [amazon_image, setAmazon_image] = useState('');
+  const [tmpVer, setTmpVer] = useState('');
+  const [verArr, setVerArr] = useState([]);
+  const [imSearchRes, setImSearchRes] = useState([]);
+  const [editedFlg, setEditedFlg] = useState(false);
+  const [irel, setIrel] = useState([]);
+  const [irelM, setIrelM] = useState([]);
+  const [teamIdList, setTeamIdList] = useState([]);
+  const [addIrelFlg, setAddIrelFlg] = useState(false);
+  // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
+  const [irelObj, setIrelObj] = useState([]);
 
   useEffect(() => {
-    if (id) {
-      findData();
-    } else {
-      setTitle('');
-      setDescription('');
-      setPrice('');
-      setDate('');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setTeamIdList(exportFunction.getAllTeam());
+    insertIrelObj(null, null);
   }, []);
 
-  // 現在のページ
-  const location = useLocation();
+  const registerIM = async () => {
+    if (teamId !== undefined) {
+      if (imId === 0) {
+        setImId(undefined);
+      }
 
-  useEffect(() => {
-    setTitle('');
-    setDescription('');
-    setPrice('');
-    setDate('');
-  }, [location]);
+      var irelDistinct = exportFunctionRel.getDistinctRel(irel);
+      var irelMDistinct = exportFunctionRel.getDistinctRel(irelM);
 
-  // 各要素が入力されたらSTATEをアップデート
-  const handleChange = e => {
-    const txt = e.target.value;
+      const data = {
+        item_id: id,
+        im_id: imId,
+        teamId: teamId,
+        imrel: irelDistinct,
+        imrelm: irelMDistinct,
+        title: title,
+        wp_id: "",
+        publication_date: date,
+        amazon_image: amazon_image,
+        del_flg: false,
+        vers: verArr,
+      }
 
-    switch (e.target.name) {
-      case 'title':
-        setTitle(txt);
-        break;
-      case 'item_code':
-        setItemCode(txt);
-        break;
-      case 'description':
-        setDescription(txt);
-        break;
-      case 'price':
-        setPrice(txt);
-        break;
-      case 'ejId':
-        setEjId(txt);
-        break;
-      default:
-        break;
+      await axios
+        .post(ApiPath.IM, data)
+        .then(response => {
+          if (response.data) {
+            window.location.reload();
+          } else {
+            window.alert("更新エラーです");
+          }
+        })
+        .catch(error => {});
     }
   };
 
-  // 入力された日付をSTATEに反映
+  // 入力された検索ワードをSTATEに反映
   const handleChangeDate = e => {
-      setDate(e);
-  };
-
-  // 商品編集の場合の商品取得
-  const findData = () => {
-    axios
-      .get(ApiPath.IM + teamId + '/' + id)
-      .then(response => {
-        const item = response.data;
-        setTitle(item.title);
-        setDescription(item.item_caption);
-        setPrice(item.price);
-        setDate(item.publication_date);
-        setWpId(item.wp_id);
-      })
-      .catch(error => {});
-  };
-
-  // 既存IMの更新
-  const axiosItemPut = async () => {
-    const data = {
-      item_m_id: id,
-      url: null,
-      title: title,
-      wp_id: wpId,
-      item_caption: description,
-      publication_date: date,
-      price: price,
-      fct_chk: null,
-      del_flg: null,
+    setDate(e);
+    if (!editedFlg) {
+      setEditedFlg(true);
     }
-    await axios
-      .post(ApiPath.IM + teamId + '/' + id, data)
-      .then(response => {
-        history.push('/');
-        clearItemStates();
-      })
-      .catch(error => {});
   };
 
-  // Item新規追加
-  const axiosItemAdd = async () => {
-    const Item = {
-      item_id: null,
-      site_id: 3,
-      item_code: itemCode,
-      url: null,
-      price: price,
-      title: title,
-      item_caption: description,
-      publication_date: date,
-      fct_chk: true,
-      del_flg: false,
-      im_id: null,
-      created_at: null,
-      updated_at: null,
+  // 入力された検索ワードをSTATEに反映
+  const handleChangeTitle = e => {
+    const txt = e.target.value;
+    setTitle(txt);
+    if (!editedFlg) {
+      setEditedFlg(true);
     }
+  };
 
-    const data = {
-      item: Item,
-      jsonId: ejId,
+  const handleChangeAmazonImage = e => {
+    setAmazon_image(e.target.value);
+    if (!editedFlg) {
+      setEditedFlg(true);
     }
+  }
 
-    console.log(ApiPath.ITEM + "team/" + teamId);
-    await axios
-      .post(ApiPath.ITEM + "team/" + teamId, data)
-      .then(response => {
-        clearItemStates();
-        window.location.reload();
-      })
-      .catch(error => {});
+  const addVerArr = e => {
+    if (e.keyCode === 13) {
+      setVerArr([...verArr, [null, tmpVer, null]]);
+      setTmpVer('');
+    }
+  }
+
+  // 手入力で変更したirelを反映します。IDはそのまま使う（not新規but更新)
+  const handleChangeIrel = e => {
+    // var prelId = e.target.name;
+    var irelId = e.target.name;
+    // 1. Make a shallow copy of the items
+    let vers = [...irel];
+    // 2. Make a shallow copy of the item you want to mutate
+    let ver = {...vers[irelId]};
+    // 3. Replace the property you're intested in
+    ver[2] = exportFunction.nameToTeamId(e.target.value);
+    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    vers[irelId] = [ver[0], ver[1], ver[2], ver[3]];
+    // 5. Set the state to our new copy
+    setIrel(vers);
+    insertIrelObj(vers, irelM);
+  }
+
+  // 新しいirelを配列に追加します(新規not更新)
+  const handleChangeAddIrel = e => {
+    const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
+    let vers = [...irel];
+    // [irelId, itemId, teamId, imrelですかフラグ]
+    vers.push([null, id, teamIdTmp, 0]);
+    setIrel(vers);
+    setAddIrelFlg(false);
+    insertIrelObj(vers, irelM);
+  }
+
+  // そのチームをirelから抜きます
+  const minusIrel = (index) => {
+    let vers = [...irel];
+    // imrelデータでなく、irelが最低1つあれば削除可能。imrelデータだったら未選択のままにして、ポストしてdel_flg=trueにしましょう
+    if (vers[index][3] !== 1 && vers.length > 1) {
+      vers.splice(index, 1);
+    }
+    setIrel(vers);
+  }
+
+  // 入力された検索ワードをSTATEに反映
+  const handleVerArr = e => {
+    const txt = e.target.value;
+    setTmpVer(txt);
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
   };
 
-  // 全てのItem関連Stateをクリア
-  const clearItemStates = () => {
-    setTitle('');
-    setPrice('');
-    setDescription('');
-  };
+  const toggleAddIrelFlg = () => {
+    if (addIrelFlg) {
+      setAddIrelFlg(false);
+    } else {
+      setAddIrelFlg(true);
+    }
+  }
 
-  // 商品追加
-  const upItem = async (item) => {
-    axiosItemPut(item);
-  };
+  // メンバーがirelMに入っていなかったら追加、入っていたら抜く
+  const toggleIrelM = (memberId) => {
+    let vers = [...irelM];
+    let ver2 = vers.filter(rel => rel[2] !== memberId);
+
+    if (vers.length === ver2.length) {
+      ver2.push([null, null, memberId, 0]);
+    }
+    setIrelM(ver2);
+    insertIrelObj(irel, ver2);
+  }
+
+  // member関連objectを全て設定
+  // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
+  const insertIrelObj = (irel, irelM) => {
+    var allMemList = exportFunction.getAllMember();
+
+    // このitemが持ってるteamidlistを作る
+    var tmpTeamIdList = [];
+    var objArr = [];
+
+    if (irel !== null && irel !== undefined && irel.length > 0) {
+      irel.forEach((rel) => {
+        if (!tmpTeamIdList.includes(rel[2])) {
+          tmpTeamIdList.push(rel[2]);
+        }
+      });
+
+      // itemが持ってるteamIdを全部オブジェクトに突っ込む
+      tmpTeamIdList.forEach((teamId) => {
+        var addFlg = true;
+        objArr.forEach((obj) => {
+          if (obj.teamId === teamId) {
+            addFlg = false;
+          }
+        });
+
+        if (addFlg && teamId !== undefined) {
+          var mList = [];
+          allMemList.forEach((g, index) => {
+            if (g.teamId === teamId) {
+              mList.push(g.id);
+            }
+          });
+
+          var elem = {
+            teamId : teamId,
+            list : mList,
+            redList : []
+          };
+          objArr.push(elem);
+        }
+      });
+
+      if (irelM !== null && irelM !== undefined) {
+        irelM.forEach((relM) => {
+          var elem = {};
+          var index_obj_var = null;
+          objArr.forEach((obj, index_obj) => {
+            var tId = exportFunction.getTeamIdOfMember(relM[2]);
+            if (obj.teamId === tId) {
+              elem = obj;
+              index_obj_var = index_obj;
+            }
+          });
+          if (!isEmpty(elem)) {
+            var list = elem.list;
+            var index = list.indexOf(relM[2]);
+            // var index = 0;
+            var redList = elem.redList;        
+
+            if (index > -1) {
+              list.splice(index, 1);
+            }
+
+            if (!redList.includes(relM[2])) {
+              redList.push(relM[2]);
+            }
+
+            elem.teamId = elem.teamId;
+            elem.list = list;
+            elem.redList = redList;
+            objArr[index_obj_var] = elem;
+          }
+        })
+      } else {
+        
+      }
+      setIrelObj(objArr);
+    }
+  }
+
+  const isEmpty = (obj) => {
+    return !Object.keys(obj).length;
+  }
 
   return (
     <div>
       <div className="newItemForm">
-        <h2>新規Item登録</h2>
-        <p>
-          <b>Title</b>
-        </p>
-        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
-          <TextField
-            required
-            name="title"
-            label="商品名"
-            value={title}
-            onChange={handleChange}
-            fullWidth={true}
-          />
-          <br />
-          <p>
-            <b>商品説明文</b>
-          </p>
-          <TextField
-            required
-            name="description"
-            label="商品説明文"
-            value={description}
-            onChange={handleChange}
-            fullWidth={true}
-            multiline={true}
-            minRows={3}
-            maxRows={5}
-          />
-          <br />
-          <TextField
-            required
-            name="item_code"
-            label="商品コード"
-            value={itemCode}
-            onChange={handleChange}
-            fullWidth={true}
-          />
-          <br />
-          <p>
-            <b>商品価格</b>
-          </p>
-          <Field
-            required
-            name="price"
-            label="商品価格"
-            value={price}
-            onChange={handleChange}
-          />
-          <br />
-          <DatePicker
-            variant="inline"
-            inputVariant="standard"
-            format="yyyy/MM/dd"
-            id="date"
-            value={date}
-            onChange={handleChangeDate}
-            className="dateForm"
-            autoOk={true}
-          />
-          <br />
-          <Field
-            required
-            name="ejId"
-            label="ErrorJsonId"
-            value={ejId}
-            onChange={handleChange}
-          />
-        </MuiPickersUtilsProvider>
-        <br />
-          <Btn onClick={upItem}>Update</Btn>
-          <Btn onClick={axiosItemAdd}>新規登録</Btn>
+        <h2>新IM登録</h2>
+      </div>
+      <div className="itemContainer" className={editedFlg ? "editedStyle" : "notPostedStyle"}>
+        {editedFlg
+          ? (<div className="target_item" id={id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr} data-irel={irel} data-irelm={irelM}></div>)
+          : (<div id={id} data-teamid={teamId}></div>)}
+        <Text>
+          <ul>
+            <li>
+              {irel !== null && irel !== undefined ? (
+                irel.map((e, index) => (
+                  <div class="flex_row">
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      defaultValue=""
+                      value={exportFunction.teamIdToName(e[2])}
+                      label="Age"
+                      onChange={handleChangeIrel}
+                      name={index}
+                    >
+                    {teamIdList !== null && teamIdList !== undefined ? (
+                      teamIdList.map((f, index) => (
+                        <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]}>{exportFunction.teamIdToName(f.id)}</MenuItem>
+                        ))
+                    ) : (
+                      <></>
+                    )}
+                    </Select>
+                    {e[2] === 4 ? (
+                      <RemoveIcon onClick={() => minusIrel(index)} />
+                    ) : (null)
+                    }
+                    <div class="flex_column width_6rem">
+                      {function() {
+                        if (irelObj !== null && irelObj !== undefined) {
+                          return (
+                            <div>
+                              {irelObj.map((g, index) => (
+                                <div>
+                                  {function() {
+                                    if (g.teamId === e[2]) {
+                                      return (
+                                        <div>
+                                          {g.list.map((l, i) => (
+                                            <p onClick={() => toggleIrelM(l)}>{exportFunction.memberIdToName(l)}</p>
+                                          ))}
+                                          {g.redList.map((l, i) => (
+                                            <p className="colorRed" onClick={() => toggleIrelM(l)}>{exportFunction.memberIdToName(l)}</p>
+                                          ))}
+                                        </div>
+                                      )
+                                    }
+                                  }()}
+                                </div>
+                              ))}
+                            </div>
+                          )
+                        }
+                      }()}
+                    </div>
+                  </div>
+                  ))
+              ) : (
+                <></>
+              )
+            }
+            {addIrelFlg ? (
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                defaultValue=""
+                value={exportFunction.teamIdToName(4)}
+                label="Age"
+                onChange={handleChangeAddIrel}
+                name="tmpIrel"
+              >
+              {teamIdList !== null && teamIdList !== undefined ? (
+                teamIdList.map((f, index) => (
+                  <MenuItem value={exportFunction.teamIdToName(f.id)} name={4}>{exportFunction.teamIdToName(f.id)}</MenuItem>
+                  ))
+              ) : (
+                <></>
+              )}
+              </Select>
+            ) : (
+              <Btn onClick={toggleAddIrelFlg}>+irel</Btn>
+            )}
+              <br />
+              <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
+                <DatePicker
+                  variant="inline"
+                  inputVariant="standard"
+                  format="yyyy/MM/dd"
+                  id="date"
+                  label="発売日"
+                  value={date}
+                  onChange={handleChangeDate}
+                  className="dateForm"
+                  autoOk={true}
+                />
+              </MuiPickersUtilsProvider>
+            </li>
+            <li>
+              {id}
+            </li>
+            <li className="textBoxTitle">
+                <Input
+                type="text"
+                name="IM register"
+                value={title}
+                onChange={handleChangeTitle}
+                placeholder="タイトル"
+                className="titleInput"
+                />
+                <br />
+                <Input
+                  type="text"
+                  name="amazon image"
+                  value={amazon_image}
+                  onChange={handleChangeAmazonImage}
+                  placeholder="amazon_image"
+                  className="titleInput"
+                />
+                <br />
+                <Btn onClick={registerIM}>IM登録・Ver追加</Btn>
+            </li>
+            <li className="textBox">
+              <p>記号は使用しないでください</p>
+              <Input
+                type="text"
+                name="ver"
+                value={tmpVer}
+                onChange={handleVerArr}
+                placeholder="ver"
+                className="titleInput"
+                onKeyDown={addVerArr}
+              />
+              {
+                verArr.length > 0 ? (
+                    verArr.map((e, index) => (
+                      <div className="itemBox" key={index}>
+                        <p>{e}
+                        </p>
+                        <Input
+                          type="text"
+                          name="ver"
+                          value={e[1]}
+                          onChange={handleVerArr}
+                          placeholder="ver"
+                          className="titleInput"
+                          onKeyDown={addVerArr}
+                        />
+                      </div>
+                    ))
+                ):("")
+              }
+              <p>{amazon_image}</p>
+            </li>
+            <li className="price">
+              <p>
+                <b>{price}</b>&nbsp;yen
+              </p>
+            </li>
+          </ul>
+        </Text>
       </div>
     </div>
   );
 };
+
+/**
+ * UI(文章系をまとめるBOX)
+ *
+ */
+const Text = styled(Box)({
+  padding: '10px',
+});
 
 /**
  * UI(ボタン)
@@ -259,7 +455,12 @@ const Btn = styled(Button)({
   color: 'black',
 });
 
-const Field = styled(TextField)({
-  color: 'black',
+const RemoveIcon = styled(RemoveCircleOutlineIcon)({
+  // TODO:高さがselectorsと一緒になるように揃えたい
+  cursor: 'pointer',
+  '&:hover': {
+    opacity: '0.5',
+    transition: 'opacity 0.5s',
+  },
 });
 export default ItemForm;

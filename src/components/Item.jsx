@@ -249,6 +249,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     vers[irelId] = [ver[0], ver[1], ver[2], ver[3]];
     // 5. Set the state to our new copy
     setIrel(vers);
+    insertIrelObj(vers, irelM);
   }
 
   // 新しいirelを配列に追加します(新規not更新)
@@ -259,6 +260,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     vers.push([null, id, teamIdTmp, 0]);
     setIrel(vers);
     setAddIrelFlg(false);
+    insertIrelObj(vers, irelM);
   }
 
   // そのチームをirelから抜きます
@@ -366,27 +368,34 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
             }
           });
 
-          var list = elem.list;
-          var index = list.indexOf(relM[2]);
-          var redList = elem.redList;        
+          if (!isEmpty(elem)) {
+            var list = elem.list;
+            var index = list.indexOf(relM[2]);
+            // var index = 0;
+            var redList = elem.redList;        
 
-          if (index > -1) {
-            list.splice(index, 1);
+            if (index > -1) {
+              list.splice(index, 1);
+            }
+
+            if (!redList.includes(relM[2])) {
+              redList.push(relM[2]);
+            }
+
+            elem.teamId = elem.teamId;
+            elem.list = list;
+            elem.redList = redList;
+            objArr[index_obj_var] = elem;
           }
-
-          if (!redList.includes(relM[2])) {
-            redList.push(relM[2]);
-          }
-
-          elem.teamId = elem.teamId;
-          elem.list = list;
-          elem.redList = redList;
-          objArr[index_obj_var] = elem;
         });
         setIrelObj(objArr);
       }
     }
   }
+
+const isEmpty = (obj) => {
+  return !Object.keys(obj).length;
+}
 
   return (
     <div className="itemContainer" className={item.masterId !== null && item.masterId !== undefined ? "postedStyle": editedFlg ? "editedStyle" : "notPostedStyle"}>
