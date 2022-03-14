@@ -1,0 +1,27 @@
+/* Youtube */
+.rotate_right {
+    width: 100px;
+    height: 100px;
+    margin: 50px;
+    text-align: center;
+    background: skyblue;
+    animation: rotate_anime 4s linear infinite;
+}
+@keyframes rotate_anime {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.box {
+    width:100px;
+    height:100px;
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+    background-color: pink;
+    display:inline-block;
+}
+/* Youtube */
