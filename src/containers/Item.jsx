@@ -30,7 +30,6 @@ const Item = () => {
           const item = {
             id: targetItem.item_id,
             title: targetItem.title,
-            description: targetItem.item_caption,
             price: targetItem.price,
             pubDate: targetItem.publication_date,
             masterId: targetItem.item_m_id,

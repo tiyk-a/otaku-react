@@ -391,10 +391,10 @@ const ItemForm = () => {
                   className="titleInput"
                 />
                 <br />
-                <Btn onClick={registerIM}>IM登録・Ver追加</Btn>
+                <Btn onClick={registerIM}>IM登録</Btn>
             </li>
             <li className="textBox">
-              <p>記号は使用しないでください</p>
+              <p>記号x</p>
               <Input
                 type="text"
                 name="ver"

@@ -55,7 +55,6 @@ const Top = () => {
             const ele = {
               id: item.item.item_id,
               title: item.item.title,
-              description: item.item.item_caption,
               price: item.item.price,
               pubDate: item.item.publication_date,
               wpId: item.item.im_id,

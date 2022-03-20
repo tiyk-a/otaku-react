@@ -3,9 +3,9 @@ import history from './history';
 
 var url = '';
 // if (process.env.NODE_ENV === 'production') {
-  url = 'http://160.251.22.190';
+  // url = 'http://160.251.22.190';
   // } else {
-  // url = 'http://localhost:80';
+  url = 'http://localhost:80';
   // }
 
 /**
@@ -18,8 +18,14 @@ const axios = Axios.create({
 
 /** axios interceptor */
 axios.interceptors.response.use(
+
+  function(request) {
+    console.log(request);
+    return request;
+  },
+
   function(response) {
-    // リクエスト前はまだ特に設定なし
+    console.log(response.url);
     return response;
   },
   function(error) {

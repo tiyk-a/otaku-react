@@ -499,9 +499,7 @@ const isEmpty = (obj) => {
                 autoOk={true}
               />
             </MuiPickersUtilsProvider>
-          </li>
-          <li>
-            {item.id}
+            <br /><p>ItmId•{item.id}</p>
             <br />
             {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("")}
           </li>
@@ -565,11 +563,11 @@ const isEmpty = (obj) => {
                 className="titleInput"
               />
               <br />
-              <Btn onClick={registerIM}>IM登録・Ver追加</Btn>
+              <Btn onClick={registerIM}>IM登録</Btn>
               <Btn onClick={updFctChk}>IM設定</Btn>
           </li>
           <li className="textBox">
-            <p>記号は使用しないでください</p>
+            <p>記号x</p>
             <Input
               type="text"
               name="ver"
@@ -607,7 +605,6 @@ const isEmpty = (obj) => {
                 ""
               )
             ))}
-            <p>{nl2br(item.description)}</p>
             <p>{item.url}</p>
           </li>
           <li className="price">
