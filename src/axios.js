@@ -3,9 +3,9 @@ import history from './history';
 
 var url = '';
 // if (process.env.NODE_ENV === 'production') {
-  // url = 'http://160.251.22.190';
+  url = 'http://160.251.22.190';
   // } else {
-  url = 'http://localhost:80';
+  // url = 'http://localhost:80';
   // }
 
 /**
