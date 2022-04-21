@@ -40,6 +40,7 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   const [addIrelFlg, setAddIrelFlg] = useState(false);
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const [irelObj, setIrelObj] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
     // irel(team)を入れます
@@ -397,14 +398,25 @@ const isEmpty = (obj) => {
   return !Object.keys(obj).length;
 }
 
+// Item一括選択のためにboxを押したら選択/解除する
+const toggleSelectedItem = () => {
+  if (editedFlg) {
+    setEditedFlg(false);
+    setIsChecked(false);
+  } else {
+    setEditedFlg(true);
+    setIsChecked(true);
+  }
+}
+
   return (
-    <div className="itemContainer" className={item.masterId !== null && item.masterId !== undefined ? "postedStyle": editedFlg ? "editedStyle" : "notPostedStyle"}>
+    <div className={item.masterId !== null && item.masterId !== undefined ? "postedStyle itemContainer": editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
       {editedFlg
         ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr} data-irel={irel} data-irelm={irelM}></div>)
         : (<div id={item.id} data-teamid={teamId}></div>)}
       <Text>
         <ul>
-          <li><input type="checkbox" name="add_item" value={id} /></li>
+          <input type="checkbox" className="hiddenCheckBox" name="add_item" checked={isChecked} value={id} />
           <li>
             {irel !== null && irel !== undefined ? (
               irel.map((e, index) => (

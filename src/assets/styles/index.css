@@ -457,3 +457,7 @@ color: #ff4444;
   background: pink;
   width: 100%;
 }
+
+.hiddenCheckBox {
+  display: none;
+}
