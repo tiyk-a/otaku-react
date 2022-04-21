@@ -385,3 +385,75 @@ color: #ff4444;
   width: 9rem;
   margin-right: 1rem;
 }
+
+.menu-btn, .menu-btn-hover,
+.menu-btn-header, .menu-btn-header-hover {
+  position: fixed;
+  left: 10px;
+  display: flex;
+  height: 60px;
+  width: 60px;
+  justify-content: center;
+  align-items: center;
+  z-index: 90;
+  background-color: #3584bb;
+}
+
+.menu-btn, .menu-btn-hover {
+  top: 100px;
+}
+
+.menu-btn-header, .menu-btn-header-hover {
+  top: 30px;
+}
+.menu-btn span,
+.menu-btn span:before,
+.menu-btn span:after,
+.menu-btn-hover span,
+.menu-btn-hover span::before,
+.menu-btn-hover span::after,
+.menu-btn-header span,
+.menu-btn-header span:before,
+.menu-btn-header span:after,
+.menu-btn-header-hover span,
+.menu-btn-header-hover span::before,
+.menu-btn-header-hover span::after
+ {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 25px;
+  border-radius: 3px;
+  background-color: #ffffff;
+  position: absolute;
+}
+.menu-btn span:before,
+.menu-btn-header span:before {
+  bottom: 8px;
+}
+.menu-btn span:after,
+.menu-btn-header span:after {
+  top: 8px;
+}
+
+.menu-btn-hover span,
+.menu-btn-header-hover span {
+    background-color: rgba(255, 255, 255, 0);/*メニューオープン時は真ん中の線を透明にする*/
+}
+.menu-btn-hover span::before,
+.menu-btn-header-hover span::before {
+    bottom: 0;
+    transform: rotate(45deg);
+}
+.menu-btn-hover span::after,
+.menu-btn-header-hover span::after {
+    top: 0;
+    transform: rotate(-45deg);
+}
+
+#outer-container {
+  z-index: 1000;
+  position: absolute;
+  background: pink;
+  width: 100%;
+}

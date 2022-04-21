@@ -15,6 +15,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import exportFunction from '../functions/TeamIdToName';
+import MediaQuery from "react-responsive";
 
 /**
  *商品リストコンポーネント
@@ -277,21 +278,58 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           )
         }
       }()}
-      <p>登録に失敗する場合、amazon_imageを空にしてみてください</p>
-      <h3>未チェックItem
+      <p>登録に失敗する場合、amazon_imageを空にしてください</p>
+      <MediaQuery query="(min-width: 767px)">
+        {/* PC */}
+        <h3>未チェックItem
+          <Btn onClick={bundleItem}>一括登録</Btn>
+          <Btn onClick={bundleItemManage2}>一括設定２</Btn>
+          <FormControl fullWidth>
+            <p>IM検索: {imId}</p>
+            <Input
+              type="text"
+              name="IM search"
+              value={imKey}
+              onChange={handleChangeImKey}
+              placeholder="im keyword"
+              className="titleInput"
+              onKeyDown={searchImByKw}
+            />
+          {imSearchRes.length > 0 ? (
+            <Select
+              labelId="demo-simple-select-label"
+              id="other-team-im"
+              defaultValue="他チームID"
+              value={otherImTitle}
+              label="他チームID"
+              onChange={handleChangeOtherIMTitle}
+            >
+            {imSearchRes.map((e, index) => (
+              <MenuItem value={e.title}>{e.title}</MenuItem>
+            ))}
+            </Select>
+          ) : (
+            ""
+          )}
+          </FormControl>
+        </h3>
+      </MediaQuery>
+      <MediaQuery query="(max-width: 519px)">
+        {/* SP */}
+        <h3>未チェックItem</h3>
         <Btn onClick={bundleItem}>一括登録</Btn>
         <Btn onClick={bundleItemManage2}>一括設定２</Btn>
         <FormControl fullWidth>
-          <p>IM検索: {imId}</p>
-          <Input
-            type="text"
-            name="IM search"
-            value={imKey}
-            onChange={handleChangeImKey}
-            placeholder="im keyword"
-            className="titleInput"
-            onKeyDown={searchImByKw}
-          />
+        <p>IM検索: {imId}</p>
+        <Input
+          type="text"
+          name="IM search"
+          value={imKey}
+          onChange={handleChangeImKey}
+          placeholder="im keyword"
+          className="titleInput"
+          onKeyDown={searchImByKw}
+        />
         {imSearchRes.length > 0 ? (
           <Select
             labelId="demo-simple-select-label"
@@ -309,7 +347,11 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           ""
         )}
         </FormControl>
-      </h3>
+      </MediaQuery>
+      <MediaQuery query="(min-width: 520px) and (max-width: 959px)">
+        {/* TB */}
+        {/* <TbHeader styles={styles} /> */}
+      </MediaQuery>
       {itemList !== undefined && itemList.length > 0 ? (
         itemList.map((e, index) => (
           <div className="itemBox" key={index}>
@@ -318,13 +360,54 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         ))
       ) : (
         <div>
-          <h1>未チェックItemが見つかりませんでした:(</h1>
+          <h3>未チェックItemが見つかりませんでした:(</h3>
         </div>
       )}
-      <h3>未チェックItem
+      <MediaQuery query="(min-width: 767px)">
+        {/* PC */}
+        <h3>未チェックItem
+          <Btn onClick={bundleItem}>一括登録</Btn>
+          <Btn onClick={bundleItemManage2}>一括設定２</Btn>
+          <FormControl fullWidth>
+            <p>IM検索: {imId}</p>
+            <Input
+              type="text"
+              name="IM search"
+              value={imKey}
+              onChange={handleChangeImKey}
+              placeholder="im keyword"
+              className="titleInput"
+              onKeyDown={searchImByKw}
+            />
+          {imSearchRes.length > 0 ? (
+            <Select
+              labelId="demo-simple-select-label"
+              id="other-team-im"
+              defaultValue="他チームID"
+              value={otherImTitle}
+              label="他チームID"
+              onChange={handleChangeOtherIMTitle}
+            >
+            {imSearchRes.map((e, index) => (
+              <MenuItem value={e.title}>{e.title}</MenuItem>
+            ))}
+            </Select>
+          ) : (
+            ""
+          )}
+          </FormControl>
+        </h3>
+      </MediaQuery>
+      <MediaQuery query="(max-width: 519px)">
+        {/* SP */}
+        <h3>未チェックItem</h3>
         <Btn onClick={bundleItem}>一括登録</Btn>
         <Btn onClick={bundleItemManage2}>一括設定２</Btn>
-      </h3>
+      </MediaQuery>
+      <MediaQuery query="(min-width: 520px) and (max-width: 959px)">
+        {/* TB */}
+        {/* <TbHeader styles={styles} /> */}
+      </MediaQuery>
       <h3>ErrorJson</h3>
       <ItemForm />
       {errJList !== undefined && errJList.length > 0 ? (

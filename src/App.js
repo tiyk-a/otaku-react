@@ -7,6 +7,9 @@ import Header from './components/Header';
 import Tv from './containers/Tv';
 import Top from './containers/Top';
 import Twitter from './containers/Twitter';
+import MediaQuery from "react-responsive";
+import SpHeader from './components/SpHeader';
+import TbHeader from './components/TbHeader';
 
 /**
  * ルーティングのみを行うApp.js
@@ -56,7 +59,18 @@ class App extends Component {
 
     return (
       <AppContainer>
-        <Header styles={styles} />
+        <MediaQuery query="(min-width: 767px)">
+          {/* PC */}
+          <Header styles={styles} />
+        </MediaQuery>
+        <MediaQuery query="(max-width: 519px)">
+          {/* SP */}
+          <SpHeader styles={styles} />
+        </MediaQuery>
+        <MediaQuery query="(min-width: 520px) and (max-width: 959px)">
+          {/* TB */}
+          <TbHeader styles={styles} />
+        </MediaQuery>
         <Switch>
           <Route exact path="/">
             <Top />
