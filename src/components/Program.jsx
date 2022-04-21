@@ -11,8 +11,7 @@ import { DateTimePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from 'date-fns/locale/ja';
 import exportFunction from '../functions/TeamIdToName';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+import NativeSelect from '@mui/material/NativeSelect';
 
 /**
  *　TV１件を表示するコンポーネント
@@ -136,6 +135,7 @@ const Program = ({ program, teamId }) => {
     vers[prelId] = [ver[0], ver[1], ver[2]];
     // 5. Set the state to our new copy
     setPrel(vers);
+    insertPrelObj(vers, prelM);
   }
 
   // 新しいprelを配列に追加します(新規not更新)
@@ -146,6 +146,7 @@ const Program = ({ program, teamId }) => {
     vers.push([null, id, teamIdTmp]);
     setPrel(vers);
     setAddPrelFlg(false);
+    insertPrelObj(vers, prelM);
   }
 
   const toggleAddPrelFlg = () => {
@@ -232,26 +233,32 @@ const Program = ({ program, teamId }) => {
             }
           });
 
-          var list = elem.list;
-          var index = list.indexOf(relM[2]);
-          var redList = elem.redList;        
+          if (!isEmpty(elem)) {
+            var list = elem.list;
+            var index = list.indexOf(relM[2]);
+            var redList = elem.redList;        
 
-          if (index > -1) {
-            list.splice(index, 1);
+            if (index > -1) {
+              list.splice(index, 1);
+            }
+
+            if (!redList.includes(relM[2])) {
+              redList.push(relM[2]);
+            }
+
+            elem.teamId = elem.teamId;
+            elem.list = list;
+            elem.redList = redList;
+            objArr[index_obj_var] = elem;
           }
-
-          if (!redList.includes(relM[2])) {
-            redList.push(relM[2]);
-          }
-
-          elem.teamId = elem.teamId;
-          elem.list = list;
-          elem.redList = redList;
-          objArr[index_obj_var] = elem;
         });
         setPrelObj(objArr);
       }
     }
+  }
+
+  const isEmpty = (obj) => {
+    return !Object.keys(obj).length;
   }
 
   return (
@@ -266,7 +273,7 @@ const Program = ({ program, teamId }) => {
             {prel !== null && prel !== undefined ? (
               prel.map((e, index) => (
                 <div class="flex_row">
-                  <Select
+                  <NativeSelect
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     defaultValue=""
@@ -277,12 +284,14 @@ const Program = ({ program, teamId }) => {
                   >
                   {teamIdList !== null && teamIdList !== undefined ? (
                     teamIdList.map((f, index) => (
-                      <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]}>{exportFunction.teamIdToName(f.id)}</MenuItem>
+                      <option key={e[2]} value={exportFunction.teamIdToName(f.id)}>
+                        {exportFunction.teamIdToName(f.id)}
+                      </option>
                       ))
                   ) : (
                     <></>
                   )}
-                  </Select>
+                  </NativeSelect>
                   {e[2] === 4 ? (
                     <RemoveIcon onClick={() => minusPrel(index)} />
                   ) : (null)
@@ -322,7 +331,7 @@ const Program = ({ program, teamId }) => {
             )
           }
             {addPrelFlg ? (
-              <Select
+              <NativeSelect
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 defaultValue=""
@@ -333,12 +342,14 @@ const Program = ({ program, teamId }) => {
               >
               {teamIdList !== null && teamIdList !== undefined ? (
                 teamIdList.map((f, index) => (
-                  <MenuItem value={exportFunction.teamIdToName(f.id)} name={4} key={f.id} >{exportFunction.teamIdToName(f.id)}</MenuItem>
+                  <option key={4} value={exportFunction.teamIdToName(f.id)}>
+                    {exportFunction.teamIdToName(f.id)}
+                  </option>
                   ))
               ) : (
                 <></>
               )}
-              </Select>
+              </NativeSelect>
             ) : (
               <Btn onClick={toggleAddPrelFlg}>+prel</Btn>
             )}

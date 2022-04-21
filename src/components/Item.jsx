@@ -4,8 +4,7 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import styled from '@material-ui/styles/styled';
 import FormControl from '@mui/material/FormControl';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+import NativeSelect from '@mui/material/NativeSelect';
 import jaLocale from 'date-fns/locale/ja';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
@@ -421,7 +420,7 @@ const toggleSelectedItem = () => {
             {irel !== null && irel !== undefined ? (
               irel.map((e, index) => (
                 <div class="flex_row">
-                  <Select
+                  <NativeSelect
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     defaultValue=""
@@ -432,12 +431,14 @@ const toggleSelectedItem = () => {
                   >
                   {teamIdList !== null && teamIdList !== undefined ? (
                     teamIdList.map((f, index) => (
-                      <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]}>{exportFunction.teamIdToName(f.id)}</MenuItem>
+                      <option key={e[2]} value={exportFunction.teamIdToName(f.id)}>
+                        {exportFunction.teamIdToName(f.id)}
+                      </option>
                       ))
                   ) : (
                     <></>
                   )}
-                  </Select>
+                  </NativeSelect>
                   {e[2] === 4 ? (
                     <RemoveIcon onClick={() => minusIrel(index)} />
                   ) : (null)
@@ -477,7 +478,7 @@ const toggleSelectedItem = () => {
             )
           }
           {addIrelFlg ? (
-            <Select
+            <NativeSelect
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               defaultValue=""
@@ -488,12 +489,14 @@ const toggleSelectedItem = () => {
             >
             {teamIdList !== null && teamIdList !== undefined ? (
               teamIdList.map((f, index) => (
-                <MenuItem value={exportFunction.teamIdToName(f.id)} name={4}>{exportFunction.teamIdToName(f.id)}</MenuItem>
+                <option key={4} value={exportFunction.teamIdToName(f.id)}>
+                  {exportFunction.teamIdToName(f.id)}
+                </option>
                 ))
             ) : (
               <></>
             )}
-            </Select>
+            </NativeSelect>
           ) : (
             <Btn onClick={toggleAddIrelFlg}>+irel</Btn>
           )}
@@ -526,7 +529,7 @@ const toggleSelectedItem = () => {
               />
               <FormControl fullWidth>
                 <p>IMID: {imId}</p>
-                <Select
+                <NativeSelect
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   defaultValue=""
@@ -534,10 +537,17 @@ const toggleSelectedItem = () => {
                   label="Age"
                   onChange={handleChangeIMTitle}
                 >
-                {itemMList.map((e, index) => (
-                  <MenuItem value={e.title}>{e.title}</MenuItem>
-                ))}
-                </Select>
+                {itemMList.length > 0 ? (
+                  itemMList.map((e, index) => (
+                  <option key={e.id} value={e.title}>
+                    {e.title}
+                  </option>
+                ))) : (
+                  <option disabled key="0" value="N/A">
+                    N/A
+                  </option>
+                )}
+                </NativeSelect>
                 <p>IM検索</p>
                 <Input
                   type="text"
@@ -549,7 +559,7 @@ const toggleSelectedItem = () => {
                   onKeyDown={searchImByKw}
               　/>
               {imSearchRes.length > 0 ? (
-                <Select
+                <NativeSelect
                   labelId="demo-simple-select-label"
                   id="other-team-im"
                   defaultValue="他チームID"
@@ -558,9 +568,11 @@ const toggleSelectedItem = () => {
                   onChange={handleChangeOtherIMTitle}
                 >
                 {imSearchRes.map((e, index) => (
-                  <MenuItem value={e.title}>{e.title}</MenuItem>
+                  <option key={e.im_id} value={e.title}>
+                    {e.title}
+                  </option>
                 ))}
-                </Select>
+                </NativeSelect>
               ) : (
                 ""
               )}
