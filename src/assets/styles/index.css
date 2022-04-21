@@ -195,6 +195,10 @@ p {
   flex-basis:  500px;
 }
 
+.textBoxSp {
+  overflow: hidden;
+}
+
 ul li:nth-child(1){
   flex-basis:  50px;
 }
@@ -202,6 +206,11 @@ ul li:nth-child(1){
 .textBoxTitle {
   overflow: hidden;
   width: 40%;
+  text-align: left;
+}
+
+.textBoxTitleSp {
+  overflow: hidden;
   text-align: left;
 }
 
@@ -452,12 +461,35 @@ color: #ff4444;
 }
 
 #outer-container {
-  z-index: 1000;
-  position: absolute;
+  z-index: 90;
+  position: fixed;
   background: pink;
   width: 100%;
+  height: auto;
+  top: 0%;
+  opacity: 90%;
 }
 
 .hiddenCheckBox {
   display: none;
+}
+
+.responsiveCal {
+  position: relative;
+  padding-bottom: 75%;
+  height: 0;
+  overflow: hidden;
+  }
+   
+.responsiveCal iframe {
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/** Override Mui */
+.MuiInput-root {
+  width: 100%;
 }

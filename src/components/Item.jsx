@@ -40,8 +40,12 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const [irelObj, setIrelObj] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
+  const [media, setMedia] = useState(1);
 
   useEffect(() => {
+    // メディア判定
+    isSmartPhone();
+    
     // irel(team)を入れます
     var outerArr = extractAndSetIrel(item);
 
@@ -55,6 +59,17 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     setTeamIdList(exportFunction.getAllTeam());
     insertIrelObj(outerArr, outerArrM);
   }, [item.id, item.pubDate, item.title, moment]);
+
+  // メディア判別
+  const isSmartPhone = () => {
+    if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
+      // SP
+      setMedia(2);
+    } else {
+      // setMedia(1);
+      setMedia(2);
+    }
+  }
 
   const nl2br = require('react-nl2br');
 
@@ -414,12 +429,12 @@ const toggleSelectedItem = () => {
         ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr} data-irel={irel} data-irelm={irelM}></div>)
         : (<div id={item.id} data-teamid={teamId}></div>)}
       <Text>
-        <ul>
+        <ul style={media === 1 ? row : column}>
           <input type="checkbox" className="hiddenCheckBox" name="add_item" checked={isChecked} value={id} />
-          <li>
+          <li style={media === 1 ? null : column}>
             {irel !== null && irel !== undefined ? (
               irel.map((e, index) => (
-                <div class="flex_row">
+                <div className={media === 1 ? row : column}>
                   <NativeSelect
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -473,33 +488,33 @@ const toggleSelectedItem = () => {
                   </div>
                 </div>
                 ))
+              ) : (
+                <></>
+              )
+            }
+            {addIrelFlg ? (
+              <NativeSelect
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                defaultValue=""
+                value={exportFunction.teamIdToName(4)}
+                label="Age"
+                onChange={handleChangeAddIrel}
+                name="tmpIrel"
+              >
+              {teamIdList !== null && teamIdList !== undefined ? (
+                teamIdList.map((f, index) => (
+                  <option key={4} value={exportFunction.teamIdToName(f.id)}>
+                    {exportFunction.teamIdToName(f.id)}
+                  </option>
+                  ))
+              ) : (
+                <></>
+              )}
+              </NativeSelect>
             ) : (
-              <></>
-            )
-          }
-          {addIrelFlg ? (
-            <NativeSelect
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              defaultValue=""
-              value={exportFunction.teamIdToName(4)}
-              label="Age"
-              onChange={handleChangeAddIrel}
-              name="tmpIrel"
-            >
-            {teamIdList !== null && teamIdList !== undefined ? (
-              teamIdList.map((f, index) => (
-                <option key={4} value={exportFunction.teamIdToName(f.id)}>
-                  {exportFunction.teamIdToName(f.id)}
-                </option>
-                ))
-            ) : (
-              <></>
+              <Btn onClick={toggleAddIrelFlg}>+irel</Btn>
             )}
-            </NativeSelect>
-          ) : (
-            <Btn onClick={toggleAddIrelFlg}>+irel</Btn>
-          )}
             <br />
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
               <DatePicker
@@ -518,7 +533,7 @@ const toggleSelectedItem = () => {
             <br />
             {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("")}
           </li>
-          <li className="textBoxTitle">
+          <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
               <Input
               type="text"
               name="IM register"
@@ -557,7 +572,7 @@ const toggleSelectedItem = () => {
                   placeholder="im keyword"
                   className="titleInput"
                   onKeyDown={searchImByKw}
-              　/>
+                />
               {imSearchRes.length > 0 ? (
                 <NativeSelect
                   labelId="demo-simple-select-label"
@@ -590,14 +605,13 @@ const toggleSelectedItem = () => {
               <Btn onClick={registerIM}>IM登録</Btn>
               <Btn onClick={updFctChk}>IM設定</Btn>
           </li>
-          <li className="textBox">
-            <p>記号x</p>
+          <li className={media === 1 ? "textBox" : "textBoxSp"}>
             <Input
               type="text"
               name="ver"
               value={tmpVer}
               onChange={handleVerArr}
-              placeholder="ver"
+              placeholder="バージョン(記号x,Enterで追加)"
               className="titleInput"
               onKeyDown={addVerArr}
             />
@@ -669,5 +683,15 @@ const RemoveIcon = styled(RemoveCircleOutlineIcon)({
     transition: 'opacity 0.5s',
   },
 });
+
+const row = {
+  "display" : "flex",
+  "flex-direction" : "row"
+}
+
+const column = {
+  "display" : "flex",
+  "flex-direction" :"column"
+}
 
 export default Item;

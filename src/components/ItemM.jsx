@@ -30,8 +30,12 @@ const ItemM = ({ item, teamId }) => {
   const [teamIdList, setTeamIdList] = useState([]);
   const [memberIdList, setMemberIdList] = useState([]);
   const [addIMrelFlg, setAddIMrelFlg] = useState(false);
+  const [media, setMedia] = useState(1);
 
   useEffect(() => {
+    // メディア判定
+    isSmartPhone();
+
     // teamList
     const outerArr = [];
     if (item.relList !== null && item.relList !== undefined && item.relList.length > 0) {
@@ -68,6 +72,18 @@ const ItemM = ({ item, teamId }) => {
     setTeamIdList(exportFunction.getAllTeam());
     setMemberIdList(exportFunction.getAllMember());
   }, [item.id]);
+
+  // メディア判別
+  const isSmartPhone = () => {
+    if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
+      // SP
+      setMedia(2);
+    } else {
+      // setMedia(1);
+      // for test
+      setMedia(2);
+    }
+  }
 
   const setVerArrFunc = (ver) => {
     // verを登録する（im_v_idとver_name, im_idを配列にして入れる）
@@ -249,11 +265,11 @@ const ItemM = ({ item, teamId }) => {
     <div className={item.wpId !== null && item.wpId !== undefined ? "postedStyle itemContainer": editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"}>
       {editedFlg ? (<div className="target_im" id={item.id} data-title={title} data-wpid={item.wpId} data-date={date} data-image={image} data-verarr={verArr} data-imrel={imrel} data-imrelm={imrelM}></div>) : (null)}
       <Text>
-        <ul>
-          <li>
+        <ul style={media === 1 ? row : column}>
+          <li style={media === 1 ? null : column}>
             {imrel !== null && imrel !== undefined ? (
               imrel.map((e, index) => (
-                <div class="flex_row">
+                <div className={media === 1 ? row : column}>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -372,7 +388,7 @@ const ItemM = ({ item, teamId }) => {
             <br />
             WpId: {item.wpId !== null && item.wpId !== undefined ? (item.wpId) : ("No Wp")}
           </li>
-          <li className="textBoxTitle">
+          <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
             <Input
               type="text"
               name="IM register"
@@ -394,15 +410,14 @@ const ItemM = ({ item, teamId }) => {
               rowsMax={5}
             />
           </li>
-          <li className="textBox">
-            <p>中括弧（「[」と「]」）は使用しないでください</p>
+          <li className={media === 1 ? "textBox" : "textBoxSp"}>
             <Input
               type="text"
               row="5"
               name="ver"
               value={tmpVer}
               onChange={handleVerArr}
-              placeholder="ver"
+              placeholder="バージョン(記号x,Enterで追加)"
               className="titleInput"
               onKeyDown={addVerArr}
             />
@@ -459,5 +474,15 @@ const RemoveIcon = styled(RemoveCircleOutlineIcon)({
     transition: 'opacity 0.5s',
   },
 });
+
+const row = {
+  "display" : "flex",
+  "flex-direction" : "row"
+}
+
+const column = {
+  "display" : "flex",
+  "flex-direction" :"column"
+}
 
 export default ItemM;

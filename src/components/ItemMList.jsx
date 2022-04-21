@@ -456,7 +456,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
             </div>
           ))}
           <Btn onClick={toggleCalendar}>カレンダー</Btn>
-          <div>
+          <div class="responsiveCal">
             {dispCal ? (
                 <div>
                   <div dangerouslySetInnerHTML={{__html: exportFunction.getCal(teamId)}}></div>
@@ -468,7 +468,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           </div>
         </div>
       ):(
-        <div>
+        <div class="responsiveCal">
           <div dangerouslySetInnerHTML={{__html: exportFunction.getCal(teamId)}}></div>
         </div>
       )}

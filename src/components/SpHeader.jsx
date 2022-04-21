@@ -117,11 +117,6 @@ const SpHeader = styles => {
               </div>
             ) : ("") }
         </div>
-        {/* <Menu outerContainerId={'outer-container-header'} styles={ styles }>
-            <Btn onClick={linkIm}>IM</Btn>
-            <Btn onClick={linkTv}>TV</Btn>
-            <Btn onClick={linkTw}>Twitter</Btn>
-        </Menu> */}
       </div>
       {/* <div>
         <TextField

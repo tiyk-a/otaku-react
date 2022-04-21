@@ -39,11 +39,26 @@ const ItemForm = () => {
   const [addIrelFlg, setAddIrelFlg] = useState(false);
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const [irelObj, setIrelObj] = useState([]);
+  const [media, setMedia] = useState(1);
 
   useEffect(() => {
+    // メディア判定
+    isSmartPhone();
     setTeamIdList(exportFunction.getAllTeam());
     insertIrelObj(null, null);
   }, []);
+
+  // メディア判別
+  const isSmartPhone = () => {
+    if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
+      // SP
+      setMedia(2);
+    } else {
+      // setMedia(1);
+      // for test
+      setMedia(2);
+    }
+  }
 
   const registerIM = async () => {
     if (teamId !== undefined) {
@@ -268,13 +283,13 @@ const ItemForm = () => {
       <div className="newItemForm">
         <h2>新IM登録</h2>
       </div>
-      <div className="itemContainer" className={editedFlg ? "editedStyle" : "notPostedStyle"}>
+      <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"}>
         {editedFlg
           ? (<div className="target_item" id={id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr} data-irel={irel} data-irelm={irelM}></div>)
           : (<div id={id} data-teamid={teamId}></div>)}
         <Text>
-          <ul>
-            <li>
+          <ul style={media === 1 ? row : column}>
+            <li style={media === 1 ? null : column}>
               {irel !== null && irel !== undefined ? (
                 irel.map((e, index) => (
                   <div class="flex_row">
@@ -372,7 +387,7 @@ const ItemForm = () => {
             <li>
               {id}
             </li>
-            <li className="textBoxTitle">
+            <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
                 <Input
                 type="text"
                 name="IM register"
@@ -393,42 +408,34 @@ const ItemForm = () => {
                 <br />
                 <Btn onClick={registerIM}>IM登録</Btn>
             </li>
-            <li className="textBox">
-              <p>記号x</p>
+            <li className={media === 1 ? "textBox" : "textBoxSp"}>
               <Input
                 type="text"
                 name="ver"
                 value={tmpVer}
                 onChange={handleVerArr}
-                placeholder="ver"
+                placeholder="バージョン(記号x,Enterで追加)"
                 className="titleInput"
                 onKeyDown={addVerArr}
               />
               {
                 verArr.length > 0 ? (
-                    verArr.map((e, index) => (
-                      <div className="itemBox" key={index}>
-                        <p>{e}
-                        </p>
-                        <Input
-                          type="text"
-                          name="ver"
-                          value={e[1]}
-                          onChange={handleVerArr}
-                          placeholder="ver"
-                          className="titleInput"
-                          onKeyDown={addVerArr}
-                        />
-                      </div>
-                    ))
+                  verArr.map((e, index) => (
+                    <div className="itemBox" key={index}>
+                      <p>{e}</p>
+                      <Input
+                        type="text"
+                        name="ver"
+                        value={e[1]}
+                        onChange={handleVerArr}
+                        placeholder="ver"
+                        className="titleInput"
+                        onKeyDown={addVerArr}
+                      />
+                    </div>
+                  ))
                 ):("")
               }
-              <p>{amazon_image}</p>
-            </li>
-            <li className="price">
-              <p>
-                <b>{price}</b>&nbsp;yen
-              </p>
             </li>
           </ul>
         </Text>
@@ -463,4 +470,15 @@ const RemoveIcon = styled(RemoveCircleOutlineIcon)({
     transition: 'opacity 0.5s',
   },
 });
+
+const row = {
+  "display" : "flex",
+  "flex-direction" : "row"
+}
+
+const column = {
+  "display" : "flex",
+  "flex-direction" :"column"
+}
+
 export default ItemForm;
