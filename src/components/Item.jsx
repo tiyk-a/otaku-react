@@ -66,8 +66,9 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       // SP
       setMedia(2);
     } else {
-      // setMedia(1);
-      setMedia(2);
+      setMedia(1);
+      // for test
+      // setMedia(2);
     }
   }
 
@@ -431,6 +432,75 @@ const toggleSelectedItem = () => {
       <Text>
         <ul style={media === 1 ? row : column}>
           <input type="checkbox" className="hiddenCheckBox" name="add_item" checked={isChecked} value={id} />
+          <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
+              <Input
+              type="text"
+              name="IM register"
+              value={title}
+              onChange={handleChangeTitle}
+              placeholder="imId"
+              className="titleInput"
+              />
+              <FormControl fullWidth>
+                <p>IMID: {imId}</p>
+                <NativeSelect
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  defaultValue=""
+                  value={imTitle}
+                  label="Age"
+                  onChange={handleChangeIMTitle}
+                >
+                {itemMList.length > 0 ? (
+                  itemMList.map((e, index) => (
+                  <option key={e.id} value={e.title}>
+                    {e.title}
+                  </option>
+                ))) : (
+                  <option disabled key="0" value="N/A">
+                    N/A
+                  </option>
+                )}
+                </NativeSelect>
+                <p>IM検索</p>
+                <Input
+                  type="text"
+                  name="IM search"
+                  value={imKey}
+                  onChange={handleChangeImKey}
+                  placeholder="im keyword"
+                  className="titleInput"
+                  onKeyDown={searchImByKw}
+                />
+              {imSearchRes.length > 0 ? (
+                <NativeSelect
+                  labelId="demo-simple-select-label"
+                  id="other-team-im"
+                  defaultValue="他チームID"
+                  value={otherImTitle}
+                  label="他チームID"
+                  onChange={handleChangeOtherIMTitle}
+                >
+                {imSearchRes.map((e, index) => (
+                  <option key={e.im_id} value={e.title}>
+                    {e.title}
+                  </option>
+                ))}
+                </NativeSelect>
+              ) : (
+                ""
+              )}
+              </FormControl>
+              <br />
+              <Input
+                type="text"
+                name="amazon image"
+                value={amazon_image}
+                onChange={handleChangeAmazonImage}
+                placeholder="amazon_image"
+                className="titleInput"
+              />
+          </li>
           <li style={media === 1 ? null : column}>
             {irel !== null && irel !== undefined ? (
               irel.map((e, index) => (
@@ -533,78 +603,6 @@ const toggleSelectedItem = () => {
             <br />
             {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("")}
           </li>
-          <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
-              <Input
-              type="text"
-              name="IM register"
-              value={title}
-              onChange={handleChangeTitle}
-              placeholder="imId"
-              className="titleInput"
-              />
-              <FormControl fullWidth>
-                <p>IMID: {imId}</p>
-                <NativeSelect
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  defaultValue=""
-                  value={imTitle}
-                  label="Age"
-                  onChange={handleChangeIMTitle}
-                >
-                {itemMList.length > 0 ? (
-                  itemMList.map((e, index) => (
-                  <option key={e.id} value={e.title}>
-                    {e.title}
-                  </option>
-                ))) : (
-                  <option disabled key="0" value="N/A">
-                    N/A
-                  </option>
-                )}
-                </NativeSelect>
-                <p>IM検索</p>
-                <Input
-                  type="text"
-                  name="IM search"
-                  value={imKey}
-                  onChange={handleChangeImKey}
-                  placeholder="im keyword"
-                  className="titleInput"
-                  onKeyDown={searchImByKw}
-                />
-              {imSearchRes.length > 0 ? (
-                <NativeSelect
-                  labelId="demo-simple-select-label"
-                  id="other-team-im"
-                  defaultValue="他チームID"
-                  value={otherImTitle}
-                  label="他チームID"
-                  onChange={handleChangeOtherIMTitle}
-                >
-                {imSearchRes.map((e, index) => (
-                  <option key={e.im_id} value={e.title}>
-                    {e.title}
-                  </option>
-                ))}
-                </NativeSelect>
-              ) : (
-                ""
-              )}
-              </FormControl>
-              <br />
-              <Input
-                type="text"
-                name="amazon image"
-                value={amazon_image}
-                onChange={handleChangeAmazonImage}
-                placeholder="amazon_image"
-                className="titleInput"
-              />
-              <br />
-              <Btn onClick={registerIM}>IM登録</Btn>
-              <Btn onClick={updFctChk}>IM設定</Btn>
-          </li>
           <li className={media === 1 ? "textBox" : "textBoxSp"}>
             <Input
               type="text"
@@ -649,7 +647,11 @@ const toggleSelectedItem = () => {
             <p>
               <b>{item.price}</b>&nbsp;yen
             </p>
-            <Btn onClick={delIm}>DELETE</Btn>
+            <span style={media === 1 ? column : column}>
+              <Btn onClick={registerIM}>IM登録</Btn>
+              <Btn onClick={updFctChk}>IM設定</Btn>
+              <Btn onClick={delIm}>DELETE</Btn>
+            </span>
           </li>
         </ul>
       </Text>

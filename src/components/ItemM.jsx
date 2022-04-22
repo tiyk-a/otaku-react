@@ -79,9 +79,9 @@ const ItemM = ({ item, teamId }) => {
       // SP
       setMedia(2);
     } else {
-      // setMedia(1);
+      setMedia(1);
       // for test
-      setMedia(2);
+      // setMedia(2);
     }
   }
 
@@ -397,7 +397,6 @@ const ItemM = ({ item, teamId }) => {
               placeholder="imId"
               className="titleInput"
             />
-            <Btn onClick={updIM}>IM更新</Btn>
             <TextField
               required
               name="amazon image"
@@ -440,8 +439,12 @@ const ItemM = ({ item, teamId }) => {
             <p>{item.url}</p>
           </li>
           <li>
-            <Btn onClick={delIm}>DELETE</Btn>
-            <Btn onClick={upBlog} style={item.blog_not_updated ? null : selected}>Blog更新</Btn></li>
+            <span style={media === 1 ? column : column}>
+              <Btn onClick={updIM}>IM更新</Btn>
+              <Btn onClick={upBlog} style={item.blog_not_updated ? null : selected}>Blog更新</Btn>
+              <Btn onClick={delIm}>DELETE</Btn>
+            </span>
+          </li>
         </ul>
       </Text>
     </div>

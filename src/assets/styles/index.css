@@ -199,9 +199,9 @@ p {
   overflow: hidden;
 }
 
-ul li:nth-child(1){
+/* ul li:nth-child(1){
   flex-basis:  50px;
-}
+} */
 
 .textBoxTitle {
   overflow: hidden;

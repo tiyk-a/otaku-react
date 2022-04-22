@@ -54,9 +54,9 @@ const ItemForm = () => {
       // SP
       setMedia(2);
     } else {
-      // setMedia(1);
+      setMedia(1);
       // for test
-      setMedia(2);
+      // setMedia(2);
     }
   }
 
@@ -289,10 +289,29 @@ const ItemForm = () => {
           : (<div id={id} data-teamid={teamId}></div>)}
         <Text>
           <ul style={media === 1 ? row : column}>
+            <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
+                <Input
+                type="text"
+                name="IM register"
+                value={title}
+                onChange={handleChangeTitle}
+                placeholder="タイトル"
+                className="titleInput"
+                />
+                <br />
+                <Input
+                  type="text"
+                  name="amazon image"
+                  value={amazon_image}
+                  onChange={handleChangeAmazonImage}
+                  placeholder="amazon_image"
+                  className="titleInput"
+                />
+            </li>
             <li style={media === 1 ? null : column}>
               {irel !== null && irel !== undefined ? (
                 irel.map((e, index) => (
-                  <div class="flex_row">
+                  <div className={media === 1 ? row : column}>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
@@ -387,27 +406,6 @@ const ItemForm = () => {
             <li>
               {id}
             </li>
-            <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
-                <Input
-                type="text"
-                name="IM register"
-                value={title}
-                onChange={handleChangeTitle}
-                placeholder="タイトル"
-                className="titleInput"
-                />
-                <br />
-                <Input
-                  type="text"
-                  name="amazon image"
-                  value={amazon_image}
-                  onChange={handleChangeAmazonImage}
-                  placeholder="amazon_image"
-                  className="titleInput"
-                />
-                <br />
-                <Btn onClick={registerIM}>IM登録</Btn>
-            </li>
             <li className={media === 1 ? "textBox" : "textBoxSp"}>
               <Input
                 type="text"
@@ -436,6 +434,8 @@ const ItemForm = () => {
                   ))
                 ):("")
               }
+              <br />
+              <Btn onClick={registerIM}>IM登録</Btn>
             </li>
           </ul>
         </Text>
