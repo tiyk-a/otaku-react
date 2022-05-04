@@ -1,5 +1,4 @@
-import { AppBar } from '@material-ui/core';
-import { Button, TextField } from '@material-ui/core';
+import { AppBar, Button, TextField } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import history from '../history';
 import React, { useState } from 'react';

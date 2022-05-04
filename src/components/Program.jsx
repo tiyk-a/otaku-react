@@ -1,6 +1,4 @@
-import { Box } from '@material-ui/core';
-import { Button, TextField } from '@material-ui/core';
-import { Input } from '@material-ui/core';
+import { Box, Button, TextField, Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import React, { useEffect, useState } from 'react';
