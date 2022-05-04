@@ -30,7 +30,6 @@ const Team = () => {
           const item = {
             id: targetItem.item_m_id,
             title: targetItem.title,
-            description: targetItem.item_caption,
             price: targetItem.price,
             pubDate: targetItem.publication_date,
             wpId: targetItem.wp_id,
