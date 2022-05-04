@@ -190,7 +190,7 @@ const ItemM = ({ item, teamId }) => {
     del_flg: false,
     vers: verArr,
     imrel: imrel,
-    imrelM: imrelM
+    imrelm: imrelM
     }
 
     await axios
@@ -247,12 +247,12 @@ const ItemM = ({ item, teamId }) => {
   }
 
   // メンバーがirelMに入っていなかったら追加、入っていたら抜く
-  const toggleImrelM = (memberId) => {
+  const toggleImrelM = (irelId, memberId) => {
     let vers = [...imrelM];
     let ver2 = vers.filter(rel => rel[2] !== memberId);
 
     if (vers.length === ver2.length) {
-      ver2.push([null, null, memberId, 0]);
+      ver2.push([null, irelId, memberId, 0]);
     }
     setIMrelM(ver2);
   }
@@ -303,12 +303,12 @@ const ItemM = ({ item, teamId }) => {
                                   if (imrelM !== null && imrelM !== undefined && imrelM.length > 0) {
                                     return (
                                       <>
-                                        {imrelM.map((e, index) => (
+                                        {imrelM.map((f, index) => (
                                           <div>
                                             {function() {
-                                              if (e[2] === g.id) {
+                                              if (f[2] === g.id) {
                                                 return (
-                                                  <p className="colorRed" onClick={() => toggleImrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                                  <p className="colorRed" onClick={() => toggleImrelM(e[0], g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                                 )
                                               } else {
                                                 return (
@@ -316,7 +316,7 @@ const ItemM = ({ item, teamId }) => {
                                                     {function() {
                                                       if (index === 0) {
                                                         return (
-                                                          <p onClick={() => toggleImrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                                          <p onClick={() => toggleImrelM(e[0], g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                                         )
                                                       }
                                                     }()}
@@ -331,7 +331,7 @@ const ItemM = ({ item, teamId }) => {
                                   } else {
                                     return (
                                       <div>
-                                        <p onClick={() => toggleImrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                        <p onClick={() => toggleImrelM(e[0], g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                       </div>
                                     )
                                   }
