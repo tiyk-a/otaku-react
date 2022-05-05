@@ -12,8 +12,7 @@ import axios from '../axios';
 import { ApiPath } from '../constants';
 import exportFunctionRel from '../functions/RelManage';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import NativeSelect from '@mui/material/NativeSelect';
 import exportFunction from '../functions/TeamIdToName';
 import MediaQuery from "react-responsive";
 
@@ -296,7 +295,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
               onKeyDown={searchImByKw}
             />
           {imSearchRes.length > 0 ? (
-            <Select
+            <NativeSelect
               labelId="demo-simple-select-label"
               id="other-team-im"
               defaultValue="他チームID"
@@ -305,9 +304,12 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
               onChange={handleChangeOtherIMTitle}
             >
             {imSearchRes.map((e, index) => (
-              <MenuItem value={e.title}>{e.title}</MenuItem>
+              // <MenuItem value={e.title}>{e.title}</MenuItem>
+              <option key={index} value={e.title}>
+                {e.title}
+              </option>
             ))}
-            </Select>
+            </NativeSelect>
           ) : (
             ""
           )}
@@ -331,7 +333,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           onKeyDown={searchImByKw}
         />
         {imSearchRes.length > 0 ? (
-          <Select
+          <NativeSelect
             labelId="demo-simple-select-label"
             id="other-team-im"
             defaultValue="他チームID"
@@ -340,9 +342,12 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
             onChange={handleChangeOtherIMTitle}
           >
           {imSearchRes.map((e, index) => (
-            <MenuItem value={e.title}>{e.title}</MenuItem>
+            // <MenuItem value={e.title}>{e.title}</MenuItem>
+            <option key={index} value={e.title}>
+              {e.title}
+            </option>
           ))}
-          </Select>
+          </NativeSelect>
         ) : (
           ""
         )}
@@ -380,7 +385,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
               onKeyDown={searchImByKw}
             />
           {imSearchRes.length > 0 ? (
-            <Select
+            <NativeSelect
               labelId="demo-simple-select-label"
               id="other-team-im"
               defaultValue="他チームID"
@@ -389,9 +394,12 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
               onChange={handleChangeOtherIMTitle}
             >
             {imSearchRes.map((e, index) => (
-              <MenuItem value={e.title}>{e.title}</MenuItem>
+              // <MenuItem value={e.title}>{e.title}</MenuItem>
+              <option key={index} value={e.title}>
+                {e.title}
+              </option>
             ))}
-            </Select>
+            </NativeSelect>
           ) : (
             ""
           )}

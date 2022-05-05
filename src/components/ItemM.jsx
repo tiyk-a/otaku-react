@@ -4,8 +4,7 @@ import React, { useEffect, useState } from 'react';
 import exportFunction from '../functions/TeamIdToName';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+import NativeSelect from '@mui/material/NativeSelect';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 /**
@@ -268,7 +267,7 @@ const ItemM = ({ item, teamId }) => {
             {imrel !== null && imrel !== undefined ? (
               imrel.map((e, index) => (
                 <div className={media === 1 ? row : column}>
-                  <Select
+                  <NativeSelect
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     defaultValue=""
@@ -279,12 +278,14 @@ const ItemM = ({ item, teamId }) => {
                   >
                   {teamIdList !== null && teamIdList !== undefined ? (
                     teamIdList.map((f, index) => (
-                      <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]}>{exportFunction.teamIdToName(f.id)}</MenuItem>
+                      <option key={f.id} value={exportFunction.teamIdToName(f.id)}>
+                        {exportFunction.teamIdToName(f.id)}
+                      </option>
                       ))
                   ) : (
                     <></>
                   )}
-                  </Select>
+                  </NativeSelect>
                   {e[2] === 4 ? (
                     <RemoveIcon onClick={() => minusImrel(index)} />
                   ) : (null)
@@ -357,7 +358,7 @@ const ItemM = ({ item, teamId }) => {
           }
 
           {addIMrelFlg ? (
-            <Select
+            <NativeSelect
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               defaultValue=""
@@ -368,12 +369,14 @@ const ItemM = ({ item, teamId }) => {
             >
             {teamIdList !== null && teamIdList !== undefined ? (
               teamIdList.map((f, index) => (
-                <MenuItem value={exportFunction.teamIdToName(f.id)} name={4}>{exportFunction.teamIdToName(f.id)}</MenuItem>
+                <option key={f.id} value={exportFunction.teamIdToName(f.id)}>
+                  {exportFunction.teamIdToName(f.id)}
+                </option>
                 ))
             ) : (
               <></>
             )}
-            </Select>
+            </NativeSelect>
           ) : (
             <Btn onClick={toggleAddIMrelFlg}>+imrel</Btn>
           )}
