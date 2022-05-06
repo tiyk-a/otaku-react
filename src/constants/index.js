@@ -5,6 +5,5 @@ export const ApiPath = {
   IM: '/api/im/',
   TV: '/api/tv/',
   ITEM: '/api/item/',
-  SQL: '/api/sql',
 };
 

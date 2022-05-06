@@ -1,9 +1,7 @@
-import { AppBar, Button, TextField } from '@material-ui/core';
+import { AppBar, Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import history from '../history';
 import React, { useState } from 'react';
-import { ApiPath } from '../constants';
-import axios from '../axios';
 
 /**
  * ヘッダーコンポーネント
@@ -11,8 +9,6 @@ import axios from '../axios';
  * @returns jsx
  */
 const SpHeader = styles => {
-  const [sql, setSql] = useState('');
-  const [sqlResult, setSqlResult] = useState('');
   const [menuFlg, setMenuFlg] = useState(false);
 
   const headerStyle = {
@@ -43,40 +39,6 @@ const SpHeader = styles => {
   const linkTw = () => {
     const url = `/tw/`;
     history.push(url);
-  };
-
-  const handleChangeSql = e => {
-    const txt = e.target.value;
-    setSql(txt);
-  }
-
-  const pushToGetSqlResul = e => {
-    if (e.keyCode === 13) {
-      getSqlResult();
-    }
-  }
-
-  // SQLの結果をgetするためにpostします
-  const getSqlResult = async () => {
-    if (!sql.startsWith("select ")) {
-      window.alert("select文以外は打てません❌" + sql);
-      return;
-    }
-    // TODO:機能ちゃんと動き始めたら以下Else文は削除する。Java未実装
-    else {
-      return;
-    }
-
-    const data = {
-      sql: sql
-    }
-    await axios
-      .post(ApiPath.SQL, data)
-      .then(response => {
-        console.log(response.data);
-        setSqlResult(response.data);
-      })
-      .catch(error => {});
   };
 
   // ハンバーガーメニューをハンドルする
@@ -117,21 +79,6 @@ const SpHeader = styles => {
             ) : ("") }
         </div>
       </div>
-      {/* <div>
-        <TextField
-          required
-          name="selectSql"
-          label="セレクト文"
-          value={sql}
-          onChange={handleChangeSql}
-          rows={2}
-          // rowsMax={1}
-          onKeyDown={pushToGetSqlResul}
-        />
-      </div> */}
-      {/* <div>
-        <p>SQLデータをどうやって取得するか検討中</p>
-      </div> */}
     </HeaderBar>
   );
 };
