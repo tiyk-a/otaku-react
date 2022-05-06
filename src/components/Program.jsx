@@ -323,11 +323,10 @@ const Program = ({ program, teamId }) => {
                     }()}
                   </div>
                 </div>
-                ))
+              ))
             ) : (
               <></>
-            )
-          }
+            )}
             {addPrelFlg ? (
               <NativeSelect
                 labelId="demo-simple-select-label"
@@ -369,7 +368,7 @@ const Program = ({ program, teamId }) => {
               onChange={handleChange}
               placeholder="title"
               className="titleInput"
-          　/>
+            />
           </li>
           <li className="textBox">
             <TextField

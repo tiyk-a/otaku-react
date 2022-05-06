@@ -20,8 +20,6 @@ const ItemForm = () => {
   const [id, setId] = useState('');
   // 商品タイトルのSTATE
   const [title, setTitle] = useState('');
-  // 商品価格のSTATE
-  const [price, setPrice] = useState(0);
   // 発売日のSTATE
   const [date, setDate] = useState('');
 
@@ -30,7 +28,6 @@ const ItemForm = () => {
   const [amazon_image, setAmazon_image] = useState('');
   const [tmpVer, setTmpVer] = useState('');
   const [verArr, setVerArr] = useState([]);
-  const [imSearchRes, setImSearchRes] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
   const [irel, setIrel] = useState([]);
   const [irelM, setIrelM] = useState([]);
@@ -322,7 +319,6 @@ const ItemForm = () => {
                     >
                     {teamIdList !== null && teamIdList !== undefined ? (
                       teamIdList.map((f, index) => (
-                        // <MenuItem value={exportFunction.teamIdToName(f.id)} name={e[2]}>{exportFunction.teamIdToName(f.id)}</MenuItem>
                         <option key={e[2]} value={exportFunction.teamIdToName(f.id)}>
                           {exportFunction.teamIdToName(f.id)}
                         </option>
@@ -381,7 +377,6 @@ const ItemForm = () => {
               >
               {teamIdList !== null && teamIdList !== undefined ? (
                 teamIdList.map((f, index) => (
-                  // <MenuItem value={exportFunction.teamIdToName(f.id)} name={4}>{exportFunction.teamIdToName(f.id)}</MenuItem>
                   <option key={4} value={exportFunction.teamIdToName(f.id)}>
                     {exportFunction.teamIdToName(f.id)}
                   </option>
@@ -421,22 +416,21 @@ const ItemForm = () => {
                 className="titleInput"
                 onKeyDown={addVerArr}
               />
-              {
-                verArr.length > 0 ? (
-                  verArr.map((e, index) => (
-                    <div className="itemBox" key={index}>
-                      <p>{e}</p>
-                      <Input
-                        type="text"
-                        name="ver"
-                        value={e[1]}
-                        onChange={handleVerArr}
-                        placeholder="ver"
-                        className="titleInput"
-                        onKeyDown={addVerArr}
-                      />
-                    </div>
-                  ))
+              {verArr.length > 0 ? (
+                verArr.map((e, index) => (
+                  <div className="itemBox" key={index}>
+                    <p>{e}</p>
+                    <Input
+                      type="text"
+                      name="ver"
+                      value={e[1]}
+                      onChange={handleVerArr}
+                      placeholder="ver"
+                      className="titleInput"
+                      onKeyDown={addVerArr}
+                    />
+                  </div>
+                ))
                 ):("")
               }
               <br />

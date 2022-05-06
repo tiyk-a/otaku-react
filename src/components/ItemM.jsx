@@ -77,8 +77,6 @@ const ItemM = ({ item, teamId }) => {
       setMedia(2);
     } else {
       setMedia(1);
-      // for test
-      // setMedia(2);
     }
   }
 
@@ -380,7 +378,6 @@ const ItemM = ({ item, teamId }) => {
           ) : (
             <Btn onClick={toggleAddIMrelFlg}>+imrel</Btn>
           )}
-          <br />
           <br />
           {date}
           </li>

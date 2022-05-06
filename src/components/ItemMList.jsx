@@ -231,6 +231,17 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       .catch(error => {});
   }
 
+  const handleChangeIMTitle = e => {
+    const txt = e.target.value;
+    // setImTitle(txt);
+    setOtherImTitle(txt);
+    itemMList.forEach(im => {
+      if (im.title === txt) {
+        setImId(im.id);
+      }
+    });
+  };
+
   const handleChangeOtherIMTitle = e => {
     const txt = e.target.value;
     setOtherImTitle(txt);
@@ -282,9 +293,28 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         {/* PC */}
         <h3>未チェックItem
           <Btn onClick={bundleItem}>一括登録</Btn>
-          <Btn onClick={bundleItemManage2}>一括設定２</Btn>
+          <Btn onClick={bundleItemManage2}>一括設定</Btn>
           <FormControl fullWidth>
             <p>IM検索: {imId}</p>
+            <NativeSelect
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              defaultValue=""
+              value={otherImTitle}
+              label="Age"
+              onChange={handleChangeIMTitle}
+            >
+            {itemMList.length > 0 ? (
+              itemMList.map((e, index) => (
+              <option key={e.id} value={e.title}>
+                {e.title}
+              </option>
+            ))) : (
+              <option disabled key="0" value="N/A">
+                N/A
+              </option>
+            )}
+            </NativeSelect>
             <Input
               type="text"
               name="IM search"
@@ -294,25 +324,24 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
               className="titleInput"
               onKeyDown={searchImByKw}
             />
-          {imSearchRes.length > 0 ? (
-            <NativeSelect
-              labelId="demo-simple-select-label"
-              id="other-team-im"
-              defaultValue="他チームID"
-              value={otherImTitle}
-              label="他チームID"
-              onChange={handleChangeOtherIMTitle}
-            >
-            {imSearchRes.map((e, index) => (
-              // <MenuItem value={e.title}>{e.title}</MenuItem>
-              <option key={index} value={e.title}>
-                {e.title}
-              </option>
-            ))}
-            </NativeSelect>
-          ) : (
-            ""
-          )}
+            {imSearchRes.length > 0 ? (
+              <NativeSelect
+                labelId="demo-simple-select-label"
+                id="other-team-im"
+                defaultValue="他チームID"
+                value={otherImTitle}
+                label="他チームID"
+                onChange={handleChangeOtherIMTitle}
+              >
+              {imSearchRes.map((e, index) => (
+                <option key={index} value={e.title}>
+                  {e.title}
+                </option>
+              ))}
+              </NativeSelect>
+            ) : (
+              ""
+            )}
           </FormControl>
         </h3>
       </MediaQuery>
@@ -320,9 +349,28 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         {/* SP */}
         <h3>未チェックItem</h3>
         <Btn onClick={bundleItem}>一括登録</Btn>
-        <Btn onClick={bundleItemManage2}>一括設定２</Btn>
+        <Btn onClick={bundleItemManage2}>一括設定</Btn>
         <FormControl fullWidth>
         <p>IM検索: {imId}</p>
+        <NativeSelect
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          defaultValue=""
+          value={otherImTitle}
+          label="Age"
+          onChange={handleChangeIMTitle}
+        >
+        {itemMList.length > 0 ? (
+          itemMList.map((e, index) => (
+          <option key={e.id} value={e.title}>
+            {e.title}
+          </option>
+        ))) : (
+          <option disabled key="0" value="N/A">
+            N/A
+          </option>
+        )}
+        </NativeSelect>
         <Input
           type="text"
           name="IM search"
@@ -342,7 +390,6 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
             onChange={handleChangeOtherIMTitle}
           >
           {imSearchRes.map((e, index) => (
-            // <MenuItem value={e.title}>{e.title}</MenuItem>
             <option key={index} value={e.title}>
               {e.title}
             </option>
@@ -360,7 +407,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       {itemList !== undefined && itemList.length > 0 ? (
         itemList.map((e, index) => (
           <div className="itemBox" key={index}>
-            <Item item={e} teamId={teamId} itemMList={itemMList} />
+            <Item item={e} teamId={teamId} />
           </div>
         ))
       ) : (
@@ -372,7 +419,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         {/* PC */}
         <h3>未チェックItem
           <Btn onClick={bundleItem}>一括登録</Btn>
-          <Btn onClick={bundleItemManage2}>一括設定２</Btn>
+          <Btn onClick={bundleItemManage2}>一括設定</Btn>
           <FormControl fullWidth>
             <p>IM検索: {imId}</p>
             <Input
@@ -384,25 +431,24 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
               className="titleInput"
               onKeyDown={searchImByKw}
             />
-          {imSearchRes.length > 0 ? (
-            <NativeSelect
-              labelId="demo-simple-select-label"
-              id="other-team-im"
-              defaultValue="他チームID"
-              value={otherImTitle}
-              label="他チームID"
-              onChange={handleChangeOtherIMTitle}
-            >
-            {imSearchRes.map((e, index) => (
-              // <MenuItem value={e.title}>{e.title}</MenuItem>
-              <option key={index} value={e.title}>
-                {e.title}
-              </option>
-            ))}
-            </NativeSelect>
-          ) : (
-            ""
-          )}
+            {imSearchRes.length > 0 ? (
+              <NativeSelect
+                labelId="demo-simple-select-label"
+                id="other-team-im"
+                defaultValue="他チームID"
+                value={otherImTitle}
+                label="他チームID"
+                onChange={handleChangeOtherIMTitle}
+              >
+              {imSearchRes.map((e, index) => (
+                <option key={index} value={e.title}>
+                  {e.title}
+                </option>
+              ))}
+              </NativeSelect>
+            ) : (
+              ""
+            )}
           </FormControl>
         </h3>
       </MediaQuery>
@@ -410,7 +456,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         {/* SP */}
         <h3>未チェックItem</h3>
         <Btn onClick={bundleItem}>一括登録</Btn>
-        <Btn onClick={bundleItemManage2}>一括設定２</Btn>
+        <Btn onClick={bundleItemManage2}>一括設定</Btn>
       </MediaQuery>
       <MediaQuery query="(min-width: 520px) and (max-width: 959px)">
         {/* TB */}

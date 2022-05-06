@@ -3,7 +3,6 @@ import { Box, Button, Input } from '@material-ui/core';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import styled from '@material-ui/styles/styled';
-import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import jaLocale from 'date-fns/locale/ja';
 import React, { useEffect, useState } from 'react';
@@ -19,19 +18,15 @@ import exportFunction from '../functions/TeamIdToName';
  * @param {object} item
  * @returns jsx
  */
-const Item = ({ item, teamId, itemMList, updateDirection }) => {
+const Item = ({ item, teamId }) => {
   const moment = require("moment");
   const [id, setId] = useState('');
   const [imId, setImId] = useState('');
   const [date, setDate] = useState('');
   const [amazon_image, setAmazon_image] = useState('');
   const [title, setTitle] = useState('');
-  const [imTitle, setImTitle] = useState("");
-  const [otherImTitle, setOtherImTitle] = useState("");
   const [tmpVer, setTmpVer] = useState('');
   const [verArr, setVerArr] = useState([]);
-  const [imKey, setImKey] = useState('');
-  const [imSearchRes, setImSearchRes] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
   const [irel, setIrel] = useState([]);
   const [irelM, setIrelM] = useState([]);
@@ -67,12 +62,8 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       setMedia(2);
     } else {
       setMedia(1);
-      // for test
-      // setMedia(2);
     }
   }
-
-  const nl2br = require('react-nl2br');
 
   // itemもimも受け付けます。irel/imrelを引き抜いてirelに入れます
   const extractAndSetIrel = (item) => {
@@ -173,32 +164,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
     }
   };
 
-  const handleChangeIMTitle = e => {
-    const txt = e.target.value;
-    setImTitle(txt);
-    itemMList.forEach(im => {
-      if (im.title === txt) {
-        setImId(im.id);
-        // relも変更する
-        extractAndSetIrel(im);
-        extractAndSetIrelM(im);
-      }
-    });
-    if (!editedFlg) {
-      setEditedFlg(true);
-    }
-  };
-
-  const handleChangeOtherIMTitle = e => {
-    const txt = e.target.value;
-    setOtherImTitle(txt);
-    imSearchRes.forEach(item => {
-      if (item.title === txt) {
-        setImId(item.im_id);
-      }
-    });
-  };
-
   const handleChangeAmazonImage = e => {
     setAmazon_image(e.target.value);
     if (!editedFlg) {
@@ -211,22 +176,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
       setVerArr([...verArr, [null, tmpVer, null]]);
       setTmpVer('');
     }
-  }
-
-  const searchImByKw = (e) => {
-    if (e.keyCode === 13) {
-      searchOtherIm(imKey);
-      setImKey("");
-    }
-  }
-
-  const searchOtherIm = async (key) => {
-    await axios
-      .get(ApiPath.IM + 'search?key=' + key)
-      .then(response => {
-        setImSearchRes(response.data);
-      })
-      .catch(error => {});
   }
 
   const delIm = async () => {
@@ -244,11 +193,6 @@ const Item = ({ item, teamId, itemMList, updateDirection }) => {
         })
         .catch(error => {});
     }
-  };
-
-  const handleChangeImKey = e => {
-    const txt = e.target.value;
-    setImKey(txt);
   };
 
   // 手入力で変更したirelを反映します。IDはそのまま使う（not新規but更新)
@@ -433,73 +377,23 @@ const toggleSelectedItem = () => {
         <ul style={media === 1 ? row : column}>
           <input type="checkbox" className="hiddenCheckBox" name="add_item" checked={isChecked} value={id} />
           <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
-              <Input
+            <Input
+            type="text"
+            name="IM register"
+            value={title}
+            onChange={handleChangeTitle}
+            placeholder="imId"
+            className="titleInput"
+            />
+            <br />
+            <Input
               type="text"
-              name="IM register"
-              value={title}
-              onChange={handleChangeTitle}
-              placeholder="imId"
+              name="amazon image"
+              value={amazon_image}
+              onChange={handleChangeAmazonImage}
+              placeholder="amazon_image"
               className="titleInput"
-              />
-              <FormControl fullWidth>
-                <p>IMID: {imId}</p>
-                <NativeSelect
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  defaultValue=""
-                  value={imTitle}
-                  label="Age"
-                  onChange={handleChangeIMTitle}
-                >
-                {itemMList.length > 0 ? (
-                  itemMList.map((e, index) => (
-                  <option key={e.id} value={e.title}>
-                    {e.title}
-                  </option>
-                ))) : (
-                  <option disabled key="0" value="N/A">
-                    N/A
-                  </option>
-                )}
-                </NativeSelect>
-                <p>IM検索</p>
-                <Input
-                  type="text"
-                  name="IM search"
-                  value={imKey}
-                  onChange={handleChangeImKey}
-                  placeholder="im keyword"
-                  className="titleInput"
-                  onKeyDown={searchImByKw}
-                />
-              {imSearchRes.length > 0 ? (
-                <NativeSelect
-                  labelId="demo-simple-select-label"
-                  id="other-team-im"
-                  defaultValue="他チームID"
-                  value={otherImTitle}
-                  label="他チームID"
-                  onChange={handleChangeOtherIMTitle}
-                >
-                {imSearchRes.map((e, index) => (
-                  <option key={e.im_id} value={e.title}>
-                    {e.title}
-                  </option>
-                ))}
-                </NativeSelect>
-              ) : (
-                ""
-              )}
-              </FormControl>
-              <br />
-              <Input
-                type="text"
-                name="amazon image"
-                value={amazon_image}
-                onChange={handleChangeAmazonImage}
-                placeholder="amazon_image"
-                className="titleInput"
-              />
+            />
           </li>
           <li style={media === 1 ? null : column}>
             {irel !== null && irel !== undefined ? (
@@ -599,7 +493,8 @@ const toggleSelectedItem = () => {
                 autoOk={true}
               />
             </MuiPickersUtilsProvider>
-            <br /><p>ItmId•{item.id}</p>
+            <br />
+            <p>ItmId•{item.id}</p>
             <br />
             {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("")}
           </li>
@@ -613,34 +508,23 @@ const toggleSelectedItem = () => {
               className="titleInput"
               onKeyDown={addVerArr}
             />
-            {
-              verArr.length > 0 ? (
-                  verArr.map((e, index) => (
-                    <div className="itemBox" key={index}>
-                      <p>{e}
-                      </p>
-                      <Input
-                        type="text"
-                        name="ver"
-                        value={e[1]}
-                        onChange={handleVerArr}
-                        placeholder="ver"
-                        className="titleInput"
-                        onKeyDown={addVerArr}
-                      />
-                    </div>
-                  ))
+            {verArr.length > 0 ? (
+              verArr.map((e, index) => (
+                <div className="itemBox" key={index}>
+                  <p>{e}</p>
+                  <Input
+                    type="text"
+                    name="ver"
+                    value={e[1]}
+                    onChange={handleVerArr}
+                    placeholder="ver"
+                    className="titleInput"
+                    onKeyDown={addVerArr}
+                  />
+                </div>
+              ))
               ):("")
             }
-            {itemMList.map((e, index) => (
-              e.id === imId ? (
-                e.ver.map((v, index) => (
-                  <p>{v.ver_name}</p>
-                ))
-              ) : (
-                ""
-              )
-            ))}
             <p>{item.url}</p>
           </li>
           <li className="price">

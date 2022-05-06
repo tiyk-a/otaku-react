@@ -97,7 +97,6 @@ const Header = styles => {
           value={sql}
           onChange={handleChangeSql}
           rows={2}
-          // rowsMax={1}
           onKeyDown={pushToGetSqlResul}
         />
       </div>
