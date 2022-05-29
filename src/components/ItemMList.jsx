@@ -253,11 +253,24 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
   const handleChangeOtherIMTitle = e => {
     const txt = e.target.value;
     setOtherImTitle(txt);
+    var searchResFlg = false;
+
+    // searchresの場合、そこからIDとか取って入れてあげる
     imSearchRes.forEach(item => {
       if (item.title === txt) {
         setImId(item.im_id);
+        searchResFlg = true;
       }
     });
+
+    // imの場合、IMからIDとか取って入れてあげる
+    if (!searchResFlg) {
+      itemMList.forEach(im => {
+      if (im.title === txt) {
+        setImId(im.id);
+      }
+    });
+    }
   };
 
   // カレンダー表示・非表示切り替え
