@@ -251,7 +251,11 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
   };
 
   const handleChangeOtherIMTitle = e => {
-    const txt = e.target.value;
+    var txt = null;
+    if (e.target.value !== "0") {
+      txt = e.target.value;
+    }
+
     setOtherImTitle(txt);
     var searchResFlg = false;
 
@@ -265,11 +269,15 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
 
     // imの場合、IMからIDとか取って入れてあげる
     if (!searchResFlg) {
-      itemMList.forEach(im => {
-      if (im.title === txt) {
-        setImId(im.id);
+      if (txt === null) {
+        setImId(0);
+      } else {
+        itemMList.forEach(im => {
+          if (im.title === txt) {
+            setImId(im.id);
+          }
+        });
       }
-    });
     }
   };
 
@@ -344,11 +352,14 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
               label="IM候補"
               onChange={handleChangeOtherIMTitle}
             >
-            {imSearchRes.map((e, index) => (
-              <option key={index} value={e.title}>
-                {e.title}
+              {imSearchRes.map((e, index) => (
+                <option key={index} value={e.title}>
+                  {e.title}
+                </option>
+              ))}
+              <option key={0} value={0}>
+                N/A
               </option>
-            ))}
             </NativeSelect>
           ) : (
             <NativeSelect
@@ -366,10 +377,11 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
                   {e.title}
                 </option>
               ))) : (
-                <option disabled key="0" value="N/A">
-                  N/A
-                </option>
+                ""
               )}
+              <option key={0} value={0}>
+                N/A
+              </option>
             </NativeSelect>
           )}
           
