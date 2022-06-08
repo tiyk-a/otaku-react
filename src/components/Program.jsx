@@ -21,6 +21,7 @@ const Program = ({ program, teamId }) => {
   const moment = require("moment");
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [url, setUrl] = useState('');
   const [date, setDate] = useState('');
   const [prel, setPrel] = useState([]);
   const [prelM, setPrelM] = useState([]);
@@ -30,6 +31,7 @@ const Program = ({ program, teamId }) => {
   const [addPrelFlg, setAddPrelFlg] = useState(false);
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const [prelObj, setPrelObj] = useState([]);
+  const [editedFlg, setEditedFlg] = useState(false);
 
   useEffect(() => {
     setId(program.id);
@@ -38,6 +40,12 @@ const Program = ({ program, teamId }) => {
       setDescription(program.description);
     } else {
       setDescription("");
+    }
+    
+    if (program.url !== null && program.url !== undefined) {
+      setUrl(program.url);
+    } else {
+      setUrl("");
     }
     
     setDate(moment(program.date).format('YYYY-MM-DD HH:mm'));
@@ -100,52 +108,6 @@ const Program = ({ program, teamId }) => {
           }
         });
     }
-  };
-
-  // 既存商品の更新
-  const updTv = async() => {
-    const data = {
-      id: program.id,
-      title: title,
-      description: description,
-      on_air_date: date,
-      prel: prel,
-      prelM: prelM
-    }
-
-    await axios
-      .post(ApiPath.TV + teamId + '/' + program.id, data)
-      .then(response => {
-        if (response.data) {
-          window.location.reload();
-        } else {
-          window.alert("更新エラーです");
-        }
-      })
-      .catch(error => {
-        if (error.code === "ECONNABORTED") {
-          window.alert("タイムアウトしました");
-        }
-      });
-  };
-
-  const delTv = async () => {
-    await axios
-      .delete(ApiPath.TV + program.id)
-      .then(response => {
-        // 処理が成功したらresponseにはstatus=200,data=trueを返却するようにしてる
-        if (response.data) {
-          window.location.reload();
-        } else {
-          window.alert("削除エラーです");
-          console.log(response);
-        }
-      })
-      .catch(error => {
-        if (error.code === "ECONNABORTED") {
-          window.alert("タイムアウトしました");
-        }
-      });
   };
 
   // 入力された日付をSTATEに反映
@@ -309,8 +271,22 @@ const Program = ({ program, teamId }) => {
     return !Object.keys(obj).length;
   }
 
+  // Item一括選択のためにboxを押したら選択/解除する
+  const toggleSelectedItem = () => {
+    if (editedFlg) {
+      setEditedFlg(false);
+      // setIsChecked(false);
+    } else {
+      setEditedFlg(true);
+      // setIsChecked(true);
+    }
+  }
+
   return (
-    <div className="itemContainer">
+    <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
+      {editedFlg
+        ? (<div className="target_p" id={program.id} data-imid={pmId} data-teamid={teamId} data-title={title} data-date={date} data-irel={prel} data-irelm={prelM}></div>)
+        : (<div id={program.id} data-teamid={teamId}></div>)}
       <Text>
         <ul>
           <li>
@@ -419,6 +395,7 @@ const Program = ({ program, teamId }) => {
               placeholder="title"
               className="titleInput"
             />
+            <a href={url} target="_blank">{url !== "" ? url : "リンクなし"}</a>
           </li>
           <li className="textBox">
             <TextField
@@ -435,8 +412,6 @@ const Program = ({ program, teamId }) => {
           </li>
           <li>
             <Btn onClick={registerPM}>PM登録</Btn>
-            <Btn onClick={updTv}>更新</Btn>
-            <Btn onClick={delTv}>DELETE</Btn>
           </li>
         </ul>
       </Text>

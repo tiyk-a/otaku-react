@@ -42,6 +42,7 @@ const All = () => {
             id: pData.program_id,
             title: pData.title,
             description: pData.description,
+            url: pData.url,
             date: pData.on_air_date,
             station_id: pData.station_id,
             prelList: data.prelList,
