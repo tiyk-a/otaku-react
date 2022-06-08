@@ -13,6 +13,7 @@ import history from '../history';
 const All = () => {
   // TV一覧リストのSTATES
   const [tvList, setTvList] = useState([]);
+  const [pmList, setPmList] = useState([]);
   const [teamId, setTeamId] = useState('');
   const [id, setId] = useState('');
 
@@ -30,22 +31,23 @@ const All = () => {
 
     setTvList([]);
     const list = [];
-    var count = 0;
+    const pmlist = [];
     await axios
       .get(ApiPath.TV + '?teamId=' + id)
       .then(response => {
-        const apiData = response.data;
-        apiData.forEach(data => {
+        const pList = response.data.p;
+        pList.forEach(data => {
+          const pData = data.program;
           const program = {
-            id: data.program.program_id,
-            title: data.program.title,
-            description: data.program.description,
-            date: data.program.on_air_date,
+            id: pData.program_id,
+            title: pData.title,
+            description: pData.description,
+            date: pData.on_air_date,
+            station_id: pData.station_id,
             prelList: data.prelList,
             prelMList: data.prelMList,
           };
           list.push(program);
-          count = count + 1;
         });
 
         list.sort(function(first, second){
@@ -58,8 +60,34 @@ const All = () => {
           }
         });
         setTvList(list);
+
+        const pmList = response.data.pm;
+        pmList.forEach(data => {
+          const pData = data.pm;
+          const pm = {
+            id: pData.pm_id,
+            title: pData.title,
+            description: pData.description,
+            pmrelList: data.relList,
+            pmrelMList: data.relMemList,
+            verList: data.verList,
+          };
+          pmlist.push(pm);
+        });
+
+        pmlist.sort(function(first, second){
+          if (first.id > second.id){
+            return -1;
+          }else if (first.id < second.id){
+            return 1;
+          }else{
+            return 0;
+          }
+        });
+        setPmList(pmlist);
       })
-      .catch(error => {});
+      .catch(error => {
+      });
    }, []);
 
   useEffect(() => {
@@ -95,7 +123,7 @@ const All = () => {
         <Btn value="9" onClick={() => handleChange(9)} style={id === 9 ? selected : null}>TOKIO</Btn>
         <Btn value="10" onClick={() => handleChange(10)} style={id === 10 ? selected : null}>V6</Btn>
         <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐</Btn>
-        <TvList tvList={tvList} teamId={teamId} />
+        <TvList tvList={tvList} pmList={pmList} teamId={teamId} />
       </div>
     </div>
   );

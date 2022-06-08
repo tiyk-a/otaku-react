@@ -26,6 +26,7 @@ const Program = ({ program, teamId }) => {
   const [prelM, setPrelM] = useState([]);
   const [teamIdList, setTeamIdList] = useState([]);
   const [id, setId] = useState('');
+  const [pmId, setPmId] = useState('');
   const [addPrelFlg, setAddPrelFlg] = useState(false);
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const [prelObj, setPrelObj] = useState([]);
@@ -59,6 +60,44 @@ const Program = ({ program, teamId }) => {
     setTeamIdList(exportFunction.getAllTeam());
     insertPrelObj(outerArr, outerArrM);
   }, []);
+
+  // PM登録
+  const registerPM = async () => {
+    if (teamId !== undefined) {
+      if (pmId === 0) {
+        setPmId(undefined);
+      }
+
+      // var irelDistinct = exportFunctionRel.getDistinctRel(irel);
+      // var irelMDistinct = exportFunctionRel.getDistinctRel(irelM);
+
+      const data = {
+        program_id: id,
+        pm_id: pmId,
+        teamId: teamId,
+        // pmrel: irelDistinct,
+        // pmrelm: irelMDistinct,
+        title: title,
+        description: description,
+        on_air_date: date,
+        station_id: program.station_id
+        // vers: verArr,
+      }
+
+      console.log(data);
+      await axios
+        .post(ApiPath.TV, data)
+        .then(response => {
+          if (response.data) {
+            window.location.reload();
+          } else {
+            window.alert("更新エラーです");
+          }
+        })
+        .catch(error => {
+        });
+    }
+  };
 
   // 既存商品の更新
   const updTv = async() => {
@@ -384,6 +423,7 @@ const Program = ({ program, teamId }) => {
             />
           </li>
           <li>
+            <Btn onClick={registerPM}>PM登録</Btn>
             <Btn onClick={updTv}>更新</Btn>
             <Btn onClick={delTv}>DELETE</Btn>
           </li>
