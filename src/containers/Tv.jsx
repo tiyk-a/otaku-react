@@ -87,6 +87,9 @@ const All = () => {
         setPmList(pmlist);
       })
       .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
       });
    }, []);
 

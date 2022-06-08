@@ -37,7 +37,11 @@ const ItemM = () => {
         });
         setItemList(list);
       })
-      .catch(error => {});
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
   }, []);
 
   useEffect(() => {

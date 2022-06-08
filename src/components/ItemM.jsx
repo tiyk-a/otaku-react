@@ -94,7 +94,7 @@ const ItemM = ({ item, teamId }) => {
   const upBlog = async (item) => {
     if (teamId !== undefined) {
       await axios
-        .get(ApiPath.IM + 'blog?imId=' + id + '&team=' + teamId, item)
+        .get(ApiPath.IM + 'blog?imId=' + id, item)
         .then(response => {
           if (response.data) {
             window.location.reload();
@@ -102,7 +102,11 @@ const ItemM = ({ item, teamId }) => {
             window.alert("ブログ投稿エラーです");
           }
         })
-        .catch(error => {});
+        .catch(error => {
+          if (error.code === "ECONNABORTED") {
+            window.alert("タイムアウトしました");
+          }
+        });
     }
   };
 
@@ -119,7 +123,11 @@ const ItemM = ({ item, teamId }) => {
             console.log(response);
           }
         })
-        .catch(error => {});
+        .catch(error => {
+          if (error.code === "ECONNABORTED") {
+            window.alert("タイムアウトしました");
+          }
+        });
     }
   };
 
@@ -197,7 +205,11 @@ const ItemM = ({ item, teamId }) => {
         window.alert("更新エラーです");
       }
     })
-    .catch(error => {});
+    .catch(error => {
+      if (error.code === "ECONNABORTED") {
+        window.alert("タイムアウトしました");
+      }
+    });
   };
 
   const handleChangeAddIMrel = e => {

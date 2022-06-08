@@ -95,6 +95,9 @@ const Program = ({ program, teamId }) => {
           }
         })
         .catch(error => {
+          if (error.code === "ECONNABORTED") {
+            window.alert("タイムアウトしました");
+          }
         });
     }
   };
@@ -119,7 +122,11 @@ const Program = ({ program, teamId }) => {
           window.alert("更新エラーです");
         }
       })
-      .catch(error => {});
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
   };
 
   const delTv = async () => {
@@ -134,7 +141,11 @@ const Program = ({ program, teamId }) => {
           console.log(response);
         }
       })
-      .catch(error => {});
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
   };
 
   // 入力された日付をSTATEに反映

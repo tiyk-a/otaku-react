@@ -110,7 +110,11 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           console.log(response);
         }
       })
-      .catch(error => {});
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
   }
 
   // 対象Itemを一括でIM設定します
@@ -142,7 +146,11 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           console.log(response);
         }
       })
-      .catch(error => {});
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
     }
   }
 
@@ -207,7 +215,11 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           console.log(response);
         }
       })
-      .catch(error => {});
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
   }
 
   const handleChangeImKey = e => {
@@ -236,7 +248,11 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           window.alert("0 data hit :(");
         }
       })
-      .catch(error => {});
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
   }
 
   const handleChangeIMTitle = e => {

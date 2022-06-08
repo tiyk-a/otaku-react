@@ -143,7 +143,11 @@ const Item = ({ item, teamId }) => {
             window.alert("更新エラーです");
           }
         })
-        .catch(error => {});
+        .catch(error => {
+          if (error.code === "ECONNABORTED") {
+            window.alert("タイムアウトしました");
+          }
+        });
     }
   };
 
@@ -191,7 +195,11 @@ const Item = ({ item, teamId }) => {
             console.log(response);
           }
         })
-        .catch(error => {});
+        .catch(error => {
+          if (error.code === "ECONNABORTED") {
+            window.alert("タイムアウトしました");
+          }
+        });
     }
   };
 
@@ -250,7 +258,11 @@ const Item = ({ item, teamId }) => {
         .then(response => {
           window.location.reload();
         })
-        .catch(error => {});
+        .catch(error => {
+          if (error.code === "ECONNABORTED") {
+            window.alert("タイムアウトしました");
+          }
+        });
     }
   }
 

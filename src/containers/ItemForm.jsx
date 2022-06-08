@@ -88,7 +88,11 @@ const ItemForm = () => {
             window.alert("更新エラーです");
           }
         })
-        .catch(error => {});
+        .catch(error => {
+          if (error.code === "ECONNABORTED") {
+            window.alert("タイムアウトしました");
+          }
+        });
     }
   };
 
