@@ -97,7 +97,7 @@ const Program = ({ program, teamId }) => {
         .post(ApiPath.TV, data)
         .then(response => {
           if (response.data) {
-            window.location.reload();
+            window.location.href = window.location.href + "?teamId=" + teamId;
           } else {
             window.alert("更新エラーです");
           }
@@ -386,7 +386,7 @@ const Program = ({ program, teamId }) => {
               />
             </MuiPickersUtilsProvider>
           </li>
-          <li className="textBoxTitle">
+          <li className="">
             <Input
               type="text"
               name="p_name"
@@ -395,9 +395,6 @@ const Program = ({ program, teamId }) => {
               placeholder="title"
               className="titleInput"
             />
-            <a href={url} target="_blank">{url !== "" ? url : "リンクなし"}</a>
-          </li>
-          <li className="textBox">
             <TextField
               required
               name="description"
@@ -409,9 +406,9 @@ const Program = ({ program, teamId }) => {
               minRows={3}
               maxRows={5}
             />
-          </li>
-          <li>
-            <Btn onClick={registerPM}>PM登録</Btn>
+            <a href={url} target="_blank">{url !== "" ? url : "リンクなし"}</a>
+            <br />
+            <Btn100 onClick={registerPM}>PM登録</Btn100>
           </li>
         </ul>
       </Text>
@@ -435,6 +432,14 @@ const Btn = styled(Button)({
   background: '#db36a4',
   margin: '10px 0',
   color: 'black',
+});
+
+const Btn100 = styled(Button)({
+  marginLeft: '26px',
+  background: '#db36a4',
+  margin: '10px 0',
+  color: 'black',
+  width: '100%',
 });
 
 export default Program;
