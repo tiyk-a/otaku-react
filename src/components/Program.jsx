@@ -10,6 +10,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from 'date-fns/locale/ja';
 import exportFunction from '../functions/TeamIdToName';
 import NativeSelect from '@mui/material/NativeSelect';
+import exportFunctionRel from '../functions/RelManage';
 
 /**
  *　TV１件を表示するコンポーネント
@@ -52,7 +53,7 @@ const Program = ({ program, teamId }) => {
     const outerArr = [];
     program.prelList.forEach((e) => {
       const innerArr = [];
-      innerArr.push(e.p_rel_id, e.program_id, e.team_id);
+      innerArr.push(e.p_rel_id, e.program_id, e.team_id, 0);
       outerArr.push(innerArr);
     });
     setPrel(outerArr);
@@ -60,7 +61,7 @@ const Program = ({ program, teamId }) => {
     const outerArrM = [];
     program.prelMList.forEach((e) => {
       const innerArrM = [];
-      innerArrM.push(e.p_rel_mem_id, e.p_rel_id, e.member_id);
+      innerArrM.push(e.p_rel_mem_id, e.p_rel_id, e.member_id, 0);
       outerArrM.push(innerArrM);
     });
     setPrelM(outerArrM);
@@ -76,15 +77,15 @@ const Program = ({ program, teamId }) => {
         setPmId(undefined);
       }
 
-      // var irelDistinct = exportFunctionRel.getDistinctRel(irel);
-      // var irelMDistinct = exportFunctionRel.getDistinctRel(irelM);
+      var irelDistinct = exportFunctionRel.getDistinctRel(prel);
+      var irelMDistinct = exportFunctionRel.getDistinctRel(prelM);
 
       const data = {
         program_id: id,
         pm_id: pmId,
         teamId: teamId,
-        // pmrel: irelDistinct,
-        // pmrelm: irelMDistinct,
+        pmrel: irelDistinct,
+        pmrelm: irelMDistinct,
         title: title,
         description: description,
         on_air_date: date,
@@ -97,7 +98,11 @@ const Program = ({ program, teamId }) => {
         .post(ApiPath.TV, data)
         .then(response => {
           if (response.data) {
-            window.location.href = window.location.href + "?teamId=" + teamId;
+            if (teamId !== null && teamId !== undefined && !window.location.href.includes("?teamId=")) {
+              window.location.href = window.location.href + "?teamId=" + teamId;
+            } else {
+              window.location.href = window.location.href;
+            }
           } else {
             window.alert("更新エラーです");
           }
