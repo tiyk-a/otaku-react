@@ -5,6 +5,7 @@ import axios from '../axios';
 import { ApiPath } from '../constants';
 import { Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
+import exportFunctionRel from '../functions/RelManage';
 
 /**
  *商品リストコンポーネント
@@ -14,122 +15,89 @@ import styled from '@material-ui/styles/styled';
  */
 const TvList = ({tvList, pmList, teamId}) => {
 
-  // // 対象Itemを一括でIM登録します
-  // const bundleItem = async() => {
-  //   var elems = document.getElementsByClassName("target_item");
-  //   const data = [];
+  // 対象Itemを一括でIM登録します
+  const bundlePm = async() => {
+    var elems = document.getElementsByClassName("target_p");
+    const data = [];
 
-  //   Array.from(elems).forEach((e) => {
-  //     if (e.dataset.imid === null) {
-  //       const verArr = [];
-  //       if (e.dataset.verarr !== undefined && e.dataset.verarr !== null) {
-  //         var arr = e.dataset.verarr.split(",");
-  //         var i = 0;
-  //         while (arr[i]!== undefined) {
-  //           var innerArr = [];
-  //           innerArr = [arr[i], arr[i+1], arr[i+2]];
-  //           verArr.push(innerArr);
-  //           i = i + 3;
-  //         }
-  //       }
+    Array.from(elems).forEach((e) => {
+      if (e.dataset.pmid === null || e.dataset.pmid == "") {
+        // const verArr = [];
+        // if (e.dataset.verarr !== undefined && e.dataset.verarr !== null) {
+        //   var arr = e.dataset.verarr.split(",");
+        //   var i = 0;
+        //   while (arr[i]!== undefined) {
+        //     var innerArr = [];
+        //     innerArr = [arr[i], arr[i+1], arr[i+2]];
+        //     verArr.push(innerArr);
+        //     i = i + 3;
+        //   }
+        // }
 
-  //       const irel = [];
-  //       if (e.dataset.irel !== undefined && e.dataset.irel !== null) {
-  //         var arrIrel = e.dataset.irel.split(",");
-  //         var j = 0;
-  //         while (arrIrel[j]!== undefined) {
-  //           irel.push(arrIrel[j], arrIrel[j+1], arrIrel[j+2]);
-  //           j = j + 3;
-  //         }
-  //       }
+        const prel = [];
+        if (e.dataset.prel !== undefined && e.dataset.prel !== null) {
+          var arrPrel = e.dataset.prel.split(",");
+          var j = 0;
+          while (arrPrel[j]!== undefined && arrPrel[j+1]!== undefined && arrPrel[j+2]!== undefined) {
+            prel.push([Number(arrPrel[j]), Number(arrPrel[j+1]), Number(arrPrel[j+2])]);
+            j = j + 3;
+          }
+        }
 
-  //       var irelDistinct = exportFunctionRel.getDistinctRel(irel);
+        var prelDistinct = exportFunctionRel.getDistinctRel(prel);
+        console.log(prel);
 
-  //       const irelm = [];
-  //       if (e.dataset.irelm !== undefined && e.dataset.irelm !== null) {
-  //         var arrIrelM = e.dataset.irelm.split(",");
-  //         var k = 0;
-  //         while (arrIrelM[k]!== undefined) {
-  //           irelm.push(arrIrelM[k], arrIrelM[k+1], arrIrelM[k+2]);
-  //           k = k + 3;
-  //         }
-  //       }
-
-  //       var irelMDistinct = exportFunctionRel.getDistinctRel(irelm);
+        const prelm = [];
+        if (e.dataset.prelm !== undefined && e.dataset.prelm !== null) {
+          var arrPrelM = e.dataset.prelm.split(",");
+          var k = 0;
+          while (arrPrel[j]!== undefined && arrPrel[j+1]!== undefined && arrPrel[j+2]!== undefined) {
+            prelm.push([Number(arrPrelM[k]), Number(arrPrelM[k+1]), Number(arrPrelM[k+2])]);
+            k = k + 3;
+          }
+        }
+        var prelMDistinct = exportFunctionRel.getDistinctRel(prelm);
         
-  //       const item = {
-  //         item_id: e.id,
-  //         im_id: e.dataset.imid,
-  //         teamId: e.dataset.teamid,
-  //         imrel: irelDistinct,
-  //         imrelm: irelMDistinct,
-  //         title: e.dataset.title,
-  //         wp_id: "",
-  //         publication_date: e.dataset.date,
-  //         amazon_image: e.dataset.image,
-  //         del_flg: false,
-  //         vers: verArr,
-  //       }
-  //       data.push(item);
-  //     }
-  //   });
+        const p = {
+          program_id: e.id,
+          pm_id: e.dataset.pmid,
+          teamId: e.dataset.teamid,
+          pmrel: prel,
+          pmrelm: prelm,
+          title: e.dataset.title,
+          // on_air_date: e.dataset.date,
+          del_flg: false,
+          // verlist: e.dataset.verlist,
+        }
+        data.push(p);
+      }
+    });
 
-  //   await axios
-  //     .post(ApiPath.IM + "bundle/new", data)
-  //     .then(response => {
-  //       if (response.data) {
-  //         window.location.reload();
-  //       } else {
-  //         window.alert("登録エラーです");
-  //         console.log(response);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       if (error.code === "ECONNABORTED") {
-  //         window.alert("タイムアウトしました");
-  //       }
-  //     });
-  // }
-
-  // // 対象Itemを一括でIM設定します
-  // const bundleItemManage2 = async() => {
-  //   const data = [];
-  //   const itemIdList = document.getElementsByName("add_item");
-
-  //   if (imId === 0) {
-  //     window.alert("IMを選択してください！");
-  //   } else {
-  //     for (let i = 0; i < itemIdList.length; i++) {
-  //       if (itemIdList[i].checked) {
-  //         const e = document.getElementById(itemIdList[i].value);
-  //         const item = {
-  //           item_id: e.id,
-  //           im_id: imId,
-  //           teamId: e.dataset.teamid
-  //         }
-  //         data.push(item);
-  //       }
-  //     }
-  //     await axios
-  //     .post(ApiPath.IM + "bundle/chk", data)
-  //     .then(response => {
-  //       if (response.data) {
-  //         window.location.reload();
-  //       } else {
-  //         window.alert("登録エラーです");
-  //         console.log(response);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       if (error.code === "ECONNABORTED") {
-  //         window.alert("タイムアウトしました");
-  //       }
-  //     });
-  //   }
-  // }
+    console.log(data);
+    await axios
+      .post(ApiPath.PM + "bundle/new", data)
+      .then(response => {
+        if (response.data) {
+          if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
+            window.location.href = window.location.href + "?teamId=" + teamId;
+          } else {
+            window.location.href = window.location.href;
+          }
+        } else {
+          window.alert("登録エラーです");
+          console.log(response);
+        }
+      })
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
+  }
 
   // 対象Pを一括で削除します
-  const bundleP = async() => {
+  const bundleDelP = async() => {
+    window.alert("一括削除しますか？");
     var elems = document.getElementsByClassName("target_p");
     const data = [];
     Array.from(elems).forEach((e) => {
@@ -140,7 +108,11 @@ const TvList = ({tvList, pmList, teamId}) => {
       .post(ApiPath.TV + "bundle/del_p", data)
       .then(response => {
         if (response.data) {
-          window.location.reload();
+          if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
+            window.location.href = window.location.href + "?teamId=" + teamId;
+          } else {
+            window.location.href = window.location.href;
+          }
         } else {
           window.alert("登録エラーです");
           console.log(response);
@@ -155,7 +127,7 @@ const TvList = ({tvList, pmList, teamId}) => {
 
   return (
     <div className="allItemsList">
-      <h2>Program <Btn onClick={bundleP}>一括削除</Btn></h2>
+      <h2>Program <Btn onClick={bundlePm}>一括登録</Btn> <Btn onClick={bundleDelP}>一括削除</Btn></h2>
       {tvList !== undefined && tvList.length > 0 ? (
         tvList.map((e, index) => (
           <div className="itemBox" key={index}>

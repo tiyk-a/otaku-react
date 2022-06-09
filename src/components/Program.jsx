@@ -98,7 +98,7 @@ const Program = ({ program, teamId }) => {
         .post(ApiPath.TV, data)
         .then(response => {
           if (response.data) {
-            if (teamId !== null && teamId !== undefined && !window.location.href.includes("?teamId=")) {
+            if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
               window.location.href = window.location.href + "?teamId=" + teamId;
             } else {
               window.location.href = window.location.href;
@@ -290,7 +290,7 @@ const Program = ({ program, teamId }) => {
   return (
     <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
       {editedFlg
-        ? (<div className="target_p" id={program.id} data-imid={pmId} data-teamid={teamId} data-title={title} data-date={date} data-irel={prel} data-irelm={prelM}></div>)
+        ? (<div className="target_p" id={program.id} data-pmid={pmId} data-teamid={teamId} data-title={title} data-prel={prel} data-prelm={prelM}></div>)
         : (<div id={program.id} data-teamid={teamId}></div>)}
       <Text>
         <ul>

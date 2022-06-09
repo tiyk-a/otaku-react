@@ -31,6 +31,7 @@ const PM = ({ pm, teamId }) => {
   const [addPrelFlg, setAddPrelFlg] = useState(false);
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const [pmrelObj, setPmrelObj] = useState([]);
+  const [editedFlg, setEditedFlg] = useState(false);
 
   useEffect(() => {
     setId(pm.id);
@@ -80,6 +81,17 @@ const PM = ({ pm, teamId }) => {
   insertPrelObj(outerArr, outerArrM);
   }, []);
 
+  // Item一括選択のためにboxを押したら選択/解除する
+  const toggleSelectedItem = () => {
+    if (editedFlg) {
+      setEditedFlg(false);
+      // setIsChecked(false);
+    } else {
+      setEditedFlg(true);
+      // setIsChecked(true);
+    }
+  }
+
   // 既存商品の更新
   const updPm = async() => {
     const data = {
@@ -87,12 +99,10 @@ const PM = ({ pm, teamId }) => {
       title: title,
       description: description,
       pmrel: pmrel,
-      pmrelM: pmrelM,
+      pmrelm: pmrelM,
       verList: verList
     }
 
-    window.alert("koko");
-    console.log(ApiPath.PM + pm.id);
     await axios
     .post(ApiPath.PM + pm.id, data)
     .then(response => {
@@ -300,7 +310,10 @@ const PM = ({ pm, teamId }) => {
   }
 
   return (
-    <div className="itemContainer">
+    <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
+      {editedFlg
+        ? (<div className="target_pm" id={pm.id} data-teamid={teamId} data-title={title} data-prel={pmrel} data-prelm={pmrelM}></div>)
+        : (<div id={pm.id} data-teamid={teamId}></div>)}
       <Text>
         <ul>
           <li className="textBoxTitle">
