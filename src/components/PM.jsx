@@ -46,7 +46,7 @@ const PM = ({ pm, teamId }) => {
   if (pm.pmrelList !== null && pm.pmrelList.length > 0) {
     pm.pmrelList.forEach((e) => {
       const innerArr = [];
-      innerArr.push(e.p_rel_id, e.program_id, e.team_id);
+      innerArr.push(e.pm_rel_id, e.pm_id, e.team_id);
       outerArr.push(innerArr);
     });
     setPmrel(outerArr);
@@ -56,7 +56,7 @@ const PM = ({ pm, teamId }) => {
   if (pm.pmrelMList !== null && pm.pmrelMList.length > 0) {
     pm.pmrelMList.forEach((e) => {
       const innerArrM = [];
-      innerArrM.push(e.p_rel_mem_id, e.p_rel_id, e.member_id);
+      innerArrM.push(e.pm_rel_mem_id, e.pm_rel_id, e.member_id);
       outerArrM.push(innerArrM);
     });
     setPmrelM(outerArrM);
@@ -91,8 +91,10 @@ const PM = ({ pm, teamId }) => {
       verList: verList
     }
 
+    window.alert("koko");
+    console.log(ApiPath.PM + pm.id);
     await axios
-    .post(ApiPath.PM + teamId + '/' + pm.id, data)
+    .post(ApiPath.PM + pm.id, data)
     .then(response => {
       if (response.data) {
         window.location.reload();

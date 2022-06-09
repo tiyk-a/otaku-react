@@ -155,18 +155,6 @@ const TvList = ({tvList, pmList, teamId}) => {
 
   return (
     <div className="allItemsList">
-      <h2>PM</h2>
-      {pmList !== undefined && pmList.length > 0 ? (
-        pmList.map((e, index) => (
-          <div className="itemBox" key={index}>
-            <PM pm={e} teamId={teamId} key={e.id} />
-          </div>
-        ))
-      ) : (
-        <div>
-          <h1>PM見つかりませんでした:(</h1>
-        </div>
-      )}
       <h2>Program <Btn onClick={bundleP}>一括削除</Btn></h2>
       {tvList !== undefined && tvList.length > 0 ? (
         tvList.map((e, index) => (
@@ -177,6 +165,18 @@ const TvList = ({tvList, pmList, teamId}) => {
       ) : (
         <div>
           <h1>TVデータが見つかりませんでした:(</h1>
+        </div>
+      )}
+      <h2>PM</h2>
+      {pmList !== undefined && pmList.length > 0 ? (
+        pmList.map((e, index) => (
+          <div className="itemBox" key={index}>
+            <PM pm={e} teamId={teamId} key={e.id} />
+          </div>
+        ))
+      ) : (
+        <div>
+          <h1>PM見つかりませんでした:(</h1>
         </div>
       )}
     </div>
