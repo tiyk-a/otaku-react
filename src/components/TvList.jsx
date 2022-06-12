@@ -139,6 +139,7 @@ const TvList = ({tvList, pmList, teamId}) => {
           <h1>TVデータが見つかりませんでした:(</h1>
         </div>
       )}
+      <Btn onClick={bundlePm}>一括登録</Btn> <Btn onClick={bundleDelP}>一括削除</Btn>
       <h2>PM</h2>
       {pmList !== undefined && pmList.length > 0 ? (
         pmList.map((e, index) => (

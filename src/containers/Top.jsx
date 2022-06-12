@@ -20,19 +20,23 @@ const Top = () => {
   const [errJList, setErrJList] = useState([]);
   const [id, setId] = useState('');
   const [menuFlg, setMenuFlg] = useState(false);
+  // 未確認データ件数
+  const [numbers, setNumbers] = useState({});
 
   // 商品全件取得
   const getTeamItems = useCallback(async (id) => {
     var path = '';
+    var tmpTeamId = null;
 
     // Top画面リクエストならallメソッドでデータ取ってくる。それ以外はチームのを取って送る
     if (id === undefined || id === 5) {
-      setId(5);
-      path = 'api/all/';
+      setId(17);
+      tmpTeamId = 17;
     } else {
       setId(id);
-      path = 'api/' + id;
+      tmpTeamId = id;
     }
+    path = 'api/' + tmpTeamId;
 
     await axios
       .get(path)
@@ -40,6 +44,9 @@ const Top = () => {
         const i = response.data.i;
         const im = response.data.im;
         const errJ = response.data.errJ;
+
+        // 未確認データ件数
+        const numbers = response.data.itemNumberMap;
         
         // item(w/o IM)
         if (i !== null) {
@@ -117,6 +124,11 @@ const Top = () => {
           });
           setErrJList(errlist);
         }
+
+        if (numbers !== null) {
+          console.log(numbers);
+          setNumbers(numbers);
+        }
       }).catch(error => {
         if (error.code === "ECONNABORTED") {
           window.alert("タイムアウトしました");
@@ -155,23 +167,22 @@ const Top = () => {
     <div>
       <MediaQuery query="(min-width: 767px)">
         {/* PC */}
-        <Btn value="5" onClick={() => handleChange(5)} style={id === 5 ? selected : null}>All</Btn>
-        <Btn value="17" onClick={() => handleChange(17)} style={id === 17 ? selected : null}>SixTONES</Btn>
-        <Btn value="6" onClick={() => handleChange(6)} style={id === 6 ? selected : null}>SnowMan</Btn>
-        <Btn value="16" onClick={() => handleChange(16)} style={id === 16 ? selected : null}>King&Prince</Btn>
-        <Btn value="18" onClick={() => handleChange(18)} style={id === 18 ? selected : null}>なにわ男子</Btn>
-        <Btn value="8" onClick={() => handleChange(8)} style={id === 8 ? selected : null}>SexyZone</Btn>
-        <Btn value="7" onClick={() => handleChange(7)} style={id === 7 ? selected : null}>関ジャニ∞</Btn>
-        <Btn value="13" onClick={() => handleChange(13)} style={id === 13 ? selected : null}>Kis-My-Ft2</Btn>
-        <Btn value="15" onClick={() => handleChange(15)} style={id === 15 ? selected : null}>ジャニーズWEST</Btn>
-        <Btn value="19" onClick={() => handleChange(19)} style={id === 19 ? selected : null}>Hey!Say!JUMP</Btn>
-        <Btn value="14" onClick={() => handleChange(14)} style={id === 14 ? selected : null}>ABC-Z</Btn>
-        <Btn value="20" onClick={() => handleChange(20)} style={id === 20 ? selected : null}>KAT-TUN</Btn>
-        <Btn value="12" onClick={() => handleChange(12)} style={id === 12 ? selected : null}>NEWS</Btn>
-        <Btn value="21" onClick={() => handleChange(21)} style={id === 21 ? selected : null}>Kinki Kids</Btn>
-        <Btn value="9" onClick={() => handleChange(9)} style={id === 9 ? selected : null}>TOKIO</Btn>
-        <Btn value="10" onClick={() => handleChange(10)} style={id === 10 ? selected : null}>V6</Btn>
-        <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐</Btn>
+        <Btn value="17" onClick={() => handleChange(17)} style={id === 17 ? selected : null}>SixTONES<span className='itemNumber'>{numbers[17]}</span></Btn>
+        <Btn value="6" onClick={() => handleChange(6)} style={id === 6 ? selected : null}>SnowMan<span className='itemNumber'>{numbers[6]}</span></Btn>
+        <Btn value="16" onClick={() => handleChange(16)} style={id === 16 ? selected : null}>King&Prince<span className='itemNumber'>{numbers[16]}</span></Btn>
+        <Btn value="18" onClick={() => handleChange(18)} style={id === 18 ? selected : null}>なにわ男子<span className='itemNumber'>{numbers[18]}</span></Btn>
+        <Btn value="8" onClick={() => handleChange(8)} style={id === 8 ? selected : null}>SexyZone<span className='itemNumber'>{numbers[8]}</span></Btn>
+        <Btn value="7" onClick={() => handleChange(7)} style={id === 7 ? selected : null}>関ジャニ∞<span className='itemNumber'>{numbers[7]}</span></Btn>
+        <Btn value="13" onClick={() => handleChange(13)} style={id === 13 ? selected : null}>Kis-My-Ft2<span className='itemNumber'>{numbers[13]}</span></Btn>
+        <Btn value="15" onClick={() => handleChange(15)} style={id === 15 ? selected : null}>ジャニーズWEST<span className='itemNumber'>{numbers[15]}</span></Btn>
+        <Btn value="19" onClick={() => handleChange(19)} style={id === 19 ? selected : null}>Hey!Say!JUMP<span className='itemNumber'>{numbers[19]}</span></Btn>
+        <Btn value="14" onClick={() => handleChange(14)} style={id === 14 ? selected : null}>ABC-Z<span className='itemNumber'>{numbers[14]}</span></Btn>
+        <Btn value="20" onClick={() => handleChange(20)} style={id === 20 ? selected : null}>KAT-TUN<span className='itemNumber'>{numbers[20]}</span></Btn>
+        <Btn value="12" onClick={() => handleChange(12)} style={id === 12 ? selected : null}>NEWS<span className='itemNumber'>{numbers[12]}</span></Btn>
+        <Btn value="21" onClick={() => handleChange(21)} style={id === 21 ? selected : null}>Kinki Kids<span className='itemNumber'>{numbers[21]}</span></Btn>
+        <Btn value="9" onClick={() => handleChange(9)} style={id === 9 ? selected : null}>TOKIO<span className='itemNumber'>{numbers[9]}</span></Btn>
+        <Btn value="10" onClick={() => handleChange(10)} style={id === 10 ? selected : null}>V6<span className='itemNumber'>{numbers[10]}</span></Btn>
+        <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐<span className='itemNumber'>{numbers[11]}</span></Btn>
       </MediaQuery>
       <MediaQuery query="(max-width: 519px)">
         {/* SP */}
@@ -190,23 +201,22 @@ const Top = () => {
                   <span></span>
                 </label>
                 <div class="menu-content">
-                  <p value="5" onClick={() => handleChange(5)} style={id === 5 ? selected : null}>All</p>
-                  <p value="17" onClick={() => handleChange(17)} style={id === 17 ? selected : null}>SixTONES</p>
-                  <p value="6" onClick={() => handleChange(6)} style={id === 6 ? selected : null}>SnowMan</p>
-                  <p value="16" onClick={() => handleChange(16)} style={id === 16 ? selected : null}>King&Prince</p>
-                  <p value="18" onClick={() => handleChange(18)} style={id === 18 ? selected : null}>なにわ男子</p>
-                  <p value="8" onClick={() => handleChange(8)} style={id === 8 ? selected : null}>SexyZone</p>
-                  <p value="7" onClick={() => handleChange(7)} style={id === 7 ? selected : null}>関ジャニ∞</p>
-                  <p value="13" onClick={() => handleChange(13)} style={id === 13 ? selected : null}>Kis-My-Ft2</p>
-                  <p value="15" onClick={() => handleChange(15)} style={id === 15 ? selected : null}>ジャニーズWEST</p>
-                  <p value="19" onClick={() => handleChange(19)} style={id === 19 ? selected : null}>Hey!Say!JUMP</p>
-                  <p value="14" onClick={() => handleChange(14)} style={id === 14 ? selected : null}>ABC-Z</p>
-                  <p value="20" onClick={() => handleChange(20)} style={id === 20 ? selected : null}>KAT-TUN</p>
-                  <p value="12" onClick={() => handleChange(12)} style={id === 12 ? selected : null}>NEWS</p>
-                  <p value="21" onClick={() => handleChange(21)} style={id === 21 ? selected : null}>Kinki Kids</p>
-                  <p value="9" onClick={() => handleChange(9)} style={id === 9 ? selected : null}>TOKIO</p>
-                  <p value="10" onClick={() => handleChange(10)} style={id === 10 ? selected : null}>V6</p>
-                  <p value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐</p>
+                  <Btn value="17" onClick={() => handleChange(17)} style={id === 17 ? selected : null}>SixTONES<span className='itemNumber'>{numbers[17]}</span></Btn>
+                  <Btn value="6" onClick={() => handleChange(6)} style={id === 6 ? selected : null}>SnowMan<span className='itemNumber'>{numbers[6]}</span></Btn>
+                  <Btn value="16" onClick={() => handleChange(16)} style={id === 16 ? selected : null}>King&Prince<span className='itemNumber'>{numbers[16]}</span></Btn>
+                  <Btn value="18" onClick={() => handleChange(18)} style={id === 18 ? selected : null}>なにわ男子<span className='itemNumber'>{numbers[18]}</span></Btn>
+                  <Btn value="8" onClick={() => handleChange(8)} style={id === 8 ? selected : null}>SexyZone<span className='itemNumber'>{numbers[8]}</span></Btn>
+                  <Btn value="7" onClick={() => handleChange(7)} style={id === 7 ? selected : null}>関ジャニ∞<span className='itemNumber'>{numbers[7]}</span></Btn>
+                  <Btn value="13" onClick={() => handleChange(13)} style={id === 13 ? selected : null}>Kis-My-Ft2<span className='itemNumber'>{numbers[13]}</span></Btn>
+                  <Btn value="15" onClick={() => handleChange(15)} style={id === 15 ? selected : null}>ジャニーズWEST<span className='itemNumber'>{numbers[15]}</span></Btn>
+                  <Btn value="19" onClick={() => handleChange(19)} style={id === 19 ? selected : null}>Hey!Say!JUMP<span className='itemNumber'>{numbers[19]}</span></Btn>
+                  <Btn value="14" onClick={() => handleChange(14)} style={id === 14 ? selected : null}>ABC-Z<span className='itemNumber'>{numbers[14]}</span></Btn>
+                  <Btn value="20" onClick={() => handleChange(20)} style={id === 20 ? selected : null}>KAT-TUN<span className='itemNumber'>{numbers[20]}</span></Btn>
+                  <Btn value="12" onClick={() => handleChange(12)} style={id === 12 ? selected : null}>NEWS<span className='itemNumber'>{numbers[12]}</span></Btn>
+                  <Btn value="21" onClick={() => handleChange(21)} style={id === 21 ? selected : null}>Kinki Kids<span className='itemNumber'>{numbers[21]}</span></Btn>
+                  <Btn value="9" onClick={() => handleChange(9)} style={id === 9 ? selected : null}>TOKIO<span className='itemNumber'>{numbers[9]}</span></Btn>
+                  <Btn value="10" onClick={() => handleChange(10)} style={id === 10 ? selected : null}>V6<span className='itemNumber'>{numbers[10]}</span></Btn>
+                  <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐<span className='itemNumber'>{numbers[11]}</span></Btn>
                 </div>
               </div>
             ) : ("") }
@@ -215,23 +225,22 @@ const Top = () => {
       </MediaQuery>
       <MediaQuery query="(min-width: 520px) and (max-width: 959px)">
         {/* tablet */}
-        <Btn value="5" onClick={() => handleChange(5)} style={id === 5 ? selected : null}>All</Btn>
-        <Btn value="17" onClick={() => handleChange(17)} style={id === 17 ? selected : null}>SixTONES</Btn>
-        <Btn value="6" onClick={() => handleChange(6)} style={id === 6 ? selected : null}>SnowMan</Btn>
-        <Btn value="16" onClick={() => handleChange(16)} style={id === 16 ? selected : null}>King&Prince</Btn>
-        <Btn value="18" onClick={() => handleChange(18)} style={id === 18 ? selected : null}>なにわ男子</Btn>
-        <Btn value="8" onClick={() => handleChange(8)} style={id === 8 ? selected : null}>SexyZone</Btn>
-        <Btn value="7" onClick={() => handleChange(7)} style={id === 7 ? selected : null}>関ジャニ∞</Btn>
-        <Btn value="13" onClick={() => handleChange(13)} style={id === 13 ? selected : null}>Kis-My-Ft2</Btn>
-        <Btn value="15" onClick={() => handleChange(15)} style={id === 15 ? selected : null}>ジャニーズWEST</Btn>
-        <Btn value="19" onClick={() => handleChange(19)} style={id === 19 ? selected : null}>Hey!Say!JUMP</Btn>
-        <Btn value="14" onClick={() => handleChange(14)} style={id === 14 ? selected : null}>ABC-Z</Btn>
-        <Btn value="20" onClick={() => handleChange(20)} style={id === 20 ? selected : null}>KAT-TUN</Btn>
-        <Btn value="12" onClick={() => handleChange(12)} style={id === 12 ? selected : null}>NEWS</Btn>
-        <Btn value="21" onClick={() => handleChange(21)} style={id === 21 ? selected : null}>Kinki Kids</Btn>
-        <Btn value="9" onClick={() => handleChange(9)} style={id === 9 ? selected : null}>TOKIO</Btn>
-        <Btn value="10" onClick={() => handleChange(10)} style={id === 10 ? selected : null}>V6</Btn>
-        <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐</Btn>
+        <Btn value="17" onClick={() => handleChange(17)} style={id === 17 ? selected : null}>SixTONES<span className='itemNumber'>{numbers[17]}</span></Btn>
+        <Btn value="6" onClick={() => handleChange(6)} style={id === 6 ? selected : null}>SnowMan<span className='itemNumber'>{numbers[6]}</span></Btn>
+        <Btn value="16" onClick={() => handleChange(16)} style={id === 16 ? selected : null}>King&Prince<span className='itemNumber'>{numbers[16]}</span></Btn>
+        <Btn value="18" onClick={() => handleChange(18)} style={id === 18 ? selected : null}>なにわ男子<span className='itemNumber'>{numbers[18]}</span></Btn>
+        <Btn value="8" onClick={() => handleChange(8)} style={id === 8 ? selected : null}>SexyZone<span className='itemNumber'>{numbers[8]}</span></Btn>
+        <Btn value="7" onClick={() => handleChange(7)} style={id === 7 ? selected : null}>関ジャニ∞<span className='itemNumber'>{numbers[7]}</span></Btn>
+        <Btn value="13" onClick={() => handleChange(13)} style={id === 13 ? selected : null}>Kis-My-Ft2<span className='itemNumber'>{numbers[13]}</span></Btn>
+        <Btn value="15" onClick={() => handleChange(15)} style={id === 15 ? selected : null}>ジャニーズWEST<span className='itemNumber'>{numbers[15]}</span></Btn>
+        <Btn value="19" onClick={() => handleChange(19)} style={id === 19 ? selected : null}>Hey!Say!JUMP<span className='itemNumber'>{numbers[19]}</span></Btn>
+        <Btn value="14" onClick={() => handleChange(14)} style={id === 14 ? selected : null}>ABC-Z<span className='itemNumber'>{numbers[14]}</span></Btn>
+        <Btn value="20" onClick={() => handleChange(20)} style={id === 20 ? selected : null}>KAT-TUN<span className='itemNumber'>{numbers[20]}</span></Btn>
+        <Btn value="12" onClick={() => handleChange(12)} style={id === 12 ? selected : null}>NEWS<span className='itemNumber'>{numbers[12]}</span></Btn>
+        <Btn value="21" onClick={() => handleChange(21)} style={id === 21 ? selected : null}>Kinki Kids<span className='itemNumber'>{numbers[21]}</span></Btn>
+        <Btn value="9" onClick={() => handleChange(9)} style={id === 9 ? selected : null}>TOKIO<span className='itemNumber'>{numbers[9]}</span></Btn>
+        <Btn value="10" onClick={() => handleChange(10)} style={id === 10 ? selected : null}>V6<span className='itemNumber'>{numbers[10]}</span></Btn>
+        <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐<span className='itemNumber'>{numbers[11]}</span></Btn>
       </MediaQuery>
       <div>
         {
