@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { Button, Input } from '@material-ui/core';
 import PM from '../components/PM';
 import Program from '../components/Program';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-import { Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
-import exportFunctionRel from '../functions/RelManage';
+import NativeSelect from '@mui/material/NativeSelect';
 
 /**
  *商品リストコンポーネント
@@ -15,6 +15,77 @@ import exportFunctionRel from '../functions/RelManage';
  */
 const TvList = ({tvList, pmList, teamId}) => {
 
+  const [pmSearchRes, setPmSearchRes] = useState([]);
+  const [otherPmTitle, setOtherPmTitle] = useState("");
+  const [pmId, setPmId] = useState(0);
+  const [pmKey, setPmKey] = useState('');
+
+  /**
+   * DBからPM検索
+   * 
+   * @param {} key 
+   */
+  const searchOtherPm = async (key) => {
+    await axios
+      .get(ApiPath.PM + 'search?key=' + key)
+      .then(response => {
+        console.log(response.data);
+        setPmSearchRes(response.data);
+        if (response.data.length === 0) {
+          window.alert("0 data hit :(");
+        }
+      })
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
+  }
+
+  const handleChangeOtherPMTitle = e => {
+    var txt = null;
+    if (e.target.value !== "0") {
+      txt = e.target.value;
+    }
+
+    setPmId(txt);
+    var searchResFlg = false;
+
+    // searchresの場合、そこからIDとか取って入れてあげる
+    pmSearchRes.forEach(pm => {
+      if (pm.pm_id === txt) {
+        setOtherPmTitle(pm.title);
+        searchResFlg = true;
+      }
+    });
+
+    // pmの場合、PMからIDとか取って入れてあげる
+    if (!searchResFlg) {
+      if (txt === null) {
+        setPmId(0);
+      } else {
+        pmList.forEach(pm => {
+          if (pm.pm_id === txt) {
+            setPmId(txt);
+            setOtherPmTitle(pm.title);
+          }
+        });
+      }
+    }
+  };
+
+  const searchPmByKw = (e) => {
+    if (e.keyCode === 13) {
+      searchOtherPm(pmKey);
+      setPmKey("");
+    }
+  }
+
+  const handleChangePmKey = e => {
+    const txt = e.target.value;
+    setPmKey(txt);
+  };
+
   // 対象Itemを一括でIM登録します
   const bundlePm = async() => {
     var elems = document.getElementsByClassName("target_p");
@@ -22,17 +93,6 @@ const TvList = ({tvList, pmList, teamId}) => {
 
     Array.from(elems).forEach((e) => {
       if (e.dataset.pmid === null || e.dataset.pmid == "") {
-        // const verArr = [];
-        // if (e.dataset.verarr !== undefined && e.dataset.verarr !== null) {
-        //   var arr = e.dataset.verarr.split(",");
-        //   var i = 0;
-        //   while (arr[i]!== undefined) {
-        //     var innerArr = [];
-        //     innerArr = [arr[i], arr[i+1], arr[i+2]];
-        //     verArr.push(innerArr);
-        //     i = i + 3;
-        //   }
-        // }
 
         const prel = [];
         if (e.dataset.prel !== undefined && e.dataset.prel !== null) {
@@ -44,9 +104,6 @@ const TvList = ({tvList, pmList, teamId}) => {
           }
         }
 
-        var prelDistinct = exportFunctionRel.getDistinctRel(prel);
-        console.log(prel);
-
         const prelm = [];
         if (e.dataset.prelm !== undefined && e.dataset.prelm !== null) {
           var arrPrelM = e.dataset.prelm.split(",");
@@ -56,7 +113,6 @@ const TvList = ({tvList, pmList, teamId}) => {
             k = k + 3;
           }
         }
-        var prelMDistinct = exportFunctionRel.getDistinctRel(prelm);
         
         const p = {
           program_id: e.id,
@@ -67,7 +123,6 @@ const TvList = ({tvList, pmList, teamId}) => {
           title: e.dataset.title,
           // on_air_date: e.dataset.date,
           del_flg: false,
-          // verlist: e.dataset.verlist,
         }
         data.push(p);
       }
@@ -128,6 +183,57 @@ const TvList = ({tvList, pmList, teamId}) => {
   return (
     <div className="allItemsList">
       <h2>Program <Btn onClick={bundlePm}>一括登録</Btn> <Btn onClick={bundleDelP}>一括削除</Btn></h2>
+      <p>PM検索: {pmId}</p>
+      <p>まだ検索しかできません</p>
+      <Input
+        type="text"
+        name="PM search"
+        value={pmKey}
+        onChange={handleChangePmKey}
+        placeholder="pm keyword"
+        className="titleInput"
+        onKeyDown={searchPmByKw}
+      />
+      {pmSearchRes.length > 0 ? (
+        <NativeSelect
+          labelId="demo-simple-select-label"
+          id="other-team-im"
+          defaultValue=""
+          value={otherPmTitle}
+          label="PM候補"
+          onChange={handleChangeOtherPMTitle}
+        >
+          {pmSearchRes.map((e, index) => (
+            <option key={index} value={e.pm_id}>
+              {e.title} | {e.description}
+            </option>
+          ))}
+          <option key={0} value={0}>
+            N/A
+          </option>
+        </NativeSelect>
+      ) : (
+        <NativeSelect
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          defaultValue=""
+          value={otherPmTitle}
+          label="PM候補"
+          onChange={handleChangeOtherPMTitle}
+        >
+          {pmList.length > 0 ? (
+            pmList.map((e, index) => (
+            <option key={index} value={e.pm_id}>
+              {e.title}
+            </option>
+          ))) : (
+            ""
+          )}
+          <option key={0} value={0}>
+            N/A
+          </option>
+        </NativeSelect>
+      )}
       {tvList !== undefined && tvList.length > 0 ? (
         tvList.map((e, index) => (
           <div className="itemBox" key={index}>

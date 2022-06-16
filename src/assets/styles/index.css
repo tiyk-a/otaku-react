@@ -497,3 +497,14 @@ color: #ff4444;
 .itemNumber {
   background-color: yellow;
 }
+
+.link {
+  z-index: 10;
+  /* text-decoration: none; */
+  /* cursor: pointer; */
+  position: relative;
+  /* bottom: -100px; */
+  top: 2rem;
+  background-color: #db36a4;
+  opacity: 50%;
+}

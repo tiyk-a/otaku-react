@@ -37,7 +37,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
 
   // 入力された検索ワードをSTATEに反映
   const handleChangeDate = e => {
-      setDate(e);
+    setDate(e);
   };
 
   // 対象Itemを一括でIM登録します
@@ -350,15 +350,6 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
             className="titleInput"
             onKeyDown={searchImByKw}
           />
-          {/* <NativeSelect
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            defaultValue=""
-            value={otherImTitle}
-            label="IM候補"
-            // onChange={handleChangeIMTitle}
-            onChange={handleChangeOtherIMTitle}
-          > */}
           {imSearchRes.length > 0 ? (
             <NativeSelect
               labelId="demo-simple-select-label"
@@ -400,36 +391,6 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
               </option>
             </NativeSelect>
           )}
-          
-          {/* itemMList.length > 0 ? (
-            itemMList.map((e, index) => (
-            <option key={index} value={e.title}>
-              {e.title}
-            </option>
-          ))) : (
-            <option disabled key="0" value="N/A">
-              N/A
-            </option>
-          )} */}
-          {/* </NativeSelect> */}
-          {/* {imSearchRes.length > 0 ? (
-            <NativeSelect
-              labelId="demo-simple-select-label"
-              id="other-team-im"
-              defaultValue=""
-              value={otherImTitle}
-              label="IM候補"
-              onChange={handleChangeOtherIMTitle}
-            >
-            {imSearchRes.map((e, index) => (
-              <option key={index} value={e.title}>
-                {e.title}
-              </option>
-            ))}
-            </NativeSelect>
-          ) : (
-            ""
-          )} */}
         </FormControl>
       </MediaQuery>
       <MediaQuery query="(max-width: 519px)">

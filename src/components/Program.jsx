@@ -89,11 +89,9 @@ const Program = ({ program, teamId }) => {
         title: title,
         description: description,
         on_air_date: date,
-        station_id: program.station_id
-        // vers: verArr,
+        station_id: program.station_id,
       }
 
-      console.log(data);
       await axios
         .post(ApiPath.TV, data)
         .then(response => {
@@ -276,147 +274,152 @@ const Program = ({ program, teamId }) => {
     return !Object.keys(obj).length;
   }
 
-  // Item一括選択のためにboxを押したら選択/解除する
-  const toggleSelectedItem = () => {
+  // Program一括選択のためにboxを押したら選択/解除する
+  const toggleSelectedProgram = () => {
     if (editedFlg) {
       setEditedFlg(false);
-      // setIsChecked(false);
     } else {
       setEditedFlg(true);
-      // setIsChecked(true);
     }
   }
 
   return (
-    <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
-      {editedFlg
-        ? (<div className="target_p" id={program.id} data-pmid={pmId} data-teamid={teamId} data-title={title} data-prel={prel} data-prelm={prelM}></div>)
-        : (<div id={program.id} data-teamid={teamId}></div>)}
-      <Text>
-        <ul>
-          <li>
-            <p>pId</p>
-            {program.id}
-          </li>
-          <li>
-            {prel !== null && prel !== undefined ? (
-              prel.map((e, index) => (
-                <div class="flex_row">
-                  <NativeSelect
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    defaultValue=""
-                    value={exportFunction.teamIdToName(e[2])}
-                    label="Age"
-                    onChange={handleChangePrel}
-                    name={index}
-                  >
-                  {teamIdList !== null && teamIdList !== undefined ? (
-                    teamIdList.map((f, index) => (
-                      <option key={e[2]} value={exportFunction.teamIdToName(f.id)}>
-                        {exportFunction.teamIdToName(f.id)}
-                      </option>
-                      ))
-                  ) : (
-                    <></>
-                  )}
-                  </NativeSelect>
-                  {e[2] === 4 ? (
-                    <RemoveIcon onClick={() => minusPrel(index)} />
-                  ) : (null)
-                  }
-                  <div class="flex_column width_6rem">
-                    {function() {
-                      if (prelObj !== null && prelObj !== undefined) {
-                        return (
-                          <div>
-                            {prelObj.map((g, index) => (
-                              <div>
-                                {function() {
-                                  if (g.teamId === e[2]) {
-                                    return (
-                                      <div>
-                                        {g.list.map((l, i) => (
-                                          <p onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
-                                        ))}
-                                        {g.redList.map((l, i) => (
-                                          <p className="colorRed" onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
-                                        ))}
-                                      </div>
-                                    )
-                                  }
-                                }()}
-                              </div>
-                            ))}
-                          </div>
-                        )
-                      }
-                    }()}
+    <div>
+      <a href={url} target="_blank">
+        <div className="link">
+          <p>{url !== "" ? url : "リンクなしnano!"}</p>
+        </div>
+      </a>
+      <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedProgram}>
+        {editedFlg
+          ? (<div className="target_p" id={program.id} data-pmid={pmId} data-teamid={teamId} data-title={title} data-prel={prel} data-prelm={prelM}></div>)
+          : (<div id={program.id} data-teamid={teamId}></div>)}
+        <Text>
+          <ul>
+            <li>
+              <p>pId</p>
+              {program.id}
+            </li>
+            <li>
+              {prel !== null && prel !== undefined ? (
+                prel.map((e, index) => (
+                  <div class="flex_row">
+                    <NativeSelect
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      defaultValue=""
+                      value={exportFunction.teamIdToName(e[2])}
+                      label="Age"
+                      onChange={handleChangePrel}
+                      name={index}
+                    >
+                    {teamIdList !== null && teamIdList !== undefined ? (
+                      teamIdList.map((f, index) => (
+                        <option key={e[2]} value={exportFunction.teamIdToName(f.id)}>
+                          {exportFunction.teamIdToName(f.id)}
+                        </option>
+                        ))
+                    ) : (
+                      <></>
+                    )}
+                    </NativeSelect>
+                    {e[2] === 4 ? (
+                      <RemoveIcon onClick={() => minusPrel(index)} />
+                    ) : (null)
+                    }
+                    <div class="flex_column width_6rem">
+                      {function() {
+                        if (prelObj !== null && prelObj !== undefined) {
+                          return (
+                            <div>
+                              {prelObj.map((g, index) => (
+                                <div>
+                                  {function() {
+                                    if (g.teamId === e[2]) {
+                                      return (
+                                        <div>
+                                          {g.list.map((l, i) => (
+                                            <p onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
+                                          ))}
+                                          {g.redList.map((l, i) => (
+                                            <p className="colorRed" onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
+                                          ))}
+                                        </div>
+                                      )
+                                    }
+                                  }()}
+                                </div>
+                              ))}
+                            </div>
+                          )
+                        }
+                      }()}
+                    </div>
                   </div>
-                </div>
-              ))
-            ) : (
-              <></>
-            )}
-            {addPrelFlg ? (
-              <NativeSelect
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                defaultValue=""
-                value={exportFunction.teamIdToName(4)}
-                label="Age"
-                onChange={handleChangeAddPrel}
-                name="tmpPrel"
-              >
-              {teamIdList !== null && teamIdList !== undefined ? (
-                teamIdList.map((f, index) => (
-                  <option key={4} value={exportFunction.teamIdToName(f.id)}>
-                    {exportFunction.teamIdToName(f.id)}
-                  </option>
-                  ))
+                ))
               ) : (
                 <></>
               )}
-              </NativeSelect>
-            ) : (
-              <Btn onClick={toggleAddPrelFlg}>+prel</Btn>
-            )}
-            <br />
-            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
-              <DateTimePicker
-                label="on_air_date"
-                value={date}
-                onChange={handleChangeDate}
-                format="yyyy-MM-dd HH:mm"
+              {addPrelFlg ? (
+                <NativeSelect
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  defaultValue=""
+                  value={exportFunction.teamIdToName(4)}
+                  label="Age"
+                  onChange={handleChangeAddPrel}
+                  name="tmpPrel"
+                >
+                {teamIdList !== null && teamIdList !== undefined ? (
+                  teamIdList.map((f, index) => (
+                    <option key={4} value={exportFunction.teamIdToName(f.id)}>
+                      {exportFunction.teamIdToName(f.id)}
+                    </option>
+                    ))
+                ) : (
+                  <></>
+                )}
+                </NativeSelect>
+              ) : (
+                <Btn onClick={toggleAddPrelFlg}>+prel</Btn>
+              )}
+              <br />
+              <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
+                <DateTimePicker
+                  label="on_air_date"
+                  value={date}
+                  onChange={handleChangeDate}
+                  format="yyyy-MM-dd HH:mm"
+                />
+              </MuiPickersUtilsProvider>
+            </li>
+            <li className="">
+              <Input
+                type="text"
+                name="p_name"
+                value={title}
+                onChange={handleChange}
+                placeholder="title"
+                className="titleInput"
               />
-            </MuiPickersUtilsProvider>
-          </li>
-          <li className="">
-            <Input
-              type="text"
-              name="p_name"
-              value={title}
-              onChange={handleChange}
-              placeholder="title"
-              className="titleInput"
-            />
-            <TextField
-              required
-              name="description"
-              label="description"
-              value={description}
-              onChange={handleChange}
-              fullWidth={true}
-              multiline={true}
-              minRows={3}
-              maxRows={5}
-            />
-            <a href={url} target="_blank">{url !== "" ? url : "リンクなし"}</a>
-            <br />
-            <Btn100 onClick={registerPM}>PM登録</Btn100>
-          </li>
-        </ul>
-      </Text>
+              <TextField
+                required
+                name="description"
+                label="description"
+                value={description}
+                onChange={handleChange}
+                fullWidth={true}
+                multiline={true}
+                minRows={3}
+                maxRows={5}
+              />
+              {/* <a href={url} target="_blank">{url !== "" ? url : "リンクなし"}</a> */}
+              <br />
+              <Btn100 onClick={registerPM}>PM登録</Btn100>
+            </li>
+          </ul>
+        </Text>
+      </div>
     </div>
   );
 };
