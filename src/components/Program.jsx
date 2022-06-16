@@ -18,7 +18,7 @@ import exportFunctionRel from '../functions/RelManage';
  * @param {object} program
  * @returns jsx
  */
-const Program = ({ program, teamId }) => {
+const Program = ({ program, teamId, candPmList }) => {
   const moment = require("moment");
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -413,7 +413,19 @@ const Program = ({ program, teamId }) => {
                 minRows={3}
                 maxRows={5}
               />
-              {/* <a href={url} target="_blank">{url !== "" ? url : "リンクなし"}</a> */}
+              {function() {
+                if (candPmList !== null && candPmList !== undefined && candPmList.length > 0) {
+                  return (
+                    candPmList.map((f, index) => (
+                      <p>{f}</p>
+                    ))
+                  )
+                } else {
+                  return (
+                    <p>類似PMなし</p>
+                  )
+                }
+              }()}
               <br />
               <Btn100 onClick={registerPM}>PM登録</Btn100>
             </li>

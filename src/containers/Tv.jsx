@@ -14,6 +14,7 @@ const All = () => {
   // TV一覧リストのSTATES
   const [tvList, setTvList] = useState([]);
   const [pmList, setPmList] = useState([]);
+  const [candPmList, setCandPmList] = useState([]);
   const [teamId, setTeamId] = useState('');
   const [id, setId] = useState('');
   // 未確認データ件数
@@ -91,6 +92,14 @@ const All = () => {
         });
         setPmList(pmlist);
 
+        // 参考PMリスト
+        const tmpList = response.data.relPmList;
+        const relPmList = [];
+        tmpList.forEach(data => {
+          relPmList.push(data);
+        });
+        setCandPmList(relPmList);
+
         // 未確認データ件数
         const numbers = response.data.pnumberMap;
         if (numbers !== null) {
@@ -137,7 +146,7 @@ const All = () => {
         <Btn value="9" onClick={() => handleChange(9)} style={id === 9 ? selected : null}>TOKIO<span className='itemNumber'>{numbers[9]}</span></Btn>
         <Btn value="10" onClick={() => handleChange(10)} style={id === 10 ? selected : null}>V6<span className='itemNumber'>{numbers[10]}</span></Btn>
         <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐<span className='itemNumber'>{numbers[11]}</span></Btn>
-        <TvList tvList={tvList} pmList={pmList} teamId={teamId} />
+        <TvList tvList={tvList} pmList={pmList} teamId={teamId} candPmList={candPmList} />
       </div>
     </div>
   );
