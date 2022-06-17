@@ -94,11 +94,13 @@ const All = () => {
 
         // 参考PMリスト
         const tmpList = response.data.relPmList;
-        const relPmList = [];
-        tmpList.forEach(data => {
-          relPmList.push(data);
-        });
-        setCandPmList(relPmList);
+        if (tmpList !== undefined) {
+          const relPmList = [];
+          tmpList.forEach(data => {
+            relPmList.push(data);
+          });
+          setCandPmList(relPmList);
+        }
 
         // 未確認データ件数
         const numbers = response.data.pnumberMap;
