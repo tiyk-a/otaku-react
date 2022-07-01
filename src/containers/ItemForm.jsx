@@ -83,7 +83,9 @@ const ItemForm = () => {
         .post(ApiPath.IM, data)
         .then(response => {
           if (response.data) {
-            window.location.reload();
+            var tmpUrl = window.location.href;
+            var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+            window.location.href = newUrl;
           } else {
             window.alert("更新エラーです");
           }

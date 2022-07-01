@@ -104,7 +104,9 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       .post(ApiPath.IM + "bundle/new", data)
       .then(response => {
         if (response.data) {
-          window.location.reload();
+          var tmpUrl = window.location.href;
+          var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+          window.location.href = newUrl;
         } else {
           window.alert("登録エラーです");
           console.log(response);
@@ -140,7 +142,9 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       .post(ApiPath.IM + "bundle/chk", data)
       .then(response => {
         if (response.data) {
-          window.location.reload();
+          var tmpUrl = window.location.href;
+          var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+          window.location.href = newUrl;
         } else {
           window.alert("登録エラーです");
           console.log(response);
@@ -209,7 +213,9 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       .post(ApiPath.IM + "bundle/upd", data)
       .then(response => {
         if (response.data) {
-          window.location.reload();
+          var tmpUrl = window.location.href;
+          var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+          window.location.href = newUrl;
         } else {
           window.alert("登録エラーです");
           console.log(response);

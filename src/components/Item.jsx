@@ -11,7 +11,6 @@ import { ApiPath } from '../constants';
 import exportFunctionRel from '../functions/RelManage';
 import exportFunction from '../functions/TeamIdToName';
 
-
 /**
  *　商品１件を表示するコンポーネント
  *
@@ -138,7 +137,9 @@ const Item = ({ item, teamId }) => {
         .post(ApiPath.IM, data)
         .then(response => {
           if (response.data) {
-            window.location.reload();
+            var tmpUrl = window.location.href;
+            var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+            window.location.href = newUrl;
           } else {
             window.alert("更新エラーです");
           }
@@ -189,7 +190,9 @@ const Item = ({ item, teamId }) => {
         .then(response => {
           // 処理が成功したらresponseにはstatus=200,data=trueを返却するようにしてる
           if (response.data) {
-            window.location.reload();
+            var tmpUrl = window.location.href;
+            var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+            window.location.href = newUrl;
           } else {
             window.alert("削除エラーです");
             console.log(response);
@@ -256,7 +259,9 @@ const Item = ({ item, teamId }) => {
       await axios
         .get(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId + "&teamId=" + teamId)
         .then(response => {
-          window.location.reload();
+          var tmpUrl = window.location.href;
+          var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+          window.location.href = newUrl;
         })
         .catch(error => {
           if (error.code === "ECONNABORTED") {

@@ -97,7 +97,9 @@ const ItemM = ({ item, teamId }) => {
         .get(ApiPath.IM + 'blog?imId=' + id, item)
         .then(response => {
           if (response.data) {
-            window.location.reload();
+            var tmpUrl = window.location.href;
+            var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+            window.location.href = newUrl;
           } else {
             window.alert("ブログ投稿エラーです");
           }
@@ -117,7 +119,9 @@ const ItemM = ({ item, teamId }) => {
         .then(response => {
           // 処理が成功したらresponseにはstatus=200,data=trueを返却するようにしてる
           if (response.data) {
-            window.location.reload();
+            var tmpUrl = window.location.href;
+            var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+            window.location.href = newUrl;
           } else {
             window.alert("削除エラーです");
             console.log(response);
@@ -200,7 +204,9 @@ const ItemM = ({ item, teamId }) => {
     .post(ApiPath.IM + "upd", data)
     .then(response => {
       if (response.data) {
-        window.location.reload();
+        var tmpUrl = window.location.href;
+        var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+        window.location.href = newUrl;
       } else {
         window.alert("更新エラーです");
       }

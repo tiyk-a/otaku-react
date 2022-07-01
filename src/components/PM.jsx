@@ -107,7 +107,9 @@ const PM = ({ pm, teamId }) => {
     .post(ApiPath.PM + pm.id, data)
     .then(response => {
       if (response.data) {
-        window.location.reload();
+        var tmpUrl = window.location.href;
+        var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+        window.location.href = newUrl;
       } else {
       window.alert("更新エラーです");
       }
@@ -125,7 +127,9 @@ const PM = ({ pm, teamId }) => {
     .then(response => {
       // 処理が成功したらresponseにはstatus=200,data=trueを返却するようにしてる
       if (response.data) {
-        window.location.reload();
+        var tmpUrl = window.location.href;
+        var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+        window.location.href = newUrl;
       } else {
         window.alert("削除エラーです");
         console.log(response);
