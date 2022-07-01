@@ -104,7 +104,7 @@ const HeaderBar = styled(AppBar)({
  */
 const Btn = styled(Button)({
   marginLeft: '26px',
-  background: '#db36a4',
+  background: '#FFF2F2',
   margin: '10px 0',
   color: 'black',
 });

@@ -267,7 +267,7 @@ const TvList = ({tvList, pmList, teamId, candPmList}) => {
  */
 const Btn = styled(Button)({
   marginLeft: '26px',
-  background: '#db36a4',
+  background: '#FFF2F2',
   color: 'black',
 });
 

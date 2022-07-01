@@ -460,7 +460,7 @@ const Text = styled(Box)({
  */
 const Btn = styled(Button)({
   marginTop: '20px',
-  background: '#db36a4',
+  background: '#FFF2F2',
   display: 'block',
   color: 'black',
 });
