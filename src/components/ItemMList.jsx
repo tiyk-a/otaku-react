@@ -339,7 +339,6 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           )
         }
       }()}
-      <p>登録に失敗する場合、amazon_imageを空にしてください</p>
       <MediaQuery query="(min-width: 767px)">
         {/* PC */}
         <h3>未チェックItem</h3>
