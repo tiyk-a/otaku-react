@@ -29,13 +29,17 @@ const Top = () => {
     var tmpTeamId = null;
 
     // Top画面リクエストならallメソッドでデータ取ってくる。それ以外はチームのを取って送る
-    if (id === undefined || id === 5) {
-      setId(17);
-      tmpTeamId = 17;
-    } else {
+    if (id !== undefined && id !== 5) {
       setId(id);
       tmpTeamId = id;
+    } else if (teamId !== undefined || teamId !== 5) {
+      setId(teamId);
+      tmpTeamId = teamId;
+    } else {
+      setId(17);
+      tmpTeamId = 17;
     }
+
     path = 'api/' + tmpTeamId;
 
     await axios

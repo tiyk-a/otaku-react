@@ -1,6 +1,7 @@
 import { Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useCallback, useEffect, useState } from 'react';
+import { NumberParam, useQueryParam } from 'use-query-params';
 import axios from '../axios';
 import TvList from '../components/TvList';
 import { ApiPath } from '../constants';
@@ -15,7 +16,7 @@ const All = () => {
   const [tvList, setTvList] = useState([]);
   const [pmList, setPmList] = useState([]);
   const [candPmList, setCandPmList] = useState([]);
-  const [teamId, setTeamId] = useState('');
+  const [teamId, setTeamId] = useQueryParam('teamId', NumberParam);
   const [id, setId] = useState('');
   // 未確認データ件数
   const [numbers, setNumbers] = useState({});
@@ -24,14 +25,15 @@ const All = () => {
   const getAllTv = useCallback(async (id) => {
 
     var tmpTeamId = null;
-    if (id === undefined || id === 5) {
-      setId(17);
-      setTeamId(17);
-      tmpTeamId = 17;
-    } else {
+    if (id !== undefined && id !== 5) {
       setId(id);
-      setTeamId(id);
       tmpTeamId = id;
+    } else if (teamId !== undefined || teamId !== 5) {
+      setId(teamId);
+      tmpTeamId = teamId;
+    } else {
+      setId(17);
+      tmpTeamId = 17;
     }
 
     setTvList([]);
@@ -121,6 +123,8 @@ const All = () => {
   }, [getAllTv]);
 
   const handleChange = e => {
+    setTeamId(e);
+    setId(e);
     history.push('/tv?teamId=' + e);
     getAllTv(e);
   };
