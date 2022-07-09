@@ -96,11 +96,9 @@ const Program = ({ program, teamId, candPmList }) => {
         .post(ApiPath.TV, data)
         .then(response => {
           if (response.data) {
-            if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
-              window.location.href = window.location.href + "?teamId=" + teamId;
-            } else {
-              window.location.href = window.location.href;
-            }
+            var tmpUrl = window.location.href;
+            var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+            window.location.href = newUrl;
           } else {
             window.alert("更新エラーです");
           }
