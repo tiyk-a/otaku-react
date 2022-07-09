@@ -245,13 +245,24 @@ const Item = ({ item, teamId }) => {
   }
 
   // 入力された検索ワードをSTATEに反映
-  const handleVerArr = e => {
+  const handleAddVer = e => {
     const txt = e.target.value;
     setTmpVer(txt);
     if (!editedFlg) {
       setEditedFlg(true);
     }
   };
+
+  const handleVerArr = e => {
+    var newVar = e.target.value;
+    var index = e.target.name;
+    // 1. Make a shallow copy of the items
+    let vers = [...verArr];
+    // 2. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    vers[index] = [null, newVar, null];
+    // 3. Set the state to our new copy
+    setVerArr(vers);
+  }
 
   const updFctChk = async (e) => {
     if (imId === null || imId === undefined || imId === 0) {
@@ -520,7 +531,7 @@ const toggleSelectedItem = () => {
               type="text"
               name="ver"
               value={tmpVer}
-              onChange={handleVerArr}
+              onChange={handleAddVer}
               placeholder="バージョン(記号x,Enterで追加)"
               className="titleInput"
               onKeyDown={addVerArr}
@@ -528,15 +539,13 @@ const toggleSelectedItem = () => {
             {verArr.length > 0 ? (
               verArr.map((e, index) => (
                 <div className="itemBox" key={index}>
-                  <p>{e}</p>
                   <Input
                     type="text"
-                    name="ver"
+                    name={index}
                     value={e[1]}
                     onChange={handleVerArr}
                     placeholder="ver"
                     className="titleInput"
-                    onKeyDown={addVerArr}
                   />
                 </div>
               ))
