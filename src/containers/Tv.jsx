@@ -56,6 +56,18 @@ const All = () => {
             prelMList: data.prelMList,
           };
           list.push(program);
+
+          // 参考PMリスト
+          const tmpList = data.relPmList;
+          console.log(tmpList);
+
+          if (tmpList !== undefined) {
+            const relPmList = [];
+            tmpList.forEach(data => {
+              relPmList.push(data);
+            });
+            setCandPmList(relPmList);
+          }
         });
 
         list.sort(function(first, second){
@@ -93,16 +105,6 @@ const All = () => {
           }
         });
         setPmList(pmlist);
-
-        // 参考PMリスト
-        const tmpList = response.data.relPmList;
-        if (tmpList !== undefined) {
-          const relPmList = [];
-          tmpList.forEach(data => {
-            relPmList.push(data);
-          });
-          setCandPmList(relPmList);
-        }
 
         // 未確認データ件数
         const numbers = response.data.pnumberMap;
