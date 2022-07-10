@@ -107,7 +107,6 @@ const All = () => {
         // 未確認データ件数
         const numbers = response.data.pnumberMap;
         if (numbers !== null) {
-          console.log(numbers);
           setNumbers(numbers);
         }
       })

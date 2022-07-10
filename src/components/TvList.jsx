@@ -29,7 +29,6 @@ const TvList = ({tvList, pmList, teamId, candPmList}) => {
     await axios
       .get(ApiPath.PM + 'search?key=' + key)
       .then(response => {
-        console.log(response.data);
         setPmSearchRes(response.data);
         if (response.data.length === 0) {
           window.alert("0 data hit :(");
@@ -100,7 +99,7 @@ const TvList = ({tvList, pmList, teamId, candPmList}) => {
           var j = 0;
           while (arrPrel[j]!== undefined && arrPrel[j+1]!== undefined && arrPrel[j+2]!== undefined) {
             prel.push([Number(arrPrel[j]), Number(arrPrel[j+1]), Number(arrPrel[j+2])]);
-            j = j + 3;
+            j = j + 4;
           }
         }
 
@@ -110,7 +109,7 @@ const TvList = ({tvList, pmList, teamId, candPmList}) => {
           var k = 0;
           while (arrPrel[j]!== undefined && arrPrel[j+1]!== undefined && arrPrel[j+2]!== undefined) {
             prelm.push([Number(arrPrelM[k]), Number(arrPrelM[k+1]), Number(arrPrelM[k+2])]);
-            k = k + 3;
+            k = k + 4;
           }
         }
         
@@ -128,7 +127,6 @@ const TvList = ({tvList, pmList, teamId, candPmList}) => {
       }
     });
 
-    console.log(data);
     await axios
       .post(ApiPath.PM + "bundle/new", data)
       .then(response => {

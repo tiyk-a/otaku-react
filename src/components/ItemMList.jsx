@@ -46,7 +46,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
     const data = [];
 
     Array.from(elems).forEach((e) => {
-      if (e.dataset.imid === null) {
+      if (e.dataset.imid === null || e.dataset.imid === "0") {
         const verArr = [];
         if (e.dataset.verarr !== undefined && e.dataset.verarr !== null) {
           var arr = e.dataset.verarr.split(",");
@@ -63,9 +63,9 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         if (e.dataset.irel !== undefined && e.dataset.irel !== null) {
           var arrIrel = e.dataset.irel.split(",");
           var j = 0;
-          while (arrIrel[j]!== undefined) {
-            irel.push(arrIrel[j], arrIrel[j+1], arrIrel[j+2]);
-            j = j + 3;
+          while (arrIrel[j]!== undefined && arrIrel[j+1]!== undefined && arrIrel[j+2]!== undefined) {
+            irel.push([arrIrel[j], arrIrel[j+1], arrIrel[j+2]]);
+            j = j + 4;
           }
         }
 
@@ -75,9 +75,9 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         if (e.dataset.irelm !== undefined && e.dataset.irelm !== null) {
           var arrIrelM = e.dataset.irelm.split(",");
           var k = 0;
-          while (arrIrelM[k]!== undefined) {
-            irelm.push(arrIrelM[k], arrIrelM[k+1], arrIrelM[k+2]);
-            k = k + 3;
+          while (arrIrelM[k]!== undefined && arrIrelM[k+1]!== undefined && arrIrelM[k+2]!== undefined) {
+            irelm.push([arrIrelM[k], arrIrelM[k+1], arrIrelM[k+2]]);
+            k = k + 4;
           }
         }
 

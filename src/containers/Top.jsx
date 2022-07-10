@@ -130,7 +130,6 @@ const Top = () => {
         }
 
         if (numbers !== null) {
-          console.log(numbers);
           setNumbers(numbers);
         }
       }).catch(error => {
