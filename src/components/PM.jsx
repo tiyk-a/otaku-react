@@ -32,6 +32,7 @@ const PM = ({ pm, teamId }) => {
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const [pmrelObj, setPmrelObj] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
+  const [addMem, setAddMem] = useState(false);
 
   useEffect(() => {
     setId(pm.id);
@@ -199,6 +200,14 @@ const PM = ({ pm, teamId }) => {
     setPmrel(vers);
     setAddPrelFlg(false);
     insertPrelObj(vers, pmrelM);
+  }
+
+  const toggleAddMem = () => {
+    if (!addMem) {
+      setAddMem(true);
+    } else {
+      setAddMem(false);
+    }
   }
 
   const toggleAddPrelFlg = () => {
@@ -422,7 +431,7 @@ const PM = ({ pm, teamId }) => {
                                     return (
                                       <div>
                                         {g.list.map((l, i) => (
-                                          <p onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
+                                          <p  style={addMem ? showEle : hideEle} onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
                                         ))}
                                         {g.redList.map((l, i) => (
                                           <p className="colorRed" onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
@@ -466,6 +475,17 @@ const PM = ({ pm, teamId }) => {
             ) : (
               <Btn onClick={toggleAddPrelFlg}>+prel</Btn>
             )}
+            {function() {
+              if (!addMem) {
+                return(
+                  <Btn onClick={toggleAddMem}>Mem編集</Btn>
+                )
+              } else {
+                return(
+                  <Btn onClick={toggleAddMem}>Mem編集完了</Btn>
+                )
+              }
+            }()}
           </li>
           <li className='flex_column'>
             <Btn onClick={updPm}>更新</Btn>
@@ -494,6 +514,14 @@ const Btn = styled(Button)({
   margin: '10px 0',
   color: 'black',
 });
+
+const showEle = {
+  "display": "block",
+}
+
+const hideEle = {
+  "display": "none",
+}
 
 export default PM;
 

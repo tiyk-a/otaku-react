@@ -28,6 +28,7 @@ const ItemM = ({ item, teamId }) => {
   const [memberIdList, setMemberIdList] = useState([]);
   const [addIMrelFlg, setAddIMrelFlg] = useState(false);
   const [media, setMedia] = useState(1);
+  const [addMem, setAddMem] = useState(false);
 
   useEffect(() => {
     // メディア判定
@@ -150,6 +151,14 @@ const ItemM = ({ item, teamId }) => {
       setEditedFlg(true);
     }
   };
+
+  const toggleAddMem = () => {
+    if (!addMem) {
+      setAddMem(true);
+    } else {
+      setAddMem(false);
+    }
+  }
 
   const handleVerArr = e => {
     const txt = e.target.value;
@@ -327,9 +336,9 @@ const ItemM = ({ item, teamId }) => {
                                                 )
                                               } else {
                                                 return (
-                                                  <div>
+                                                  <div style={addMem ? showEle : hideEle}>
                                                     {function() {
-                                                      if (index === 0) {
+                                                      if (f[2] !== g.id && index === 0) {
                                                         return (
                                                           <p onClick={() => toggleImrelM(e[0], g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                                         )
@@ -345,7 +354,7 @@ const ItemM = ({ item, teamId }) => {
                                     )
                                   } else {
                                     return (
-                                      <div>
+                                      <div style={addMem ? showEle : hideEle}>
                                         <p onClick={() => toggleImrelM(e[0], g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                       </div>
                                     )
@@ -372,30 +381,42 @@ const ItemM = ({ item, teamId }) => {
               <></>
             )
           }
-
-          {addIMrelFlg ? (
-            <NativeSelect
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              defaultValue=""
-              value={exportFunction.teamIdToName(4)}
-              label="Age"
-              onChange={handleChangeAddIMrel}
-              name="tmpIrel"
-            >
-            {teamIdList !== null && teamIdList !== undefined ? (
-              teamIdList.map((f, index) => (
-                <option key={f.id} value={exportFunction.teamIdToName(f.id)}>
-                  {exportFunction.teamIdToName(f.id)}
-                </option>
-                ))
+          <div style={row}>
+            {addIMrelFlg ? (
+              <NativeSelect
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                defaultValue=""
+                value={exportFunction.teamIdToName(4)}
+                label="Age"
+                onChange={handleChangeAddIMrel}
+                name="tmpIrel"
+              >
+              {teamIdList !== null && teamIdList !== undefined ? (
+                teamIdList.map((f, index) => (
+                  <option key={f.id} value={exportFunction.teamIdToName(f.id)}>
+                    {exportFunction.teamIdToName(f.id)}
+                  </option>
+                  ))
+              ) : (
+                <></>
+              )}
+              </NativeSelect>
             ) : (
-              <></>
+              <Btn onClick={toggleAddIMrelFlg}>+imrel</Btn>
             )}
-            </NativeSelect>
-          ) : (
-            <Btn onClick={toggleAddIMrelFlg}>+imrel</Btn>
-          )}
+            {function() {
+              if (!addMem) {
+                return(
+                  <Btn onClick={toggleAddMem}>Mem編集</Btn>
+                )
+              } else {
+                return(
+                  <Btn onClick={toggleAddMem}>Mem編集完了</Btn>
+                )
+              }
+            }()}
+          </div>
           </li>
           <li>
             IMId: {item.id}
@@ -502,6 +523,14 @@ const row = {
 const column = {
   "display" : "flex",
   "flex-direction" :"column"
+}
+
+const showEle = {
+  "display": "block",
+}
+
+const hideEle = {
+  "display": "none",
 }
 
 export default ItemM;
