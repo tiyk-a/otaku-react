@@ -17,20 +17,15 @@ const Header = styles => {
     cursor: 'pointer',
   };
 
-  // トップ画面に変遷
-  const toTop = () => {
-    history.push('/');
-  };
-
   // マスター商品画面に変遷
   const linkIm = () => {
-    const url = `/`;
+    const url = `/?teamId=17`;
     history.push(url);
   };
 
   // TV画面に変遷
   const linkTv = () => {
-    const url = `/tv/`;
+    const url = `/tv?teamId=17`;
     history.push(url);
   };
 
@@ -43,7 +38,7 @@ const Header = styles => {
   return (
     <HeaderBar>
       <div className="flexRowCenter ">
-          <p style={headerStyle} onClick={toTop}>ジャニ！</p>
+          <p style={headerStyle} onClick={linkIm}>ジャニ！</p>
           <p>Env:{process.env.NODE_ENV}</p>
       </div>
       <div>
