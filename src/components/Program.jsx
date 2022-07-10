@@ -290,7 +290,7 @@ const Program = ({ program, teamId, candPmList }) => {
       </a>
       <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedProgram}>
         {editedFlg
-          ? (<div className="target_p" id={program.id} data-pmid={pmId} data-teamid={teamId} data-title={title} data-prel={prel} data-prelm={prelM}></div>)
+          ? (<div className="target_p" id={program.id} data-pmid={pmId} data-teamid={teamId} data-title={title} data-description={description} data-prel={prel} data-prelm={prelM}></div>)
           : (<div id={program.id} data-teamid={teamId}></div>)}
         <Text>
           <ul>

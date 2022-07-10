@@ -325,7 +325,7 @@ const PM = ({ pm, teamId }) => {
   return (
     <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
       {editedFlg
-        ? (<div className="target_pm" id={pm.id} data-teamid={teamId} data-title={title} data-prel={pmrel} data-prelm={pmrelM}></div>)
+        ? (<div className="target_pm" id={pm.id} data-teamid={teamId} data-title={title} data-description={description} data-prel={pmrel} data-prelm={pmrelM}></div>)
         : (<div id={pm.id} data-teamid={teamId}></div>)}
       <Text>
         <ul>

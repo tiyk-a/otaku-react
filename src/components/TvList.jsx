@@ -117,6 +117,7 @@ const TvList = ({tvList, pmList, teamId, candPmList}) => {
           program_id: e.id,
           pm_id: e.dataset.pmid,
           teamId: e.dataset.teamid,
+          description: e.dataset.description,
           pmrel: prel,
           pmrelm: prelm,
           title: e.dataset.title,
