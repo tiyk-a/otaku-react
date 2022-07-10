@@ -320,8 +320,35 @@ const PM = ({ pm, teamId }) => {
         : (<div id={pm.id} data-teamid={teamId}></div>)}
       <Text>
         <ul>
-          <li className="textBoxTitle">
+          <li>
             <p>pmId: {pm.id}</p>
+            {verList !== null && verList !== undefined ? (
+              <ul>
+                {verList.map((e, index) => (
+                  <li className='flex_column'>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
+                      <DateTimePicker
+                      label="on_air_date"
+                      value={e.on_air_date}
+                      // onChange={handleChangeDate}
+                      format="yyyy/MM/dd HH:mm"
+                      />
+                    </MuiPickersUtilsProvider>
+                    <br />
+                    <Input
+                      type="text"
+                      name="station_name"
+                      value={e.station_name}
+                      onChange={handleChange}
+                      placeholder="station"
+                      className="titleInput"
+                    />
+                </li>
+                ))}
+              </ul>
+            ) : ("")}
+          </li>
+          <li className="textBoxTitle">
             <Input
               type="text"
               name="p_name"
@@ -356,32 +383,6 @@ const PM = ({ pm, teamId }) => {
               minRows={3}
               maxRows={5}
             />
-          </li>
-          <li>
-            {verList !== null && verList !== undefined ? (
-              <ul>
-                {verList.map((e, index) => (
-                  <li className='flex_row'>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
-                      <DateTimePicker
-                      label="on_air_date"
-                      value={e.on_air_date}
-                      // onChange={handleChangeDate}
-                      format="yyyy-MM-dd HH:mm"
-                      />
-                    </MuiPickersUtilsProvider>
-                    <Input
-                      type="text"
-                      name="station_name"
-                      value={e.station_name}
-                      onChange={handleChange}
-                      placeholder="station"
-                      className="titleInput"
-                    />
-                </li>
-                ))}
-              </ul>
-            ) : ("")}
           </li>
           <li>
             {pmrel !== null && pmrel !== undefined ? (

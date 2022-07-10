@@ -15,7 +15,7 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
  */
 const ItemM = ({ item, teamId }) => {
   const moment = require("moment");
-  const date = moment(item.pubDate).format('YYYY-MM-DD');
+  const date = moment(item.pubDate).format('YYYY/MM/DD');
   const [id, setId] = useState('');
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
@@ -396,13 +396,13 @@ const ItemM = ({ item, teamId }) => {
           ) : (
             <Btn onClick={toggleAddIMrelFlg}>+imrel</Btn>
           )}
-          <br />
-          {date}
           </li>
           <li>
             IMId: {item.id}
             <br />
             WpId: {item.wpId !== null && item.wpId !== undefined ? (item.wpId) : ("No Wp")}
+            <br />
+            {date}
           </li>
           <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
             <Input

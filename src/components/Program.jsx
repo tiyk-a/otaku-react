@@ -49,7 +49,7 @@ const Program = ({ program, teamId, candPmList }) => {
       setUrl("");
     }
     
-    setDate(moment(program.date).format('YYYY-MM-DD HH:mm'));
+    setDate(moment(program.date).format('YYYY/MM/DD HH:mm'));
     const outerArr = [];
     program.prelList.forEach((e) => {
       const innerArr = [];
@@ -113,7 +113,7 @@ const Program = ({ program, teamId, candPmList }) => {
 
   // 入力された日付をSTATEに反映
   const handleChangeDate = e => {
-    const newDate = moment(e).format('YYYY-MM-DD HH:mm');
+    const newDate = moment(e).format('YYYY/MM/DD HH:mm');
     setDate(newDate);
   };
 
@@ -295,8 +295,15 @@ const Program = ({ program, teamId, candPmList }) => {
         <Text>
           <ul>
             <li>
-              <p>pId</p>
-              {program.id}
+              <p>pId:{program.id}</p>
+              <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
+                <DateTimePicker
+                  label="on_air_date"
+                  value={date}
+                  onChange={handleChangeDate}
+                  format="yyyy/MM/dd HH:mm"
+                />
+              </MuiPickersUtilsProvider>
             </li>
             <li>
               {prel !== null && prel !== undefined ? (
@@ -381,15 +388,6 @@ const Program = ({ program, teamId, candPmList }) => {
               ) : (
                 <Btn onClick={toggleAddPrelFlg}>+prel</Btn>
               )}
-              <br />
-              <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
-                <DateTimePicker
-                  label="on_air_date"
-                  value={date}
-                  onChange={handleChangeDate}
-                  format="yyyy-MM-dd HH:mm"
-                />
-              </MuiPickersUtilsProvider>
             </li>
             <li className="">
               <Input

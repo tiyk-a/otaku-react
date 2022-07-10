@@ -47,7 +47,7 @@ const Item = ({ item, teamId }) => {
     var outerArrM = extractAndSetIrelM(item);
 
     setId(item.id);
-    setDate(moment(item.pubDate).format('YYYY-MM-DD'));
+    setDate(moment(item.pubDate).format('YYYY/MM/DD'));
     setImId(0);
     setTitle(item.title);
     setTeamIdList(exportFunction.getAllTeam());
@@ -405,6 +405,8 @@ const toggleSelectedItem = () => {
         <ul style={media === 1 ? row : column}>
           <input type="checkbox" className="hiddenCheckBox" name="add_item" checked={isChecked} value={id} />
           <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
+            <p>ItmId•{item.id}</p>
+            <br />
             <Input
             type="text"
             name="IM register"
@@ -422,6 +424,20 @@ const toggleSelectedItem = () => {
               placeholder="amazon_image"
               className="titleInput"
             />
+            <br />
+            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
+              <DatePicker
+                variant="inline"
+                inputVariant="standard"
+                format="yyyy/MM/dd"
+                id="date"
+                label="発売日"
+                value={date}
+                onChange={handleChangeDate}
+                className="dateForm"
+                autoOk={true}
+              />
+            </MuiPickersUtilsProvider>
           </li>
           <li style={media === 1 ? null : column}>
             {irel !== null && irel !== undefined ? (
@@ -507,22 +523,6 @@ const toggleSelectedItem = () => {
             ) : (
               <Btn onClick={toggleAddIrelFlg}>+irel</Btn>
             )}
-            <br />
-            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
-              <DatePicker
-                variant="inline"
-                inputVariant="standard"
-                format="yyyy/MM/dd"
-                id="date"
-                label="発売日"
-                value={date}
-                onChange={handleChangeDate}
-                className="dateForm"
-                autoOk={true}
-              />
-            </MuiPickersUtilsProvider>
-            <br />
-            <p>ItmId•{item.id}</p>
             <br />
             {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("")}
           </li>
