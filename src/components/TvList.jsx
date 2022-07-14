@@ -132,10 +132,12 @@ const TvList = ({tvList, pmList, teamId}) => {
       .post(ApiPath.PM + "bundle/new", data)
       .then(response => {
         if (response.data) {
-          if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
-            window.location.href = window.location.href + "?teamId=" + teamId;
-          }
-          //  else {
+          var tmpUrl = window.location.href;
+          var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+          window.location.href = newUrl;
+          // if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
+          //   window.location.href = window.location.href + "?teamId=" + teamId;
+          // } else {
           //   window.location.href = window.location.href;
           // }
         } else {
@@ -163,10 +165,12 @@ const TvList = ({tvList, pmList, teamId}) => {
       .post(ApiPath.TV + "bundle/del_p", data)
       .then(response => {
         if (response.data) {
-          if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
-            window.location.href = window.location.href + "?teamId=" + teamId;
-          }
-          //  else {
+          var tmpUrl = window.location.href;
+          var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+          window.location.href = newUrl;
+          // if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
+          //   window.location.href = window.location.href + "?teamId=" + teamId;
+          // } else {
           //   window.location.href = window.location.href;
           // }
         } else {
