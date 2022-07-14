@@ -18,7 +18,7 @@ import exportFunctionRel from '../functions/RelManage';
  * @param {object} program
  * @returns jsx
  */
-const Program = ({ program, teamId, candPmList }) => {
+const Program = ({ program, teamId }) => {
   const moment = require("moment");
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -26,6 +26,7 @@ const Program = ({ program, teamId, candPmList }) => {
   const [date, setDate] = useState('');
   const [prel, setPrel] = useState([]);
   const [prelM, setPrelM] = useState([]);
+  const [relPm, setRelPM] = useState([]);
   const [teamIdList, setTeamIdList] = useState([]);
   const [id, setId] = useState('');
   const [pmId, setPmId] = useState('');
@@ -65,6 +66,8 @@ const Program = ({ program, teamId, candPmList }) => {
       outerArrM.push(innerArrM);
     });
     setPrelM(outerArrM);
+
+    setRelPM(program.relPmList);
 
     setTeamIdList(exportFunction.getAllTeam());
     insertPrelObj(outerArr, outerArrM);
@@ -410,9 +413,9 @@ const Program = ({ program, teamId, candPmList }) => {
                 maxRows={5}
               />
               {function() {
-                if (candPmList !== null && candPmList !== undefined && candPmList.length > 0) {
+                if (relPm.length > 0) {
                   return (
-                    candPmList.map((f, index) => (
+                    relPm.map((f, index) => (
                       <p>{f}</p>
                     ))
                   )

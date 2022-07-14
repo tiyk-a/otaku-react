@@ -13,7 +13,7 @@ import NativeSelect from '@mui/material/NativeSelect';
  * @param {array} itemList
  * @returns jsx
  */
-const TvList = ({tvList, pmList, teamId, candPmList}) => {
+const TvList = ({tvList, pmList, teamId}) => {
 
   const [pmSearchRes, setPmSearchRes] = useState([]);
   const [otherPmTitle, setOtherPmTitle] = useState("");
@@ -238,7 +238,7 @@ const TvList = ({tvList, pmList, teamId, candPmList}) => {
       {tvList !== undefined && tvList.length > 0 ? (
         tvList.map((e, index) => (
           <div className="itemBox" key={index}>
-            <Program program={e} teamId={teamId} key={e.id} candPmList={candPmList} />
+            <Program program={e} teamId={teamId} key={e.id} />
           </div>
         ))
       ) : (
