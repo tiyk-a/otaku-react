@@ -14,7 +14,7 @@ var url = '';
  */
 const axios = Axios.create({
   baseURL: url,
-  timeout: 30000, 
+  timeout: 100000, 
 });
 
 /** axios interceptor */
