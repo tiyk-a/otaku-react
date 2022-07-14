@@ -68,7 +68,7 @@ const Program = ({ program, teamId, candPmList }) => {
 
     setTeamIdList(exportFunction.getAllTeam());
     insertPrelObj(outerArr, outerArrM);
-  }, []);
+  }, [moment, program.date, program.description, program.id, program.prelList, program.prelMList, program.title, program.url]);
 
   // PM登録
   const registerPM = async () => {
@@ -257,7 +257,7 @@ const Program = ({ program, teamId, candPmList }) => {
               redList.push(relM[2]);
             }
 
-            elem.teamId = elem.teamId;
+            // elem.teamId = elem.teamId;
             elem.list = list;
             elem.redList = redList;
             objArr[index_obj_var] = elem;

@@ -189,7 +189,7 @@ exports.getCal = function(teamId) {
         teamId = Number(teamId)
     }
     var teamObject = teamList.find(t => t.id === teamId);
-    if (teamObject === null || teamObject == undefined) {
+    if (teamObject === null || teamObject === undefined) {
         teamObject = teamList.find(t => t.id === 5);
     }
     return teamObject.cal;

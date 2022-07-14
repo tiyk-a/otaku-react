@@ -52,7 +52,7 @@ const Item = ({ item, teamId }) => {
     setTitle(item.title);
     setTeamIdList(exportFunction.getAllTeam());
     insertIrelObj(outerArr, outerArrM);
-  }, [item.id, item.pubDate, item.title, moment]);
+  }, [item, item.id, item.pubDate, item.title, moment]);
 
   // メディア判別
   const isSmartPhone = () => {
@@ -370,7 +370,7 @@ const Item = ({ item, teamId }) => {
               redList.push(relM[2]);
             }
 
-            elem.teamId = elem.teamId;
+            // elem.teamId = elem.teamId;
             elem.list = list;
             elem.redList = redList;
             objArr[index_obj_var] = elem;

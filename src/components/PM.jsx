@@ -18,7 +18,6 @@ import NativeSelect from '@mui/material/NativeSelect';
  * @returns jsx
  */
 const PM = ({ pm, teamId }) => {
-  const moment = require("moment");
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   // const [date, setDate] = useState('');
@@ -27,7 +26,6 @@ const PM = ({ pm, teamId }) => {
   const [verList, setVerList] = useState([]);
   const [teamIdList, setTeamIdList] = useState([]);
   const [id, setId] = useState('');
-  const [pmId, setPmId] = useState('');
   const [addPrelFlg, setAddPrelFlg] = useState(false);
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const [pmrelObj, setPmrelObj] = useState([]);
@@ -80,7 +78,7 @@ const PM = ({ pm, teamId }) => {
 
   setTeamIdList(exportFunction.getAllTeam());
   insertPrelObj(outerArr, outerArrM);
-  }, []);
+  }, [pm.description, pm.id, pm.pmrelList, pm.pmrelMList, pm.title, pm.verList]);
 
   // Item一括選択のためにboxを押したら選択/解除する
   const toggleSelectedItem = () => {
@@ -307,7 +305,7 @@ const PM = ({ pm, teamId }) => {
             redList.push(relM[2]);
           }
 
-          elem.teamId = elem.teamId;
+          // elem.teamId = elem.teamId;
           elem.list = list;
           elem.redList = redList;
           objArr[index_obj_var] = elem;

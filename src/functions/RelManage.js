@@ -7,10 +7,10 @@ exports.getDistinctRel = function(irel) {
             irelTeamId.push(rel[2]);
         } else {
             irelDistinct.map((e, index) => {
-            if (e[2] === rel[2] && e[3] !== 1 && rel[3] === 1) {
-                irelDistinct.splice(index, 1);
-                irelDistinct.push(e);
-            }
+                if (e[2] === rel[2] && e[3] !== 1 && rel[3] === 1) {
+                    irelDistinct.splice(index, 1);
+                    irelDistinct.push(e);
+                }
             })
         }
     })

@@ -137,7 +137,7 @@ const Top = () => {
           window.alert("タイムアウトしました");
         }
       });
-  }, []);
+  }, [teamId]);
 
   useEffect(() => {
 
@@ -146,7 +146,7 @@ const Top = () => {
     }
     getTeamItems(teamId);
     
-  }, [getTeamItems]);
+  }, [getTeamItems, setTeamId, teamId]);
 
   const handleChange = e => {
     history.push('/?teamId=' + e);

@@ -263,7 +263,7 @@ const ItemForm = () => {
               redList.push(relM[2]);
             }
 
-            elem.teamId = elem.teamId;
+            // elem.teamId = elem.teamId;
             elem.list = list;
             elem.redList = redList;
             objArr[index_obj_var] = elem;

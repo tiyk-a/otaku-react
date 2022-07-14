@@ -69,7 +69,7 @@ const ItemM = ({ item, teamId }) => {
     setImage(item.image);
     setTeamIdList(exportFunction.getAllTeam());
     setMemberIdList(exportFunction.getAllMember());
-  }, [item.id]);
+  }, [item.id, item.image, item.relList, item.relMList, item.title, item.ver]);
 
   // メディア判別
   const isSmartPhone = () => {

@@ -117,7 +117,7 @@ const All = () => {
           window.alert("タイムアウトしました");
         }
       });
-   }, []);
+   }, [teamId]);
 
   useEffect(() => {
     getAllTv(5);

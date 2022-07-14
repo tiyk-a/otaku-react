@@ -91,7 +91,7 @@ const TvList = ({tvList, pmList, teamId, candPmList}) => {
     const data = [];
 
     Array.from(elems).forEach((e) => {
-      if (e.dataset.pmid === null || e.dataset.pmid == "") {
+      if (e.dataset.pmid === null || e.dataset.pmid === "") {
 
         const prel = [];
         if (e.dataset.prel !== undefined && e.dataset.prel !== null) {
@@ -134,9 +134,10 @@ const TvList = ({tvList, pmList, teamId, candPmList}) => {
         if (response.data) {
           if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
             window.location.href = window.location.href + "?teamId=" + teamId;
-          } else {
-            window.location.href = window.location.href;
           }
+          //  else {
+          //   window.location.href = window.location.href;
+          // }
         } else {
           window.alert("登録エラーです");
           console.log(response);
@@ -164,9 +165,10 @@ const TvList = ({tvList, pmList, teamId, candPmList}) => {
         if (response.data) {
           if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
             window.location.href = window.location.href + "?teamId=" + teamId;
-          } else {
-            window.location.href = window.location.href;
           }
+          //  else {
+          //   window.location.href = window.location.href;
+          // }
         } else {
           window.alert("登録エラーです");
           console.log(response);
