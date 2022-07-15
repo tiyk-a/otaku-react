@@ -154,7 +154,11 @@ const TvList = ({tvList, pmList, teamId}) => {
 
   // 対象Pを一括で削除します
   const bundleDelP = async() => {
-    window.alert("一括削除しますか？");
+    var res = window.confirm("一括削除しますか？");
+    if (res === false) {
+      return "";
+    }
+
     var elems = document.getElementsByClassName("target_p");
     const data = [];
     Array.from(elems).forEach((e) => {
