@@ -94,6 +94,7 @@ const ItemM = ({ item, teamId }) => {
 
   const upBlog = async (item) => {
     if (teamId !== undefined) {
+      window.alert("ブログ更新発火！処理します");
       await axios
         .get(ApiPath.IM + 'blog?imId=' + id, item)
         .then(response => {
@@ -110,6 +111,8 @@ const ItemM = ({ item, teamId }) => {
             window.alert("タイムアウトしました");
           }
         });
+    } else {
+      window.alert("ブログ更新発火！teamIdがないので処理できません");
     }
   };
 
@@ -226,6 +229,25 @@ const ItemM = ({ item, teamId }) => {
       }
     });
   };
+
+  const updEyeCatch = async () => {
+    await axios
+    .get(ApiPath.IM + "eye?id=" + id)
+    .then(response => {
+      if (response.data) {
+        var tmpUrl = window.location.href;
+        var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+        window.location.href = newUrl;
+      } else {
+        window.alert("更新エラーです");
+      }
+    })
+    .catch(error => {
+      if (error.code === "ECONNABORTED") {
+        window.alert("タイムアウトしました");
+      }
+    });
+  }
 
   const handleChangeAddIMrel = e => {
     const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
@@ -478,6 +500,7 @@ const ItemM = ({ item, teamId }) => {
           <li>
             <span style={media === 1 ? column : column}>
               <Btn onClick={updIM}>IM更新</Btn>
+              <Btn onClick={updEyeCatch}>アイキャッチ更新</Btn>
               <Btn onClick={upBlog} style={item.blog_not_updated ? null : selected}>Blog更新</Btn>
               <Btn onClick={delIm}>DELETE</Btn>
             </span>
