@@ -398,7 +398,7 @@ color: #ff4444;
 .menu-btn, .menu-btn-hover,
 .menu-btn-header, .menu-btn-header-hover {
   position: fixed;
-  left: 10px;
+  right: 10px;
   display: flex;
   height: 60px;
   width: 60px;
@@ -461,10 +461,9 @@ color: #ff4444;
 }
 
 #outer-container {
-  z-index: 90;
+  z-index: 1200;
   position: fixed;
   background: pink;
-  width: 100%;
   height: auto;
   top: 0%;
   opacity: 90%;

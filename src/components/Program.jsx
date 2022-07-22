@@ -34,8 +34,12 @@ const Program = ({ program, teamId }) => {
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const [prelObj, setPrelObj] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
+  const [media, setMedia] = useState(1);
 
   useEffect(() => {
+    // メディア判定
+    isSmartPhone();
+
     setId(program.id);
     setTitle(program.title);
     if (program.description !== null && program.description !== undefined) {
@@ -72,6 +76,16 @@ const Program = ({ program, teamId }) => {
     setTeamIdList(exportFunction.getAllTeam());
     insertPrelObj(outerArr, outerArrM);
   }, [moment, program.date, program.description, program.id, program.prelList, program.prelMList, program.title, program.url]);
+
+  // メディア判別
+  const isSmartPhone = () => {
+    if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
+      // SP
+      setMedia(2);
+    } else {
+      setMedia(1);
+    }
+  }
 
   // PM登録
   const registerPM = async () => {
@@ -288,7 +302,11 @@ const Program = ({ program, teamId }) => {
     <div>
       <a href={url} target="_blank">
         <div className="link">
-          <p>{url !== "" ? url : "リンクなしnano!"}</p>
+          {media === 1 ? (
+            <p>{url !== "" ? url : "リンクなしnano!"}</p>
+          ) : (
+            <p>詳細</p>
+          )}
         </div>
       </a>
       <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedProgram}>
@@ -296,8 +314,8 @@ const Program = ({ program, teamId }) => {
           ? (<div className="target_p" id={program.id} data-pmid={pmId} data-teamid={teamId} data-title={title} data-description={description} data-prel={prel} data-prelm={prelM}></div>)
           : (<div id={program.id} data-teamid={teamId}></div>)}
         <Text>
-          <ul>
-            <li>
+          <ul style={media === 1 ? row : column}>
+            <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
               <p>pId:{program.id}</p>
               <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
                 <DateTimePicker
@@ -308,7 +326,7 @@ const Program = ({ program, teamId }) => {
                 />
               </MuiPickersUtilsProvider>
             </li>
-            <li>
+            <li style={media === 1 ? null : column}>
               {prel !== null && prel !== undefined ? (
                 prel.map((e, index) => (
                   <div class="flex_row">
@@ -393,6 +411,7 @@ const Program = ({ program, teamId }) => {
               )}
             </li>
             <li className="">
+            <li className={media === 1 ? "textBox" : "textBoxSp"}>
               <Input
                 type="text"
                 name="p_name"
@@ -471,3 +490,13 @@ const RemoveIcon = styled(RemoveCircleOutlineIcon)({
     transition: 'opacity 0.5s',
   },
 });
+
+const row = {
+  "display" : "flex",
+  "flex-direction" : "row"
+}
+
+const column = {
+  "display" : "flex",
+  "flex-direction" :"column"
+}

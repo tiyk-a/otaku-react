@@ -67,7 +67,7 @@ class App extends Component {
           {/* SP */}
           <SpHeader styles={styles} />
         </MediaQuery>
-        <MediaQuery query="(min-width: 520px) and (max-width: 959px)">
+        <MediaQuery query="(min-width: 520px) and (max-width: 768px)">
           {/* TB */}
           <TbHeader styles={styles} />
         </MediaQuery>
