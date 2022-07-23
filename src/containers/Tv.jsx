@@ -16,6 +16,7 @@ const All = () => {
   // TV一覧リストのSTATES
   const [tvList, setTvList] = useState([]);
   const [pmList, setPmList] = useState([]);
+  const [regPmList, setRegPmList] = useState([]);
   const [teamId, setTeamId] = useQueryParam('teamId', NumberParam);
   const [id, setId] = useState('');
   const [menuFlg, setMenuFlg] = useState(false);
@@ -96,6 +97,25 @@ const All = () => {
           }
         });
         setPmList(pmlist);
+
+        // そのチームの生きてるレギュラー番組
+        const regPm = response.data.regPmList;
+        if (regPm !== null) {
+          const list = [];
+          console.log(regPm);
+
+          regPm.forEach(data => {
+          const regObject = {
+            id: data.regular_pm_id,
+            title: data.title,
+            description: data.description,
+            startDate: data.start_date,
+            endDate: data.end_date,
+          };
+          list.push(regObject);
+        });
+          setRegPmList(list);
+        }
 
         // 未確認データ件数
         const numbers = response.data.pnumberMap;
@@ -214,7 +234,7 @@ const All = () => {
         <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐<span className='itemNumber'>{numbers[11]}</span></Btn>
       </MediaQuery>
       <div>
-        <TvList tvList={tvList} pmList={pmList} teamId={teamId} />
+        <TvList tvList={tvList} pmList={pmList} regPmList={regPmList} teamId={teamId} />
       </div>
     </div>
   );
