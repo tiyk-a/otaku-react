@@ -32,7 +32,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
   const [dispCal, setDispCal] = useState(false);
 
   useEffect(() => {
-    setDate(moment('2020-01-01').format('YYYY-MM-DD'));
+    setDate(moment('2020-01-01').format('YYYY/MM/DD'));
   }, [moment]);
 
   // 入力された検索ワードをSTATEに反映
@@ -211,6 +211,33 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
 
     await axios
       .post(ApiPath.IM + "bundle/upd", data)
+      .then(response => {
+        if (response.data) {
+          var tmpUrl = window.location.href;
+          var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+          window.location.href = newUrl;
+        } else {
+          window.alert("登録エラーです");
+          console.log(response);
+        }
+      })
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
+  }
+
+  // 対象IMを一括でアマゾンアイキャッチ設定します
+  const bundleIMEyeCatch = async() => {
+    var elems = document.getElementsByClassName("target_im");
+    const data = [];
+    Array.from(elems).forEach((e) => {
+      data.push(e.id);
+    });
+
+    await axios
+      .post(ApiPath.IM + "eyeBundle", data)
       .then(response => {
         if (response.data) {
           var tmpUrl = window.location.href;
@@ -531,7 +558,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           <h1>ErrorJsonはなし</h1>
         </div>
       )}
-      <h3>今後のIM<Btn onClick={bundleIM}>一括処理</Btn></h3>
+      <h3>今後のIM<Btn onClick={bundleIM}>一括処理</Btn> <Btn onClick={bundleIMEyeCatch}>一括アイキャッチ</Btn></h3>
       <p>期間指定</p>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
         <DatePicker
