@@ -13,17 +13,17 @@ import FormControl from '@mui/material/FormControl';
  *
  * @returns jsx
  */
-const RegPmUpdate = ({regPmList, teamId}) => {
+const RegPmUpdate = ({regPmList}) => {
 
   const [regPm, setRegPm] = useState('');
   const [displayForm, setDisplayForm] = useState(false);
-  const [prel, setPrel] = useState([]);
-  const [prelM, setPrelM] = useState([]);
+  const [teamArr, setTeamArr] = useState([]);
+  const [memArr, setMemArr] = useState([]);
+  const [teamAllMem, setTeamAllMem] = useState([]);
   const [id, setId] = useState('');
   const [teamIdList, setTeamIdList] = useState([]);
-  const [addPrelFlg, setAddPrelFlg] = useState(false);
+  const [addTeamFlg, setAddTeamFlg] = useState(false);
   const [staKey, setStaKey] = useState('');
-  const [prelObj, setPrelObj] = useState([]);
   const [staSearchRes, setStaSearchRes] = useState([]);
   const [staList, setStaList] = useState([]);
 
@@ -51,20 +51,29 @@ const RegPmUpdate = ({regPmList, teamId}) => {
     }
   };
 
-  const handleChangePrel = e => {
-    // var prelId = e.target.name;
-    var prelId = e.target.name;
-    // 1. Make a shallow copy of the items
-    let vers = [...prel];
-    // 2. Make a shallow copy of the item you want to mutate
-    let ver = {...vers[prelId]};
-    // 3. Replace the property you're intested in
-    ver[2] = exportFunction.nameToTeamId(e.target.value);
-    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    vers[prelId] = [ver[0], ver[1], ver[2]];
-    // 5. Set the state to our new copy
-    setPrel(vers);
-    insertPrelObj(vers, prelM);
+  /**
+   * teamArrにteamを追加します
+   * 
+   * @param {*} e 
+   */
+  const addTeamArr = e => {
+
+    var teamId = e.target.value;
+    let vers = [...teamArr];
+    vers.push(parseInt(teamId));
+    setTeamArr(vers);
+    
+    // teamAllMemもセットする
+    var tmpArr =[];
+    vers.forEach((rel) => {
+      var memList = exportFunction.getMemIdListOfTeam(rel);
+      var tmp = {
+        teamId: rel,
+        memList: memList,
+      }
+      tmpArr.push(tmp);
+    });
+    setTeamAllMem(tmpArr);
   }
 
   /**
@@ -73,7 +82,6 @@ const RegPmUpdate = ({regPmList, teamId}) => {
    * @param {*} e 
    */
   const handleChangeStaList = staId => {
-    // 1. Make a shallow copy of the items
     let vers = [...staList];
 
     if (staList.includes(staId)) {
@@ -87,123 +95,37 @@ const RegPmUpdate = ({regPmList, teamId}) => {
     setStaList(vers);
   }
 
-  // 新しいprelを配列に追加します(新規not更新)
-  const handleChangeAddPrel = e => {
-    const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
-    let vers = [...prel];
-    // [prelId, programId, teamId]
-    vers.push([null, id, teamIdTmp]);
-    setPrel(vers);
-    setAddPrelFlg(false);
-    insertPrelObj(vers, prelM);
-  }
-
-  const toggleAddPrelFlg = () => {
-    if (addPrelFlg) {
-      setAddPrelFlg(false);
+  const toggleAddTeamFlg = () => {
+    if (addTeamFlg) {
+      setAddTeamFlg(false);
     } else {
-      setAddPrelFlg(true);
+      setAddTeamFlg(true);
     }
   }
 
-  // そのチームをprelから抜きます
-  const minusPrel = (index) => {
-    let vers = [...prel];
-    // prelが最低1つあれば削除可能
+  // そのチームをteamArrから抜きます
+  const minusTeam = (index) => {
+    let vers = [...teamArr];
+    // teamArrが最低1つあれば削除可能
     if (vers.length > 1) {
       vers.splice(index, 1);
     }
-    setPrel(vers);
+    setTeamArr(vers);
   }
 
-  // メンバーがprelMに入っていなかったら追加、入っていたら抜く
-  const togglePrelM = (memberId) => {
-    let vers = [...prelM];
-    let ver2 = vers.filter(rel => rel[2] !== memberId);
+  /**
+   * メンバーがmemArrに入っていなかったら追加、入っていたら抜く
+   * 
+   * @param {*} memberId 
+   */
+  const toggleMem = (memberId) => {
+    let vers = [...memArr];
+    let ver2 = vers.filter(rel => rel !== memberId);
 
     if (vers.length === ver2.length) {
-      ver2.push([null, null, memberId, 0]);
+      ver2.push(memberId);
     }
-    setPrelM(ver2);
-    insertPrelObj(prel, ver2);
-  }
-
-  // member関連objectを全て設定
-  // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
-  const insertPrelObj = (prel, prelM) => {
-    var allMemList = exportFunction.getAllMember();
-
-    // このprogramが持ってるteamidlistを作る
-    var tmpTeamIdList = [];
-
-    if (prel !== null && prel !== undefined && prel.length > 0) {
-      prel.forEach((rel) => {
-        if (!tmpTeamIdList.includes(rel[2])) {
-          tmpTeamIdList.push(rel[2]);
-        }
-      });
-
-      var objArr = [];
-      // programが持ってるteamIdを全部オブジェクトに突っ込む
-      tmpTeamIdList.forEach((teamId) => {
-        var addFlg = true;
-        objArr.forEach((obj) => {
-          if (obj.teamId === teamId) {
-            addFlg = false;
-          }
-        });
-
-        if (addFlg && teamId !== undefined) {
-          var mList = [];
-          allMemList.forEach((g, index) => {
-            if (g.teamId === teamId) {
-              mList.push(g.id);
-            }
-          });
-
-          var elem = {
-            teamId : teamId,
-            list : mList,
-            redList : []
-          };
-          objArr.push(elem);
-        }
-      });
-
-      if (prelM !== null && prelM !== undefined) {
-        prelM.forEach((relM) => {
-          var elem = {};
-          var index_obj_var = null;
-          objArr.forEach((obj, index_obj) => {
-            var tId = exportFunction.getTeamIdOfMember(relM[2]);
-            if (obj.teamId === tId) {
-              elem = obj;
-              index_obj_var = index_obj;
-            }
-          });
-
-          if (!isEmpty(elem)) {
-            var list = elem.list;
-            var index = list.indexOf(relM[2]);
-            var redList = elem.redList;        
-
-            if (index > -1) {
-              list.splice(index, 1);
-            }
-
-            if (!redList.includes(relM[2])) {
-              redList.push(relM[2]);
-            }
-
-            // elem.teamId = elem.teamId;
-            elem.list = list;
-            elem.redList = redList;
-            objArr[index_obj_var] = elem;
-          }
-        });
-        setPrelObj(objArr);
-      }
-    }
+    setMemArr(ver2);
   }
 
   const isEmpty = (obj) => {
@@ -224,16 +146,10 @@ const RegPmUpdate = ({regPmList, teamId}) => {
   // 新しいregpmを追加しますAJAX
   const handleChangeAddRegPm = async(e) => {
     if (e.keyCode === 13) {
-      var tmArr = [];
-      prel.forEach((r) => {
-        tmArr.push(r[2]);
-      });
-      prelM.forEach((r) => {
-        tmArr.push(r[2]);
-      });
+      let tm_arr = teamArr.concat(memArr);
       const data = {
         title: e.target.value,
-        tm_id_arr: tmArr,
+        tm_id_arr: tm_arr,
         station_id_arr: staList,
       }
 
@@ -322,78 +238,85 @@ const RegPmUpdate = ({regPmList, teamId}) => {
             {/* 出演者 */}
             <li>
               <p className='text_blue'>出演者選択</p>
-              {prel !== null && prel !== undefined ? (
-                prel.map((e, index) => (
+              {teamArr !== null && teamArr !== undefined ? (
+                teamArr.map((tId, index) => (
                   <div class="flex_row">
                     <NativeSelect
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       defaultValue=""
-                      value={exportFunction.teamIdToName(e[2])}
+                      value={tId}
                       label="Age"
-                      onChange={handleChangePrel}
+                      onChange={addTeamArr}
                       name={index}
                     >
                     {teamIdList !== null && teamIdList !== undefined ? (
                       teamIdList.map((f, index) => (
-                        <option key={e[2]} value={exportFunction.teamIdToName(f.id)}>
-                          {exportFunction.teamIdToName(f.id)}
+                        <option key={tId} value={f.id}>
+                          {f.name}
                         </option>
                         ))
                     ) : (
                       <></>
                     )}
                     </NativeSelect>
-                    {e[2] === 4 ? (
-                      <RemoveIcon onClick={() => minusPrel(index)} />
+                    {tId === 4 ? (
+                      <RemoveIcon onClick={() => minusTeam(index)} />
                     ) : (null)
                     }
                     <div class="flex_column width_6rem">
-                      {function() {
-                        if (prelObj !== null && prelObj !== undefined) {
-                          return (
-                            <div>
-                              {prelObj.map((g, index) => (
-                                <div>
-                                  {function() {
-                                    if (g.teamId === e[2]) {
-                                      return (
-                                        <div>
-                                          {g.list.map((l, i) => (
-                                            <p onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
-                                          ))}
-                                          {g.redList.map((l, i) => (
-                                            <p className="colorRed" onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
-                                          ))}
-                                        </div>
-                                      )
-                                    }
-                                  }()}
-                                </div>
-                              ))}
-                            </div>
-                          )
-                        }
-                      }()}
+                      {teamAllMem.map((tmObj, index) => (
+                        <div>
+                          {function() {
+                            if (tmObj.teamId === tId) {
+                              return (
+                                <>
+                                {tmObj.memList.map((memId) => {
+                                  return (
+                                    <>
+                                    {function() {
+                                      if (memArr.includes(memId)) {
+                                        return (
+                                          <p onClick={() => toggleMem(memId)} className="colorRed" data-memId={""}>
+                                            {exportFunction.memberIdToName(memId)}
+                                          </p>
+                                        )
+                                      } else {
+                                        return (
+                                          <p onClick={() => toggleMem(memId)} data-memId={""}>
+                                            {exportFunction.memberIdToName(memId)}
+                                          </p>
+                                        )
+                                      }
+                                    }()}
+                                    </>
+                                  )
+                                })}
+                                </>
+                              )
+                            }
+                          }()}
+                        </div>
+                      ))}
                     </div>
                   </div>
                 ))
               ) : (
                 <></>
               )}
-              {addPrelFlg ? (
+              {addTeamFlg ? (
                 <NativeSelect
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   defaultValue=""
-                  value={exportFunction.teamIdToName(4)}
+                  value={4}
                   label="Age"
-                  onChange={handleChangeAddPrel}
+                  onChange={addTeamArr}
                   name="tmpPrel"
                 >
                 {teamIdList !== null && teamIdList !== undefined ? (
                   teamIdList.map((f, index) => (
-                    <option key={4} value={exportFunction.teamIdToName(f.id)}>
+                    <option key={4} value={f.id}>
                       {exportFunction.teamIdToName(f.id)}
                     </option>
                     ))
@@ -402,7 +325,7 @@ const RegPmUpdate = ({regPmList, teamId}) => {
                 )}
                 </NativeSelect>
               ) : (
-                <Btn onClick={toggleAddPrelFlg}>+prel</Btn>
+                <Btn onClick={toggleAddTeamFlg}>+teamArr</Btn>
               )}
             </li>
             {/* 放送局は複数選択が可能 */}
@@ -442,7 +365,7 @@ const RegPmUpdate = ({regPmList, teamId}) => {
           </ul>
           <p className='text_blue'>既存のregpm</p>
           {regPmList.length > 0 ? (
-            regPmList.map(pm => <p>{pm.title}</p>)):(<p>N/A</p>)}
+            regPmList.map(pm => <p>{pm.regularPM.title}</p>)):(<p>N/A</p>)}
         </div>
       ) : (
         <></>

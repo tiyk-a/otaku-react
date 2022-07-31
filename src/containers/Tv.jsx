@@ -235,7 +235,7 @@ const All = () => {
         <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐<span className='itemNumber'>{numbers[11]}</span></Btn>
       </MediaQuery>
       <div>
-        <RegPmUpdate regPmList={regPmList} teamId={teamId} />
+        <RegPmUpdate regPmList={regPmList} />
         <TvList tvList={tvList} pmList={pmList} regPmList={regPmList} teamId={teamId} />
       </div>
     </div>
