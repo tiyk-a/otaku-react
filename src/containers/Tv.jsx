@@ -7,6 +7,7 @@ import TvList from '../components/TvList';
 import { ApiPath } from '../constants';
 import history from '../history';
 import MediaQuery from "react-responsive";
+import RegPmUpdate from '../components/RegPmUpdate';
 
 /**
  * TVトップページコンテナ
@@ -55,6 +56,7 @@ const All = () => {
             url: pData.url,
             date: pData.on_air_date,
             station_id: pData.station_id,
+            station_name: data.station_name,
             prelList: data.prelList,
             prelMList: data.prelMList,
             relPmList: data.relPmList,
@@ -102,7 +104,6 @@ const All = () => {
         const regPm = response.data.regPmList;
         if (regPm !== null) {
           const list = [];
-          console.log(regPm);
 
           regPm.forEach(data => {
           const regObject = {
@@ -234,6 +235,7 @@ const All = () => {
         <Btn value="11" onClick={() => handleChange(11)} style={id === 11 ? selected : null}>嵐<span className='itemNumber'>{numbers[11]}</span></Btn>
       </MediaQuery>
       <div>
+        <RegPmUpdate regPmList={regPmList} teamId={teamId} />
         <TvList tvList={tvList} pmList={pmList} regPmList={regPmList} teamId={teamId} />
       </div>
     </div>

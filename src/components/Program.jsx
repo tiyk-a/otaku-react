@@ -1,16 +1,15 @@
-import { Box, Button, TextField, Input } from '@material-ui/core';
-import styled from '@material-ui/styles/styled';
+import DateFnsUtils from '@date-io/date-fns';
+import { Box, Button, Input, TextField } from '@material-ui/core';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import styled from '@material-ui/styles/styled';
+import NativeSelect from '@mui/material/NativeSelect';
+import jaLocale from 'date-fns/locale/ja';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { DateTimePicker } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import jaLocale from 'date-fns/locale/ja';
-import exportFunction from '../functions/TeamIdToName';
-import NativeSelect from '@mui/material/NativeSelect';
 import exportFunctionRel from '../functions/RelManage';
+import exportFunction from '../functions/TeamIdToName';
 
 /**
  *　TV１件を表示するコンポーネント
@@ -18,18 +17,22 @@ import exportFunctionRel from '../functions/RelManage';
  * @param {object} program
  * @returns jsx
  */
-const Program = ({ program, teamId }) => {
+const Program = ({ program, teamId, regPmList }) => {
   const moment = require("moment");
   const [title, setTitle] = useState('');
+  const [verTitle, setVerTitle] = useState('');
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
   const [date, setDate] = useState('');
   const [prel, setPrel] = useState([]);
   const [prelM, setPrelM] = useState([]);
   const [relPm, setRelPM] = useState([]);
+  const [regPmOptionList, setRegPmOptionList] = useState([]);
   const [teamIdList, setTeamIdList] = useState([]);
   const [id, setId] = useState('');
   const [pmId, setPmId] = useState('');
+  const [regPm, setRegPm] = useState('');
+  const [selectedRegPm, setSelectedRegPm] = useState('');
   const [addPrelFlg, setAddPrelFlg] = useState(false);
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const [prelObj, setPrelObj] = useState([]);
@@ -37,6 +40,11 @@ const Program = ({ program, teamId }) => {
   const [media, setMedia] = useState(1);
 
   useEffect(() => {
+    console.log(regPmList);
+    if (regPmList !== undefined && regPmList.length > 0) {
+      // TODO: do something
+    }
+
     // メディア判定
     isSmartPhone();
 
@@ -69,12 +77,29 @@ const Program = ({ program, teamId }) => {
       innerArrM.push(e.p_rel_mem_id, e.p_rel_id, e.member_id, 0);
       outerArrM.push(innerArrM);
     });
+
+    const outerArrReg = [];
+    if (regPmList !== undefined) {
+      console.log("kk");
+      console.log(regPmList);
+    }
+    // regPmList.forEach((e) => {
+    //   window.alert("be");
+    //   console.log(e);
+    //   window.alert("af");
+    //   // var ele = {
+
+    //   // }
+    //   outerArrReg.push(e);
+    // });
+    setRegPmOptionList(outerArrReg);
     setPrelM(outerArrM);
 
     setRelPM(program.relPmList);
 
     setTeamIdList(exportFunction.getAllTeam());
     insertPrelObj(outerArr, outerArrM);
+    setRegPmOptionList(regPmList);
   }, [moment, program.date, program.description, program.id, program.prelList, program.prelMList, program.title, program.url]);
 
   // メディア判別
@@ -144,6 +169,15 @@ const Program = ({ program, teamId }) => {
         break;
       case 'description':
         setDescription(txt);
+        break;
+      case 'regPm':
+        setRegPm(txt);
+        break;
+      case 'verTitle':
+        setVerTitle(txt);
+        break;
+      case 'selectedRegPm':
+        setSelectedRegPm(txt);
         break;
       default:
         break;
@@ -301,13 +335,7 @@ const Program = ({ program, teamId }) => {
   return (
     <div>
       <a href={url} target="_blank">
-        <div className="link">
-          {media === 1 ? (
-            <p>{url !== "" ? url : "リンクなしnano!"}</p>
-          ) : (
-            <p>詳細</p>
-          )}
-        </div>
+        <div className="link"><p>詳細</p></div>
       </a>
       <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedProgram}>
         {editedFlg
@@ -315,7 +343,7 @@ const Program = ({ program, teamId }) => {
           : (<div id={program.id} data-teamid={teamId}></div>)}
         <Text>
           <ul style={media === 1 ? row : column}>
-            <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
+            <li>
               <p>pId:{program.id}</p>
               <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
                 <DateTimePicker
@@ -410,16 +438,44 @@ const Program = ({ program, teamId }) => {
                 <Btn onClick={toggleAddPrelFlg}>+prel</Btn>
               )}
             </li>
-            <li className="">
             <li className={media === 1 ? "textBox" : "textBoxSp"}>
+              <span className='text_blue'>programタイトル</span>
+              <p>{title}</p>
+              {/* レギュラー番組候補 */}
+              <span className='text_blue'>レギュラー番組候補</span>
+              <NativeSelect
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                defaultValue=""
+                value={selectedRegPm}
+                label="selectedRegPm"
+                onChange={handleChange}
+                name="selectedRegPm"
+              >
+              {regPmOptionList !== null && regPmOptionList !== undefined ? (
+                regPmList.map((f, index) => (
+                  <option key={f.title} value={f.title}>
+                    {f.title}
+                  </option>
+                  ))
+              ) : (
+                <></>
+              )}
+              <option key={4} value={""}>
+                "N/A"
+              </option>
+              </NativeSelect>
+              <span className='text_blue'>PMタイトル</span>
               <Input
                 type="text"
-                name="p_name"
-                value={title}
+                name="verTitle"
+                value={verTitle}
+                label="番組名"
                 onChange={handleChange}
-                placeholder="title"
+                placeholder="verTitle"
                 className="titleInput"
               />
+              <span className='text_blue'>説明</span>
               <TextField
                 required
                 name="description"
@@ -431,6 +487,15 @@ const Program = ({ program, teamId }) => {
                 minRows={3}
                 maxRows={5}
               />
+              <br />
+              <Btn100 onClick={registerPM}>PM登録</Btn100>
+            </li>
+            {/* pm_ver */}
+            <li>
+              <p>放送</p>
+              {program.station_name}
+              <br />
+              <span className='text_blue'>類似予定</span>
               {function() {
                 if (relPm.length > 0) {
                   return (
@@ -440,12 +505,13 @@ const Program = ({ program, teamId }) => {
                   )
                 } else {
                   return (
-                    <p>類似PMなし</p>
+                    <div>
+                      <p>2023/01/20 レギュラー番組名 PMタイトル</p>
+                      <p>説明</p>
+                    </div>
                   )
                 }
               }()}
-              <br />
-              <Btn100 onClick={registerPM}>PM登録</Btn100>
             </li>
           </ul>
         </Text>

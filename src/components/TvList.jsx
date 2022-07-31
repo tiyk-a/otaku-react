@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
-import { Button, Input } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import styled from '@material-ui/styles/styled';
+import React from 'react';
+import axios from '../axios';
 import PM from '../components/PM';
 import Program from '../components/Program';
-import axios from '../axios';
 import { ApiPath } from '../constants';
-import styled from '@material-ui/styles/styled';
-import NativeSelect from '@mui/material/NativeSelect';
 
 /**
  *商品リストコンポーネント
@@ -13,77 +12,7 @@ import NativeSelect from '@mui/material/NativeSelect';
  * @param {array} itemList
  * @returns jsx
  */
-const TvList = ({tvList, pmList, teamId}) => {
-
-  const [pmSearchRes, setPmSearchRes] = useState([]);
-  const [otherPmTitle, setOtherPmTitle] = useState("");
-  const [pmId, setPmId] = useState(0);
-  const [pmKey, setPmKey] = useState('');
-
-  /**
-   * DBからPM検索
-   * 
-   * @param {} key 
-   */
-  const searchOtherPm = async (key) => {
-    await axios
-      .get(ApiPath.PM + 'search?key=' + key)
-      .then(response => {
-        setPmSearchRes(response.data);
-        if (response.data.length === 0) {
-          window.alert("0 data hit :(");
-        }
-      })
-      .catch(error => {
-        if (error.code === "ECONNABORTED") {
-          window.alert("タイムアウトしました");
-        }
-      });
-  }
-
-  const handleChangeOtherPMTitle = e => {
-    var txt = null;
-    if (e.target.value !== "0") {
-      txt = e.target.value;
-    }
-
-    setPmId(txt);
-    var searchResFlg = false;
-
-    // searchresの場合、そこからIDとか取って入れてあげる
-    pmSearchRes.forEach(pm => {
-      if (pm.pm_id === txt) {
-        setOtherPmTitle(pm.title);
-        searchResFlg = true;
-      }
-    });
-
-    // pmの場合、PMからIDとか取って入れてあげる
-    if (!searchResFlg) {
-      if (txt === null) {
-        setPmId(0);
-      } else {
-        pmList.forEach(pm => {
-          if (pm.pm_id === txt) {
-            setPmId(txt);
-            setOtherPmTitle(pm.title);
-          }
-        });
-      }
-    }
-  };
-
-  const searchPmByKw = (e) => {
-    if (e.keyCode === 13) {
-      searchOtherPm(pmKey);
-      setPmKey("");
-    }
-  }
-
-  const handleChangePmKey = e => {
-    const txt = e.target.value;
-    setPmKey(txt);
-  };
+const TvList = ({tvList, pmList, regPmList, teamId}) => {
 
   // 対象Itemを一括でIM登録します
   const bundlePm = async() => {
@@ -135,11 +64,6 @@ const TvList = ({tvList, pmList, teamId}) => {
           var tmpUrl = window.location.href;
           var newUrl = tmpUrl.replace("http://localhost:3000/", "");
           window.location.href = newUrl;
-          // if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
-          //   window.location.href = window.location.href + "?teamId=" + teamId;
-          // } else {
-          //   window.location.href = window.location.href;
-          // }
         } else {
           window.alert("登録エラーです");
           console.log(response);
@@ -172,11 +96,6 @@ const TvList = ({tvList, pmList, teamId}) => {
           var tmpUrl = window.location.href;
           var newUrl = tmpUrl.replace("http://localhost:3000/", "");
           window.location.href = newUrl;
-          // if (teamId !== null && teamId !== undefined && !window.location.href.includes("teamId=")) {
-          //   window.location.href = window.location.href + "?teamId=" + teamId;
-          // } else {
-          //   window.location.href = window.location.href;
-          // }
         } else {
           window.alert("登録エラーです");
           console.log(response);
@@ -192,61 +111,10 @@ const TvList = ({tvList, pmList, teamId}) => {
   return (
     <div className="allItemsList">
       <h2>Program <Btn onClick={bundlePm}>一括登録</Btn> <Btn onClick={bundleDelP}>一括削除</Btn></h2>
-      <p>PM検索: {pmId}</p>
-      <p>まだ検索しかできません</p>
-      <Input
-        type="text"
-        name="PM search"
-        value={pmKey}
-        onChange={handleChangePmKey}
-        placeholder="pm keyword"
-        className="titleInput"
-        onKeyDown={searchPmByKw}
-      />
-      {pmSearchRes.length > 0 ? (
-        <NativeSelect
-          labelId="demo-simple-select-label"
-          id="other-team-im"
-          defaultValue=""
-          value={otherPmTitle}
-          label="PM候補"
-          onChange={handleChangeOtherPMTitle}
-        >
-          {pmSearchRes.map((e, index) => (
-            <option key={index} value={e.pm_id}>
-              {e.title} 📺 {e.description}
-            </option>
-          ))}
-          <option key={0} value={0}>
-            N/A
-          </option>
-        </NativeSelect>
-      ) : (
-        <NativeSelect
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          defaultValue=""
-          value={otherPmTitle}
-          label="PM候補"
-          onChange={handleChangeOtherPMTitle}
-        >
-          {pmList.length > 0 ? (
-            pmList.map((e, index) => (
-            <option key={index} value={e.pm_id}>
-              {e.title}
-            </option>
-          ))) : (
-            ""
-          )}
-          <option key={0} value={0}>
-            N/A
-          </option>
-        </NativeSelect>
-      )}
       {tvList !== undefined && tvList.length > 0 ? (
         tvList.map((e, index) => (
           <div className="itemBox" key={index}>
-            <Program program={e} teamId={teamId} key={e.id} />
+            <Program program={e} teamId={teamId} regPmList={regPmList} key={e.id} />
           </div>
         ))
       ) : (

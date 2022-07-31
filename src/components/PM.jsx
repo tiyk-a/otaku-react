@@ -31,8 +31,10 @@ const PM = ({ pm, teamId }) => {
   const [pmrelObj, setPmrelObj] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
   const [addMem, setAddMem] = useState(false);
+  const [media, setMedia] = useState(1);
 
   useEffect(() => {
+    isSmartPhone();
     setId(pm.id);
     setTitle(pm.title);
     if (pm.description !== null && pm.description !== undefined) {
@@ -79,6 +81,16 @@ const PM = ({ pm, teamId }) => {
   setTeamIdList(exportFunction.getAllTeam());
   insertPrelObj(outerArr, outerArrM);
   }, [pm.description, pm.id, pm.pmrelList, pm.pmrelMList, pm.title, pm.verList]);
+
+  // メディア判別
+  const isSmartPhone = () => {
+    if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
+      // SP
+      setMedia(2);
+    } else {
+      setMedia(1);
+    }
+  }
 
   // Item一括選択のためにboxを押したら選択/解除する
   const toggleSelectedItem = () => {
@@ -326,13 +338,13 @@ const PM = ({ pm, teamId }) => {
         ? (<div className="target_pm" id={pm.id} data-teamid={teamId} data-title={title} data-description={description} data-prel={pmrel} data-prelm={pmrelM}></div>)
         : (<div id={pm.id} data-teamid={teamId}></div>)}
       <Text>
-        <ul>
+        <ul style={media === 1 ? row : column}>
           <li>
             <p>pmId: {pm.id}</p>
             {verList !== null && verList !== undefined ? (
-              <ul>
+              <ul style={media === 1 ? row : column}>
                 {verList.map((e, index) => (
-                  <li className='flex_column'>
+                  <li style={media === 1 ? row : column}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
                       <DateTimePicker
                       label="on_air_date"
@@ -355,7 +367,7 @@ const PM = ({ pm, teamId }) => {
               </ul>
             ) : ("")}
           </li>
-          <li className="textBoxTitle">
+          <li>
             <Input
               type="text"
               name="p_name"
@@ -394,7 +406,7 @@ const PM = ({ pm, teamId }) => {
           <li>
             {pmrel !== null && pmrel !== undefined ? (
               pmrel.map((e, index) => (
-                <div class="flex_row">
+                <div  style={media === 1 ? row : column}>
                   <NativeSelect
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -417,7 +429,7 @@ const PM = ({ pm, teamId }) => {
                   {e[2] === 4 ? (
                     <RemoveIcon onClick={() => minusPrel(index)} />
                   ) : (null)}
-                  <div class="flex_column width_6rem">
+                  <div style={media === 1 ? row : column} class="width_6rem">
                     {function() {
                       if (pmrelObj !== null && pmrelObj !== undefined) {
                         return (
@@ -485,7 +497,7 @@ const PM = ({ pm, teamId }) => {
               }
             }()}
           </li>
-          <li className='flex_column'>
+          <li style={media === 1 ? row : column}>
             <Btn onClick={updPm}>更新</Btn>
             <Btn onClick={delPm}>DELETE</Btn>
           </li>
@@ -522,6 +534,16 @@ const hideEle = {
 }
 
 export default PM;
+
+const row = {
+  "display" : "flex",
+  "flex-direction" : "row"
+}
+
+const column = {
+  "display" : "flex",
+  "flex-direction" :"column"
+}
 
 const RemoveIcon = styled(RemoveCircleOutlineIcon)({
   // TODO:高さがselectorsと一緒になるように揃えたい
