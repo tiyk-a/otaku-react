@@ -107,11 +107,9 @@ const All = () => {
 
           regPm.forEach(data => {
           const regObject = {
-            id: data.regular_pm_id,
-            title: data.title,
-            description: data.description,
-            startDate: data.start_date,
-            endDate: data.end_date,
+            regularPM: data.regularPM,
+            castList: data.castList,
+            stationMap: data.stationMap,
           };
           list.push(regObject);
         });

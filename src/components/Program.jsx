@@ -31,19 +31,13 @@ const Program = ({ program, teamId, regPmList }) => {
   const [teamIdList, setTeamIdList] = useState([]);
   const [id, setId] = useState('');
   const [pmId, setPmId] = useState('');
-  const [regPm, setRegPm] = useState('');
   const [selectedRegPm, setSelectedRegPm] = useState('');
   const [addPrelFlg, setAddPrelFlg] = useState(false);
-  // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const [prelObj, setPrelObj] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
   const [media, setMedia] = useState(1);
 
   useEffect(() => {
-    console.log(regPmList);
-    if (regPmList !== undefined && regPmList.length > 0) {
-      // TODO: do something
-    }
 
     // メディア判定
     isSmartPhone();
@@ -63,6 +57,15 @@ const Program = ({ program, teamId, regPmList }) => {
     }
     
     setDate(moment(program.date).format('YYYY/MM/DD HH:mm'));
+
+    /**
+     * relに含まれるものは
+     * ・レギュラー番組が設定ある時、cast設定のチーム・メンバー
+     * ・指定でその放送用に設定したチーム・メンバー
+     * 
+     * useEffect()の場合、まだレギュラー番組設定はないはずなのでprogramでキャッチした
+     * チーム・メンバーのみが入る
+     */
     const outerArr = [];
     program.prelList.forEach((e) => {
       const innerArr = [];
@@ -79,19 +82,7 @@ const Program = ({ program, teamId, regPmList }) => {
     });
 
     const outerArrReg = [];
-    if (regPmList !== undefined) {
-      console.log("kk");
-      console.log(regPmList);
-    }
-    // regPmList.forEach((e) => {
-    //   window.alert("be");
-    //   console.log(e);
-    //   window.alert("af");
-    //   // var ele = {
 
-    //   // }
-    //   outerArrReg.push(e);
-    // });
     setRegPmOptionList(outerArrReg);
     setPrelM(outerArrM);
 
@@ -170,9 +161,6 @@ const Program = ({ program, teamId, regPmList }) => {
       case 'description':
         setDescription(txt);
         break;
-      case 'regPm':
-        setRegPm(txt);
-        break;
       case 'verTitle':
         setVerTitle(txt);
         break;
@@ -208,6 +196,28 @@ const Program = ({ program, teamId, regPmList }) => {
     vers.push([null, id, teamIdTmp]);
     setPrel(vers);
     setAddPrelFlg(false);
+    insertPrelObj(vers, prelM);
+  }
+
+  // 新しいprelを配列に追加します(新規not更新)
+  // e=castId <30の時に飛んでくる、teamId
+  const handleChangeAddPrelById = e => {
+    let vers = [...prel];
+    let ind = null;
+    vers.forEach((v, index) => {
+      if (v[2] === e) {
+        ind = index;
+      }
+    });
+
+    if (ind !== null) {
+      window.alert("kotti" + e);
+      vers.splice(ind, 1);
+    } else {
+      window.alert("sotti" + e);
+      vers.push([null, id, e]);
+    }
+    setPrel(vers);
     insertPrelObj(vers, prelM);
   }
 
@@ -261,9 +271,9 @@ const Program = ({ program, teamId, regPmList }) => {
       tmpTeamIdList.forEach((teamId) => {
         var addFlg = true;
         objArr.forEach((obj) => {
-          if (obj.teamId === teamId) {
-            addFlg = false;
-          }
+          // if (obj.teamId === teamId) {
+          //   addFlg = false;
+          // }
         });
 
         if (addFlg && teamId !== undefined) {
@@ -321,6 +331,57 @@ const Program = ({ program, teamId, regPmList }) => {
 
   const isEmpty = (obj) => {
     return !Object.keys(obj).length;
+  }
+
+  const removeTeamIfExist = (t) => {
+    let vers = [...prel];
+    let ind = null;
+    vers.forEach((v, index) => {
+      if (v[2] === t) {
+        ind = index;
+      }
+    });
+
+    if (ind !== null) {
+      window.alert("kotti" + t);
+      vers.splice(ind, 1);
+    }
+    setPrel(vers);
+    insertPrelObj(vers, prelM);
+  }
+
+  const removeMemIfExist = (m) => {
+    let vers = [...prelM];
+    let ind = null;
+    vers.forEach((v, index) => {
+      if (v[2] === m) {
+        ind = index;
+      }
+    });
+
+    if (ind !== null) {
+      window.alert("kotti" + module);
+      vers.splice(ind, 1);
+    }
+    setPrel(vers);
+    insertPrelObj(prel, vers);
+  }
+
+  const addTeamIfNotExist = (t) => {
+    let vers = [...prel];
+    let ind = null;
+    vers.forEach((v, index) => {
+      if (v[2] === t) {
+        ind = index;
+      }
+    });
+
+    if (ind === null) {
+      window.alert("sotti" + t);
+      vers.push([null, id, t]);
+    }
+    setPrel(vers);
+    insertPrelObj(vers, prelM);
   }
 
   // Program一括選択のためにboxを押したら選択/解除する
@@ -439,10 +500,10 @@ const Program = ({ program, teamId, regPmList }) => {
               )}
             </li>
             <li className={media === 1 ? "textBox" : "textBoxSp"}>
-              <span className='text_blue'>programタイトル</span>
+              <span className='text_blue'>番組データ名</span>
               <p>{title}</p>
               {/* レギュラー番組候補 */}
-              <span className='text_blue'>レギュラー番組候補</span>
+              <span className='text_blue'>レギュラー番組</span>
               <NativeSelect
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -454,8 +515,8 @@ const Program = ({ program, teamId, regPmList }) => {
               >
               {regPmOptionList !== null && regPmOptionList !== undefined ? (
                 regPmList.map((f, index) => (
-                  <option key={f.title} value={f.title}>
-                    {f.title}
+                  <option key={f.regularPM.title} value={f.regularPM.regular_pm_id}>
+                    {f.regularPM.title}
                   </option>
                   ))
               ) : (
@@ -465,6 +526,61 @@ const Program = ({ program, teamId, regPmList }) => {
                 "N/A"
               </option>
               </NativeSelect>
+              {selectedRegPm !== undefined && selectedRegPm !== "" ? (
+                regPmList.map((regPm, index) => (
+                  String(regPm.regularPM.regular_pm_id) === String(selectedRegPm) ? (
+                    <>
+                      {regPm.castList !== undefined && regPm.castList.length > 0 ? (
+                        regPm.castList.map((cast) => {
+                          return (
+                            <>
+                            {function() {
+                              if (cast < 30) {
+                                return (
+                                  <p>{exportFunction.teamIdToName(cast)}</p>
+                                )
+                              } else {
+                                return (
+                                  <p>{exportFunction.memberIdToName(cast)}</p>
+                                )
+                              }
+                            }()}
+                            </>
+                          )
+                        })
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  ) : (
+                    <></>
+                  )
+                ))
+              ) : (
+                <></>
+              )}
+              <p className='text_blue'>放送局</p>
+              {selectedRegPm !== undefined && selectedRegPm !== "" ? (
+                regPmList.map((regPm, index) => (
+                  String(regPm.regularPM.regular_pm_id) === String(selectedRegPm) ? (
+                    <>
+                      {regPm.stationMap !== undefined ? (
+                        Object.keys(regPm.stationMap).map(key => {
+                          return (
+                            <p>{regPm.stationMap[key]}</p>)}
+                          )
+                      ) : (
+                        <></>
+                      )}
+                      <></>
+                    </>
+                  ) : (
+                    <></>
+                  )
+                ))
+              ) : (
+                <></>
+              )}
               <span className='text_blue'>PMタイトル</span>
               <Input
                 type="text"

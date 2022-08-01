@@ -164,6 +164,20 @@ exports.getAllMember = function() {
     return memberList;
 }
 
+exports.getMemIdListOfTeam = function(teamId) {
+    if (typeof teamId === 'string') {
+        teamId = Number(teamId)
+    }
+
+    const tmpList = [];
+    memberList.forEach((e) => {
+        if (e.teamId === teamId) {
+            tmpList.push(e.id);
+        }
+    })
+    return tmpList;
+}
+
 exports.getMemberObjListOfTeam = function(teamIdArg) {
     const tmpList = [];
     memberList.forEach((e) => {
