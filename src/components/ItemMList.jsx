@@ -59,36 +59,37 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           }
         }
 
-        const irel = [];
-        if (e.dataset.irel !== undefined && e.dataset.irel !== null) {
-          var arrIrel = e.dataset.irel.split(",");
-          var j = 0;
-          while (arrIrel[j]!== undefined && arrIrel[j+1]!== undefined && arrIrel[j+2]!== undefined) {
-            irel.push([arrIrel[j], arrIrel[j+1], arrIrel[j+2]]);
-            j = j + 4;
-          }
-        }
+        // const irel = [];
+        // if (e.dataset.irel !== undefined && e.dataset.irel !== null) {
+        //   var arrIrel = e.dataset.irel.split(",");
+        //   var j = 0;
+        //   while (arrIrel[j]!== undefined && arrIrel[j+1]!== undefined && arrIrel[j+2]!== undefined) {
+        //     irel.push([arrIrel[j], arrIrel[j+1], arrIrel[j+2]]);
+        //     j = j + 4;
+        //   }
+        // }
 
-        var irelDistinct = exportFunctionRel.getDistinctRel(irel);
+        // var irelDistinct = exportFunctionRel.getDistinctRel(irel);
 
-        const irelm = [];
-        if (e.dataset.irelm !== undefined && e.dataset.irelm !== null) {
-          var arrIrelM = e.dataset.irelm.split(",");
-          var k = 0;
-          while (arrIrelM[k]!== undefined && arrIrelM[k+1]!== undefined && arrIrelM[k+2]!== undefined) {
-            irelm.push([arrIrelM[k], arrIrelM[k+1], arrIrelM[k+2]]);
-            k = k + 4;
-          }
-        }
+        // const irelm = [];
+        // if (e.dataset.irelm !== undefined && e.dataset.irelm !== null) {
+        //   var arrIrelM = e.dataset.irelm.split(",");
+        //   var k = 0;
+        //   while (arrIrelM[k]!== undefined && arrIrelM[k+1]!== undefined && arrIrelM[k+2]!== undefined) {
+        //     irelm.push([arrIrelM[k], arrIrelM[k+1], arrIrelM[k+2]]);
+        //     k = k + 4;
+        //   }
+        // }
 
-        var irelMDistinct = exportFunctionRel.getDistinctRel(irelm);
+        // var irelMDistinct = exportFunctionRel.getDistinctRel(irelm);
         
+        // teamIdってなってるところをarrにせねば。+mem
         const item = {
           item_id: e.id,
           im_id: e.dataset.imid,
           teamId: e.dataset.teamid,
-          imrel: irelDistinct,
-          imrelm: irelMDistinct,
+          // imrel: irelDistinct,
+          // imrelm: irelMDistinct,
           title: e.dataset.title,
           wp_id: "",
           publication_date: e.dataset.date,
@@ -175,36 +176,37 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         }
       }
 
-      const imrel = [];
-      if (e.dataset.imrel !== undefined && e.dataset.imrel !== null) {
-        var arr = e.dataset.imrel.split(",");
-        var i = 0;
-        while (arr[i]!== undefined) {
-          imrel.push(arr[i], arr[i+1], arr[i+2]);
-          i = i + 3;
-        }
-      }
+      // const imrel = [];
+      // if (e.dataset.imrel !== undefined && e.dataset.imrel !== null) {
+      //   var arr = e.dataset.imrel.split(",");
+      //   var i = 0;
+      //   while (arr[i]!== undefined) {
+      //     imrel.push(arr[i], arr[i+1], arr[i+2]);
+      //     i = i + 3;
+      //   }
+      // }
 
-      const imrelm = [];
-      if (e.dataset.imrelm !== undefined && e.dataset.imrelm !== null) {
-        var arr = e.dataset.imrelm.split(",");
-        var i = 0;
-        while (arr[i]!== undefined) {
-          imrelm.push(arr[i], arr[i+1], arr[i+2]);
-          i = i + 3;
-        }
-      }
+      // const imrelm = [];
+      // if (e.dataset.imrelm !== undefined && e.dataset.imrelm !== null) {
+      //   var arr = e.dataset.imrelm.split(",");
+      //   var i = 0;
+      //   while (arr[i]!== undefined) {
+      //     imrelm.push(arr[i], arr[i+1], arr[i+2]);
+      //     i = i + 3;
+      //   }
+      // }
 
+      // teamarr, memarrを入れる、wp_idはverごとでは？
       const im = {
         im_id: e.id,
         title: e.dataset.title,
-        wp_id: e.dataset.wpid,
+        // wp_id: e.dataset.wpid,
         publication_date: e.dataset.date,
         amazon_image: e.dataset.image,
         del_flg: false,
         vers: verArr,
-        imrel: imrel,
-        imrelm: imrelm
+        // imrel: imrel,
+        // imrelm: imrelm
       } 
       data.push(im);
     });
@@ -345,16 +347,17 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         if (teamId === 5 && itemList !== undefined && itemList.length > 0) {
           var teamIdList = {};
           itemList.forEach((item) => {
-            var rel = item.relList;
-            var one = 1;
-            rel.forEach((e) => {
-              if (e.team_id in teamIdList) {
-                let current = teamIdList[e.team_id];
-                teamIdList[e.team_id] = current + 1;
-              } else {
-                teamIdList[e.team_id] = one;
-              }
-            })
+            // ここ何かかえてteamID入るようにしないと。itemが持ってるじゃん
+            // var rel = item.relList;
+            // var one = 1;
+            // rel.forEach((e) => {
+            //   if (e.team_id in teamIdList) {
+            //     let current = teamIdList[e.team_id];
+            //     teamIdList[e.team_id] = current + 1;
+            //   } else {
+            //     teamIdList[e.team_id] = one;
+            //   }
+            // })
           });
 
           return (
@@ -602,7 +605,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           </div>
         </div>
       ):(
-        <div class="responsiveCal">
+        <div className="responsiveCal">
           <div dangerouslySetInnerHTML={{__html: exportFunction.getCal(teamId)}}></div>
         </div>
       )}

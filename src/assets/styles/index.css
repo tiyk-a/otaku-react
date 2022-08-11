@@ -460,6 +460,15 @@ color: #ff4444;
     transform: rotate(-45deg);
 }
 
+.makeStyles-root-1 {
+  padding: 0 !important;
+}
+
+#outer-container-header {
+  position: fixed;
+  background: pink;
+}
+
 #outer-container {
   z-index: 1200;
   position: fixed;
@@ -506,4 +515,25 @@ color: #ff4444;
   top: 2rem;
   background-color: #FFF2F2;
   opacity: 50%;
+}
+
+.text_blue {
+  color: #3584bb;
+}
+
+.add_regpm_parent {
+  position:fixed;
+  top:10%;
+  z-index: 3000;
+}
+.add_regpm_box {
+  background: pink;
+  opacity: 90%;
+  top: 50rem;
+  margin-top: 0;
+}
+
+.add_regpm_btn {
+  opacity: 90%;
+  position: relative;
 }

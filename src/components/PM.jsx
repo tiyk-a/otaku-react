@@ -106,7 +106,7 @@ const PM = ({ pm, teamId }) => {
   // 既存商品の更新
   const updPm = async() => {
     const data = {
-      id: pm.id,
+      pm_id: pm.id,
       title: title,
       description: description,
       pmrel: pmrel,

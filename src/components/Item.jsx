@@ -27,12 +27,13 @@ const Item = ({ item, teamId }) => {
   const [tmpVer, setTmpVer] = useState('');
   const [verArr, setVerArr] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
-  const [irel, setIrel] = useState([]);
-  const [irelM, setIrelM] = useState([]);
-  const [teamIdList, setTeamIdList] = useState([]);
+  // const [irel, setIrel] = useState([]);
+  // const [irelM, setIrelM] = useState([]);
+  const [memIdList, setMemIdList] = useState([]);
+  const [allTeamIdList, setAllTeamIdList] = useState([]);
   const [addIrelFlg, setAddIrelFlg] = useState(false);
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
-  const [irelObj, setIrelObj] = useState([]);
+  // const [irelObj, setIrelObj] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
   const [media, setMedia] = useState(1);
 
@@ -50,7 +51,7 @@ const Item = ({ item, teamId }) => {
     setDate(moment(item.pubDate).format('YYYY/MM/DD'));
     setImId(0);
     setTitle(item.title);
-    setTeamIdList(exportFunction.getAllTeam());
+    setAllTeamIdList(exportFunction.getAllTeam());
     insertIrelObj(outerArr, outerArrM);
   }, [item, item.id, item.pubDate, item.title, moment]);
 
@@ -66,48 +67,48 @@ const Item = ({ item, teamId }) => {
 
   // itemもimも受け付けます。irel/imrelを引き抜いてirelに入れます
   const extractAndSetIrel = (item) => {
-    const outerArr = [];
-    if (item.relList !== null && item.relList !== undefined && item.relList.length > 0) {
-      item.relList.forEach((e) => {
-        const innerArr = [];
-        // irel/imrelで分岐
-        if (e.i_rel_id !== undefined) {
-          // [irelId, itemId, teamId, imrelですかフラグ]
-          innerArr.push(e.i_rel_id, e.item_id, e.team_id, 0);
-        } else {
-          // [irelId, itemId, teamId, imrelですかフラグ]
-          innerArr.push(e.im_rel_id, e.im_id, e.team_id, 1);
-        }
-        outerArr.push(innerArr);
-      });
-      setIrel(outerArr);
-    } else {
-      setIrel([]);
-    }
+    // const outerArr = [];
+    // if (item.relList !== null && item.relList !== undefined && item.relList.length > 0) {
+    //   item.relList.forEach((e) => {
+    //     const innerArr = [];
+    //     // irel/imrelで分岐
+    //     if (e.i_rel_id !== undefined) {
+    //       // [irelId, itemId, teamId, imrelですかフラグ]
+    //       innerArr.push(e.i_rel_id, e.item_id, e.team_id, 0);
+    //     } else {
+    //       // [irelId, itemId, teamId, imrelですかフラグ]
+    //       innerArr.push(e.im_rel_id, e.im_id, e.team_id, 1);
+    //     }
+    //     outerArr.push(innerArr);
+    //   });
+    //   setIrel(outerArr);
+    // } else {
+    //   setIrel([]);
+    // }
 
-    return outerArr;
+    // return outerArr;
   }
 
   // itemもimも受け付けます。irel/imrelを引き抜いてirelMに入れます
   const extractAndSetIrelM = (item) => {
-    const outerArrM = [];
-    if (item.relMList !== null && item.relMList !== undefined && item.relMList.length > 0) {
-      item.relMList.forEach((e) => {
-        const innerArrM = [];
-        if (e.i_rel_mem_id !== undefined) {
-          // [iremlId, irelId, memberId, imrelmですかフラグ]
-          innerArrM.push(e.i_rel_mem_id, e.i_rel_id, e.member_id, 0);
-        } else {
-          // [iremlId, irelId, memberId, imrelmですかフラグ]
-          innerArrM.push(e.im_rel_mem_id, e.im_rel_id, e.member_id, 1);
-        }
-        outerArrM.push(innerArrM);
-      });
-      setIrelM(outerArrM);
-    } else {
-      setIrelM([]);
-    }
-    return outerArrM;
+    // const outerArrM = [];
+    // if (item.relMList !== null && item.relMList !== undefined && item.relMList.length > 0) {
+    //   item.relMList.forEach((e) => {
+    //     const innerArrM = [];
+    //     if (e.i_rel_mem_id !== undefined) {
+    //       // [iremlId, irelId, memberId, imrelmですかフラグ]
+    //       innerArrM.push(e.i_rel_mem_id, e.i_rel_id, e.member_id, 0);
+    //     } else {
+    //       // [iremlId, irelId, memberId, imrelmですかフラグ]
+    //       innerArrM.push(e.im_rel_mem_id, e.im_rel_id, e.member_id, 1);
+    //     }
+    //     outerArrM.push(innerArrM);
+    //   });
+    //   setIrelM(outerArrM);
+    // } else {
+    //   setIrelM([]);
+    // }
+    // return outerArrM;
   }
 
   const registerIM = async () => {
@@ -116,15 +117,15 @@ const Item = ({ item, teamId }) => {
         setImId(undefined);
       }
 
-      var irelDistinct = exportFunctionRel.getDistinctRel(irel);
-      var irelMDistinct = exportFunctionRel.getDistinctRel(irelM);
+      // var irelDistinct = exportFunctionRel.getDistinctRel(irel);
+      // var irelMDistinct = exportFunctionRel.getDistinctRel(irelM);
 
       const data = {
         item_id: id,
         im_id: imId,
         teamId: teamId,
-        imrel: irelDistinct,
-        imrelm: irelMDistinct,
+        // imrel: irelDistinct,
+        // imrelm: irelMDistinct,
         title: title,
         wp_id: "",
         publication_date: date,
@@ -208,40 +209,40 @@ const Item = ({ item, teamId }) => {
 
   // 手入力で変更したirelを反映します。IDはそのまま使う（not新規but更新)
   const handleChangeIrel = e => {
-    // var prelId = e.target.name;
-    var irelId = e.target.name;
-    // 1. Make a shallow copy of the items
-    let vers = [...irel];
-    // 2. Make a shallow copy of the item you want to mutate
-    let ver = {...vers[irelId]};
-    // 3. Replace the property you're intested in
-    ver[2] = exportFunction.nameToTeamId(e.target.value);
-    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    vers[irelId] = [ver[0], ver[1], ver[2], ver[3]];
-    // 5. Set the state to our new copy
-    setIrel(vers);
-    insertIrelObj(vers, irelM);
+    // // var prelId = e.target.name;
+    // var irelId = e.target.name;
+    // // 1. Make a shallow copy of the items
+    // let vers = [...irel];
+    // // 2. Make a shallow copy of the item you want to mutate
+    // let ver = {...vers[irelId]};
+    // // 3. Replace the property you're intested in
+    // ver[2] = exportFunction.nameToTeamId(e.target.value);
+    // // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    // vers[irelId] = [ver[0], ver[1], ver[2], ver[3]];
+    // // 5. Set the state to our new copy
+    // setIrel(vers);
+    // insertIrelObj(vers, irelM);
   }
 
   // 新しいirelを配列に追加します(新規not更新)
   const handleChangeAddIrel = e => {
-    const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
-    let vers = [...irel];
-    // [irelId, itemId, teamId, imrelですかフラグ]
-    vers.push([null, id, teamIdTmp, 0]);
-    setIrel(vers);
-    setAddIrelFlg(false);
-    insertIrelObj(vers, irelM);
+    // const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
+    // let vers = [...irel];
+    // // [irelId, itemId, teamId, imrelですかフラグ]
+    // vers.push([null, id, teamIdTmp, 0]);
+    // setIrel(vers);
+    // setAddIrelFlg(false);
+    // insertIrelObj(vers, irelM);
   }
 
   // そのチームをirelから抜きます
   const minusIrel = (index) => {
-    let vers = [...irel];
-    // imrelデータでなく、irelが最低1つあれば削除可能。imrelデータだったら未選択のままにして、ポストしてdel_flg=trueにしましょう
-    if (vers[index][3] !== 1 && vers.length > 1) {
-      vers.splice(index, 1);
-    }
-    setIrel(vers);
+    // let vers = [...irel];
+    // // imrelデータでなく、irelが最低1つあれば削除可能。imrelデータだったら未選択のままにして、ポストしてdel_flg=trueにしましょう
+    // if (vers[index][3] !== 1 && vers.length > 1) {
+    //   vers.splice(index, 1);
+    // }
+    // setIrel(vers);
   }
 
   // 入力された検索ワードをSTATEに反映
@@ -268,7 +269,7 @@ const Item = ({ item, teamId }) => {
     if (imId === null || imId === undefined || imId === 0) {
     } else {
       await axios
-        .get(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId + "&teamId=" + teamId)
+        .get(ApiPath.IM + "chk?itemId=" + id + "&imId=" + imId)
         .then(response => {
           var tmpUrl = window.location.href;
           var newUrl = tmpUrl.replace("http://localhost:3000/", "");
@@ -292,93 +293,93 @@ const Item = ({ item, teamId }) => {
 
   // メンバーがirelMに入っていなかったら追加、入っていたら抜く
   const toggleIrelM = (memberId) => {
-    let vers = [...irelM];
-    let ver2 = vers.filter(rel => rel[2] !== memberId);
+    // let vers = [...irelM];
+    // let ver2 = vers.filter(rel => rel[2] !== memberId);
 
-    if (vers.length === ver2.length) {
-      ver2.push([null, null, memberId, 0]);
-    }
-    setIrelM(ver2);
-    insertIrelObj(irel, ver2);
+    // if (vers.length === ver2.length) {
+    //   ver2.push([null, null, memberId, 0]);
+    // }
+    // setIrelM(ver2);
+    // insertIrelObj(irel, ver2);
   }
 
   // member関連objectを全て設定
   // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
   const insertIrelObj = (irel, irelM) => {
-    var allMemList = exportFunction.getAllMember();
+    // var allMemList = exportFunction.getAllMember();
 
-    // このitemが持ってるteamidlistを作る
-    var tmpTeamIdList = [];
+    // // このitemが持ってるteamidlistを作る
+    // var tmpTeamIdList = [];
 
-    if (irel !== null && irel !== undefined && irel.length > 0) {
-      irel.forEach((rel) => {
-        if (!tmpTeamIdList.includes(rel[2])) {
-          tmpTeamIdList.push(rel[2]);
-        }
-      });
+    // if (irel !== null && irel !== undefined && irel.length > 0) {
+    //   irel.forEach((rel) => {
+    //     if (!tmpTeamIdList.includes(rel[2])) {
+    //       tmpTeamIdList.push(rel[2]);
+    //     }
+    //   });
 
-      var objArr = [];
-      // itemが持ってるteamIdを全部オブジェクトに突っ込む
-      tmpTeamIdList.forEach((teamId) => {
-        var addFlg = true;
-        objArr.forEach((obj) => {
-          if (obj.teamId === teamId) {
-            addFlg = false;
-          }
-        });
+    //   var objArr = [];
+    //   // itemが持ってるteamIdを全部オブジェクトに突っ込む
+    //   tmpTeamIdList.forEach((teamId) => {
+    //     var addFlg = true;
+    //     objArr.forEach((obj) => {
+    //       if (obj.teamId === teamId) {
+    //         addFlg = false;
+    //       }
+    //     });
 
-        if (addFlg && teamId !== undefined) {
-          var mList = [];
-          allMemList.forEach((g, index) => {
-            if (g.teamId === teamId) {
-              mList.push(g.id);
-            }
-          });
+    //     if (addFlg && teamId !== undefined) {
+    //       var mList = [];
+    //       allMemList.forEach((g, index) => {
+    //         if (g.teamId === teamId) {
+    //           mList.push(g.id);
+    //         }
+    //       });
 
-          var elem = {
-            teamId : teamId,
-            list : mList,
-            redList : []
-          };
-          objArr.push(elem);
-        }
-      });
+    //       var elem = {
+    //         teamId : teamId,
+    //         list : mList,
+    //         redList : []
+    //       };
+    //       objArr.push(elem);
+    //     }
+    //   });
 
-      if (irelM !== null && irelM !== undefined) {
-        irelM.forEach((relM) => {
-          var elem = {};
-          var index_obj_var = null;
-          objArr.forEach((obj, index_obj) => {
-            var tId = exportFunction.getTeamIdOfMember(relM[2]);
-            if (obj.teamId === tId) {
-              elem = obj;
-              index_obj_var = index_obj;
-            }
-          });
+    //   if (irelM !== null && irelM !== undefined) {
+    //     irelM.forEach((relM) => {
+    //       var elem = {};
+    //       var index_obj_var = null;
+    //       objArr.forEach((obj, index_obj) => {
+    //         var tId = exportFunction.getTeamIdOfMember(relM[2]);
+    //         if (obj.teamId === tId) {
+    //           elem = obj;
+    //           index_obj_var = index_obj;
+    //         }
+    //       });
 
-          if (!isEmpty(elem)) {
-            var list = elem.list;
-            var index = list.indexOf(relM[2]);
-            // var index = 0;
-            var redList = elem.redList;        
+    //       if (!isEmpty(elem)) {
+    //         var list = elem.list;
+    //         var index = list.indexOf(relM[2]);
+    //         // var index = 0;
+    //         var redList = elem.redList;        
 
-            if (index > -1) {
-              list.splice(index, 1);
-            }
+    //         if (index > -1) {
+    //           list.splice(index, 1);
+    //         }
 
-            if (!redList.includes(relM[2])) {
-              redList.push(relM[2]);
-            }
+    //         if (!redList.includes(relM[2])) {
+    //           redList.push(relM[2]);
+    //         }
 
-            // elem.teamId = elem.teamId;
-            elem.list = list;
-            elem.redList = redList;
-            objArr[index_obj_var] = elem;
-          }
-        });
-        setIrelObj(objArr);
-      }
-    }
+    //         // elem.teamId = elem.teamId;
+    //         elem.list = list;
+    //         elem.redList = redList;
+    //         objArr[index_obj_var] = elem;
+    //       }
+    //     });
+    //     setIrelObj(objArr);
+    //   }
+    // }
   }
 
 const isEmpty = (obj) => {
@@ -399,8 +400,9 @@ const toggleSelectedItem = () => {
   return (
     <div className={item.masterId !== null && item.masterId !== undefined ? "postedStyle itemContainer": editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
       {editedFlg
-        ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr} data-irel={irel} data-irelm={irelM}></div>)
+        ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr}></div>)
         : (<div id={item.id} data-teamid={teamId}></div>)}
+        {/* data-irel={irel} data-irelm={irelM} */}
       <Text>
         <ul style={media === 1 ? row : column}>
           <input type="checkbox" className="hiddenCheckBox" name="add_item" checked={isChecked} value={id} />
@@ -440,7 +442,7 @@ const toggleSelectedItem = () => {
             </MuiPickersUtilsProvider>
           </li>
           <li style={media === 1 ? null : column}>
-            {irel !== null && irel !== undefined ? (
+            {/* {irel !== null && irel !== undefined ? (
               irel.map((e, index) => (
                 <div className={media === 1 ? row : column}>
                   <NativeSelect
@@ -452,8 +454,8 @@ const toggleSelectedItem = () => {
                     onChange={handleChangeIrel}
                     name={index}
                   >
-                  {teamIdList !== null && teamIdList !== undefined ? (
-                    teamIdList.map((f, index) => (
+                  {allTeamIdList !== null && allTeamIdList !== undefined ? (
+                    allTeamIdList.map((f, index) => (
                       <option key={e[2]} value={exportFunction.teamIdToName(f.id)}>
                         {exportFunction.teamIdToName(f.id)}
                       </option>
@@ -499,8 +501,8 @@ const toggleSelectedItem = () => {
               ) : (
                 <></>
               )
-            }
-            {addIrelFlg ? (
+            } */}
+            {/* {addIrelFlg ? (
               <NativeSelect
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -510,8 +512,8 @@ const toggleSelectedItem = () => {
                 onChange={handleChangeAddIrel}
                 name="tmpIrel"
               >
-              {teamIdList !== null && teamIdList !== undefined ? (
-                teamIdList.map((f, index) => (
+              {allTeamIdList !== null && allTeamIdList !== undefined ? (
+                allTeamIdList.map((f, index) => (
                   <option key={4} value={exportFunction.teamIdToName(f.id)}>
                     {exportFunction.teamIdToName(f.id)}
                   </option>
@@ -522,7 +524,7 @@ const toggleSelectedItem = () => {
               </NativeSelect>
             ) : (
               <Btn onClick={toggleAddIrelFlg}>+irel</Btn>
-            )}
+            )} */}
             <br />
             {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("")}
           </li>
