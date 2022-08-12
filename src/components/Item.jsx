@@ -8,7 +8,6 @@ import jaLocale from 'date-fns/locale/ja';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-import exportFunctionRel from '../functions/RelManage';
 import exportFunction from '../functions/TeamIdToName';
 
 /**
@@ -27,33 +26,27 @@ const Item = ({ item, teamId }) => {
   const [tmpVer, setTmpVer] = useState('');
   const [verArr, setVerArr] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
-  // const [irel, setIrel] = useState([]);
-  // const [irelM, setIrelM] = useState([]);
+  const [teamIdList, setTeamIdList] = useState([]);
   const [memIdList, setMemIdList] = useState([]);
   const [allTeamIdList, setAllTeamIdList] = useState([]);
+  const [allMemIdList, setAllMemIdList] = useState([]);
   const [addIrelFlg, setAddIrelFlg] = useState(false);
-  // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
-  // const [irelObj, setIrelObj] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
   const [media, setMedia] = useState(1);
 
   useEffect(() => {
     // メディア判定
     isSmartPhone();
-    
-    // irel(team)を入れます
-    var outerArr = extractAndSetIrel(item);
-
-    // irelM(member)を入れます
-    var outerArrM = extractAndSetIrelM(item);
 
     setId(item.id);
     setDate(moment(item.pubDate).format('YYYY/MM/DD'));
     setImId(0);
     setTitle(item.title);
+    setTeamIdList(item.teamArr);
+    setMemIdList(item.memArr);
     setAllTeamIdList(exportFunction.getAllTeam());
-    insertIrelObj(outerArr, outerArrM);
-  }, [item, item.id, item.pubDate, item.title, moment]);
+    setAllMemIdList(exportFunction.getAllMember());
+  }, [item, item.id, item.pubDate, item.title, item.teamArr, item.memArr, moment]);
 
   // メディア判別
   const isSmartPhone = () => {
@@ -65,67 +58,17 @@ const Item = ({ item, teamId }) => {
     }
   }
 
-  // itemもimも受け付けます。irel/imrelを引き抜いてirelに入れます
-  const extractAndSetIrel = (item) => {
-    // const outerArr = [];
-    // if (item.relList !== null && item.relList !== undefined && item.relList.length > 0) {
-    //   item.relList.forEach((e) => {
-    //     const innerArr = [];
-    //     // irel/imrelで分岐
-    //     if (e.i_rel_id !== undefined) {
-    //       // [irelId, itemId, teamId, imrelですかフラグ]
-    //       innerArr.push(e.i_rel_id, e.item_id, e.team_id, 0);
-    //     } else {
-    //       // [irelId, itemId, teamId, imrelですかフラグ]
-    //       innerArr.push(e.im_rel_id, e.im_id, e.team_id, 1);
-    //     }
-    //     outerArr.push(innerArr);
-    //   });
-    //   setIrel(outerArr);
-    // } else {
-    //   setIrel([]);
-    // }
-
-    // return outerArr;
-  }
-
-  // itemもimも受け付けます。irel/imrelを引き抜いてirelMに入れます
-  const extractAndSetIrelM = (item) => {
-    // const outerArrM = [];
-    // if (item.relMList !== null && item.relMList !== undefined && item.relMList.length > 0) {
-    //   item.relMList.forEach((e) => {
-    //     const innerArrM = [];
-    //     if (e.i_rel_mem_id !== undefined) {
-    //       // [iremlId, irelId, memberId, imrelmですかフラグ]
-    //       innerArrM.push(e.i_rel_mem_id, e.i_rel_id, e.member_id, 0);
-    //     } else {
-    //       // [iremlId, irelId, memberId, imrelmですかフラグ]
-    //       innerArrM.push(e.im_rel_mem_id, e.im_rel_id, e.member_id, 1);
-    //     }
-    //     outerArrM.push(innerArrM);
-    //   });
-    //   setIrelM(outerArrM);
-    // } else {
-    //   setIrelM([]);
-    // }
-    // return outerArrM;
-  }
-
   const registerIM = async () => {
     if (teamId !== undefined) {
       if (imId === 0) {
         setImId(undefined);
       }
 
-      // var irelDistinct = exportFunctionRel.getDistinctRel(irel);
-      // var irelMDistinct = exportFunctionRel.getDistinctRel(irelM);
-
       const data = {
         item_id: id,
         im_id: imId,
-        teamId: teamId,
-        // imrel: irelDistinct,
-        // imrelm: irelMDistinct,
+        teamArr: teamIdList.join(', '),
+        memArr: memIdList.join(', '),
         title: title,
         wp_id: "",
         publication_date: date,
@@ -208,41 +151,31 @@ const Item = ({ item, teamId }) => {
   };
 
   // 手入力で変更したirelを反映します。IDはそのまま使う（not新規but更新)
-  const handleChangeIrel = e => {
-    // // var prelId = e.target.name;
-    // var irelId = e.target.name;
-    // // 1. Make a shallow copy of the items
-    // let vers = [...irel];
-    // // 2. Make a shallow copy of the item you want to mutate
-    // let ver = {...vers[irelId]};
-    // // 3. Replace the property you're intested in
-    // ver[2] = exportFunction.nameToTeamId(e.target.value);
-    // // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    // vers[irelId] = [ver[0], ver[1], ver[2], ver[3]];
-    // // 5. Set the state to our new copy
-    // setIrel(vers);
-    // insertIrelObj(vers, irelM);
+  const handleChangeTeam = e => {
+    var arr = e.target.value.split(":");
+    var teamId = exportFunction.nameToTeamId(arr[0]);
+    var index = arr[1];
+    let tmpList = [...teamIdList];
+    tmpList[index] = teamId;
+    setTeamIdList(tmpList);
   }
 
   // 新しいirelを配列に追加します(新規not更新)
   const handleChangeAddIrel = e => {
-    // const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
-    // let vers = [...irel];
-    // // [irelId, itemId, teamId, imrelですかフラグ]
-    // vers.push([null, id, teamIdTmp, 0]);
-    // setIrel(vers);
-    // setAddIrelFlg(false);
-    // insertIrelObj(vers, irelM);
+    var teamId = exportFunction.nameToTeamId(e.target.value);
+    let tmpList = [...teamIdList];
+    tmpList.push(teamId);
+    setTeamIdList(tmpList);
   }
 
   // そのチームをirelから抜きます
   const minusIrel = (index) => {
-    // let vers = [...irel];
-    // // imrelデータでなく、irelが最低1つあれば削除可能。imrelデータだったら未選択のままにして、ポストしてdel_flg=trueにしましょう
-    // if (vers[index][3] !== 1 && vers.length > 1) {
-    //   vers.splice(index, 1);
-    // }
-    // setIrel(vers);
+    let tmpList = [...teamIdList];
+    // imrelデータでなく、irelが最低1つあれば削除可能。imrelデータだったら未選択のままにして、ポストしてdel_flg=trueにしましょう
+    if (tmpList.length > 1) {
+      tmpList.splice(index, 1);
+    }
+    setTeamIdList(tmpList);
   }
 
   // 入力された検索ワードをSTATEに反映
@@ -293,98 +226,15 @@ const Item = ({ item, teamId }) => {
 
   // メンバーがirelMに入っていなかったら追加、入っていたら抜く
   const toggleIrelM = (memberId) => {
-    // let vers = [...irelM];
-    // let ver2 = vers.filter(rel => rel[2] !== memberId);
-
-    // if (vers.length === ver2.length) {
-    //   ver2.push([null, null, memberId, 0]);
-    // }
-    // setIrelM(ver2);
-    // insertIrelObj(irel, ver2);
+    var tmpList = [...memIdList];
+    // https://stackoverflow.com/questions/61997123/how-to-delete-a-value-from-array-if-exist-or-push-it-to-array-if-not-exists
+    if(!tmpList.includes(memberId)){ //checking weather array contain the id
+        tmpList.push(memberId); //adding to array because value doesnt exists
+    }else{
+        tmpList.splice(tmpList.indexOf(memberId), 1); //deleting
+    }
+    setMemIdList(tmpList);
   }
-
-  // member関連objectを全て設定
-  // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
-  const insertIrelObj = (irel, irelM) => {
-    // var allMemList = exportFunction.getAllMember();
-
-    // // このitemが持ってるteamidlistを作る
-    // var tmpTeamIdList = [];
-
-    // if (irel !== null && irel !== undefined && irel.length > 0) {
-    //   irel.forEach((rel) => {
-    //     if (!tmpTeamIdList.includes(rel[2])) {
-    //       tmpTeamIdList.push(rel[2]);
-    //     }
-    //   });
-
-    //   var objArr = [];
-    //   // itemが持ってるteamIdを全部オブジェクトに突っ込む
-    //   tmpTeamIdList.forEach((teamId) => {
-    //     var addFlg = true;
-    //     objArr.forEach((obj) => {
-    //       if (obj.teamId === teamId) {
-    //         addFlg = false;
-    //       }
-    //     });
-
-    //     if (addFlg && teamId !== undefined) {
-    //       var mList = [];
-    //       allMemList.forEach((g, index) => {
-    //         if (g.teamId === teamId) {
-    //           mList.push(g.id);
-    //         }
-    //       });
-
-    //       var elem = {
-    //         teamId : teamId,
-    //         list : mList,
-    //         redList : []
-    //       };
-    //       objArr.push(elem);
-    //     }
-    //   });
-
-    //   if (irelM !== null && irelM !== undefined) {
-    //     irelM.forEach((relM) => {
-    //       var elem = {};
-    //       var index_obj_var = null;
-    //       objArr.forEach((obj, index_obj) => {
-    //         var tId = exportFunction.getTeamIdOfMember(relM[2]);
-    //         if (obj.teamId === tId) {
-    //           elem = obj;
-    //           index_obj_var = index_obj;
-    //         }
-    //       });
-
-    //       if (!isEmpty(elem)) {
-    //         var list = elem.list;
-    //         var index = list.indexOf(relM[2]);
-    //         // var index = 0;
-    //         var redList = elem.redList;        
-
-    //         if (index > -1) {
-    //           list.splice(index, 1);
-    //         }
-
-    //         if (!redList.includes(relM[2])) {
-    //           redList.push(relM[2]);
-    //         }
-
-    //         // elem.teamId = elem.teamId;
-    //         elem.list = list;
-    //         elem.redList = redList;
-    //         objArr[index_obj_var] = elem;
-    //       }
-    //     });
-    //     setIrelObj(objArr);
-    //   }
-    // }
-  }
-
-const isEmpty = (obj) => {
-  return !Object.keys(obj).length;
-}
 
 // Item一括選択のためにboxを押したら選択/解除する
 const toggleSelectedItem = () => {
@@ -400,9 +250,8 @@ const toggleSelectedItem = () => {
   return (
     <div className={item.masterId !== null && item.masterId !== undefined ? "postedStyle itemContainer": editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
       {editedFlg
-        ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-verarr={verArr}></div>)
+        ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-teamarr={teamIdList} data-memarr={memIdList} data-verarr={verArr}></div>)
         : (<div id={item.id} data-teamid={teamId}></div>)}
-        {/* data-irel={irel} data-irelm={irelM} */}
       <Text>
         <ul style={media === 1 ? row : column}>
           <input type="checkbox" className="hiddenCheckBox" name="add_item" checked={isChecked} value={id} />
@@ -442,21 +291,23 @@ const toggleSelectedItem = () => {
             </MuiPickersUtilsProvider>
           </li>
           <li style={media === 1 ? null : column}>
-            {/* {irel !== null && irel !== undefined ? (
-              irel.map((e, index) => (
+            {teamIdList !== null && teamIdList !== undefined ? (
+              teamIdList.map((e, index) => (
                 <div className={media === 1 ? row : column}>
                   <NativeSelect
                     labelId="demo-simple-select-label"
-                    id="demo-simple-select"
+                    id={e}
                     defaultValue=""
-                    value={exportFunction.teamIdToName(e[2])}
-                    label="Age"
-                    onChange={handleChangeIrel}
+                    value={exportFunction.teamIdToName(e) + ":" + index}
+                    label="Team"
+                    onChange={handleChangeTeam}
                     name={index}
                   >
                   {allTeamIdList !== null && allTeamIdList !== undefined ? (
-                    allTeamIdList.map((f, index) => (
-                      <option key={e[2]} value={exportFunction.teamIdToName(f.id)}>
+                    allTeamIdList.map((f, index2) => (
+                      // optionの中は選択された時に持っていくvalue
+                      <option key={e} value={exportFunction.teamIdToName(f.id) + ":" + index}>
+                        {/* ここは選択肢として表示される文言 */}
                         {exportFunction.teamIdToName(f.id)}
                       </option>
                       ))
@@ -464,29 +315,32 @@ const toggleSelectedItem = () => {
                     <></>
                   )}
                   </NativeSelect>
-                  {e[2] === 4 ? (
+                  {e === 4 ? (
                     <RemoveIcon onClick={() => minusIrel(index)} />
                   ) : (null)
                   }
                   <div class="flex_column width_6rem">
                     {function() {
-                      if (irelObj !== null && irelObj !== undefined) {
+                      if (allMemIdList !== null && allMemIdList !== undefined) {
                         return (
                           <div>
-                            {irelObj.map((g, index) => (
+                            {allMemIdList.map((g, index) => (
                               <div>
                                 {function() {
-                                  if (g.teamId === e[2]) {
-                                    return (
-                                      <div>
-                                        {g.list.map((l, i) => (
-                                          <p onClick={() => toggleIrelM(l)}>{exportFunction.memberIdToName(l)}</p>
-                                        ))}
-                                        {g.redList.map((l, i) => (
-                                          <p className="colorRed" onClick={() => toggleIrelM(l)}>{exportFunction.memberIdToName(l)}</p>
-                                        ))}
-                                      </div>
+                                  if (g.teamId === Number(e)) {
+                                    if (memIdList.includes(g.id)) {
+                                      return (
+                                        <div>
+                                          <p className="colorRed" onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                        </div>
                                     )
+                                    } else {
+                                      return (
+                                        <div>
+                                          <p onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                        </div>
+                                      )
+                                    }
                                   }
                                 }()}
                               </div>
@@ -501,8 +355,8 @@ const toggleSelectedItem = () => {
               ) : (
                 <></>
               )
-            } */}
-            {/* {addIrelFlg ? (
+            }
+            {addIrelFlg ? (
               <NativeSelect
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -513,7 +367,7 @@ const toggleSelectedItem = () => {
                 name="tmpIrel"
               >
               {allTeamIdList !== null && allTeamIdList !== undefined ? (
-                allTeamIdList.map((f, index) => (
+                allTeamIdList.map((f, index2) => (
                   <option key={4} value={exportFunction.teamIdToName(f.id)}>
                     {exportFunction.teamIdToName(f.id)}
                   </option>
@@ -523,8 +377,8 @@ const toggleSelectedItem = () => {
               )}
               </NativeSelect>
             ) : (
-              <Btn onClick={toggleAddIrelFlg}>+irel</Btn>
-            )} */}
+              <Btn onClick={toggleAddIrelFlg}>+Team</Btn>
+            )}
             <br />
             {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("")}
           </li>

@@ -72,8 +72,8 @@ const Top = () => {
               price: item.price,
               pubDate: item.publication_date,
               wpId: item.im_id,
-              teamArr: item.teamArr.split(","),
-              memArr: item.memArr.split(","),
+              teamArr: stringToArr(item.teamArr),
+              memArr: stringToArr(item.memArr),
             };
             ilist.push(ele);
           });
@@ -86,26 +86,27 @@ const Top = () => {
           const imlist = [];
 
           im.forEach(itemM => {
+            console.log(itemM);
 
             // relListから必要な情報を抜き出す
-            var wpId = '';
-            itemM.relList.forEach(rel => {
-              // wpIdを取得したい
-              if (rel.team_id === id) {
-                wpId = rel.wp_id;
-              }
-            });
+            // var wpId = '';
+            // itemM.relList.forEach(rel => {
+            //   // wpIdを取得したい
+            //   if (rel.team_id === id) {
+            //     wpId = rel.wp_id;
+            //   }
+            // });
 
             const m = {
               id: itemM.im.im_id,
               title: itemM.im.title,
-              price: itemM.im.price,
+              // price: itemM.im.price,
               pubDate: itemM.im.publication_date,
               image: itemM.im.amazon_image,
-              wpId: wpId,
+              // wpId: wpId,
               ver: itemM.verList,
-              // relList: itemM.relList,
-              // relMList: itemM.relMemList,
+              teamArr: stringToArr(itemM.im.teamArr),
+              memArr: stringToArr(itemM.im.memArr),
               blog_not_updated: itemM.im.blog_not_updated,
             };
           imlist.push(m);
@@ -151,6 +152,14 @@ const Top = () => {
 
   const selected = {
     opacity: 0.5,
+  }
+
+  const stringToArr = (str) => {
+    var tmpArr = str.split(",");
+    if (tmpArr.includes("")) {
+      tmpArr.splice(tmpArr.indexOf(""), 1);
+    }
+    return tmpArr;
   }
 
   // ハンバーガーメニューをハンドルする
