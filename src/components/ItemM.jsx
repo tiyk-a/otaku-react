@@ -494,12 +494,4 @@ const column = {
   "flex-direction" :"column"
 }
 
-const showEle = {
-  "display": "block",
-}
-
-const hideEle = {
-  "display": "none",
-}
-
 export default ItemM;

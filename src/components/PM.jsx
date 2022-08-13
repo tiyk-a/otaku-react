@@ -20,17 +20,15 @@ import NativeSelect from '@mui/material/NativeSelect';
 const PM = ({ pm, teamId }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  // const [date, setDate] = useState('');
-  const [pmrel, setPmrel] = useState([]);
-  const [pmrelM, setPmrelM] = useState([]);
   const [verList, setVerList] = useState([]);
   const [teamIdList, setTeamIdList] = useState([]);
+  const [memIdList, setMemIdList] = useState([]);
+  const [allTeamIdList, setAllTeamIdList] = useState([]);
+  const [allMemIdList, setAllMemIdList] = useState([]);
   const [id, setId] = useState('');
   const [addPrelFlg, setAddPrelFlg] = useState(false);
-  // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
-  const [pmrelObj, setPmrelObj] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
-  const [addMem, setAddMem] = useState(false);
+  const [showMem, setShowMem] = useState(false);
   const [media, setMedia] = useState(1);
 
   useEffect(() => {
@@ -41,28 +39,11 @@ const PM = ({ pm, teamId }) => {
       setDescription(pm.description);
     } else {
       setDescription("");
-  }
-  
-  // setDate(moment(pm.date).format('YYYY-MM-DD HH:mm'));
-  const outerArr = [];
-  if (pm.pmrelList !== null && pm.pmrelList.length > 0) {
-    pm.pmrelList.forEach((e) => {
-      const innerArr = [];
-      innerArr.push(e.pm_rel_id, e.pm_id, e.team_id);
-      outerArr.push(innerArr);
-    });
-    setPmrel(outerArr);
-  }
-
-  const outerArrM = [];
-  if (pm.pmrelMList !== null && pm.pmrelMList.length > 0) {
-    pm.pmrelMList.forEach((e) => {
-      const innerArrM = [];
-      innerArrM.push(e.pm_rel_mem_id, e.pm_rel_id, e.member_id);
-      outerArrM.push(innerArrM);
-    });
-    setPmrelM(outerArrM);
-  }
+    }
+    setTeamIdList(pm.teamArr);
+    setMemIdList(pm.memArr);
+    setAllTeamIdList(exportFunction.getAllTeam());
+    setAllMemIdList(exportFunction.getAllMember());
 
   const outerArrV = [];
   if (pm.verList !== null && pm.verList.length > 0) {
@@ -77,10 +58,7 @@ const PM = ({ pm, teamId }) => {
     });
     setVerList(outerArrV);
   }
-
-  setTeamIdList(exportFunction.getAllTeam());
-  insertPrelObj(outerArr, outerArrM);
-  }, [pm.description, pm.id, pm.pmrelList, pm.pmrelMList, pm.title, pm.verList]);
+  }, [pm.description, pm.id, pm.teamIdList, pm.memIdList, pm.title, pm.verList]);
 
   // メディア判別
   const isSmartPhone = () => {
@@ -109,8 +87,8 @@ const PM = ({ pm, teamId }) => {
       pm_id: pm.id,
       title: title,
       description: description,
-      pmrel: pmrel,
-      pmrelm: pmrelM,
+      teamArr: teamIdList.join(', '),
+      memArr: memIdList.join(', '),
       verList: verList
     }
 
@@ -153,22 +131,6 @@ const PM = ({ pm, teamId }) => {
     });
   };
 
-  // 入力された日付を反映
-  // const handleChangeDate = e => {
-  //   // values[0]=pm_v_id, values[1]=on_air_date
-  //   console.log(e);
-  //   // var values = e.split(',');
-  //   const newDate = moment(e).format('YYYY-MM-DD HH:mm');
-  //   console.log(newDate);
-  //   // let tmpList = [verList];
-  //   // tmpList.forEach((e) => {
-  //   //   if (e.v_id === values[0]) {
-  //   //     e.on_air_date = values[1];
-  //   //   }
-  //   // });
-  //   // setVerList(tmpList);
-  // };
-
   // 各要素が入力されたらSTATEをアップデート
   const handleChange = e => {
     const txt = e.target.value;
@@ -185,38 +147,28 @@ const PM = ({ pm, teamId }) => {
     }
   };
 
-  const handleChangePrel = e => {
-    // var prelId = e.target.name;
-    var pmrelId = e.target.name;
-    // 1. Make a shallow copy of the items
-    let vers = [...pmrel];
-    // 2. Make a shallow copy of the item you want to mutate
-    let ver = {...vers[pmrelId]};
-    // 3. Replace the property you're intested in
-    ver[2] = exportFunction.nameToTeamId(e.target.value);
-    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    vers[pmrelId] = [ver[0], ver[1], ver[2]];
-    // 5. Set the state to our new copy
-    setPmrel(vers);
-    insertPrelObj(vers, pmrelM);
+  const handleChangeTeam = e => {
+    var arr = e.target.value.split(":");
+    var teamId = exportFunction.nameToTeamId(arr[0]);
+    var index = arr[1];
+    let tmpList = [...teamIdList];
+    tmpList[index] = teamId;
+    setTeamIdList(tmpList);
   }
 
   // 新しいprelを配列に追加します(新規not更新)
   const handleChangeAddPrel = e => {
-    const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
-    let vers = [...pmrel];
-    // [prelId, programId, teamId]
-    vers.push([null, id, teamIdTmp]);
-    setPmrel(vers);
-    setAddPrelFlg(false);
-    insertPrelObj(vers, pmrelM);
+    var teamIdTmp = exportFunction.nameToTeamId(e.target.value);
+    let tmpList = [...teamIdList];
+    tmpList.push(teamIdTmp);
+    setTeamIdList(tmpList);
   }
 
-  const toggleAddMem = () => {
-    if (!addMem) {
-      setAddMem(true);
+  const toggleShowMem = () => {
+    if (!showMem) {
+      setShowMem(true);
     } else {
-      setAddMem(false);
+      setShowMem(false);
     }
   }
 
@@ -230,112 +182,30 @@ const PM = ({ pm, teamId }) => {
 
   // そのチームをprelから抜きます
   const minusPrel = (index) => {
-    let vers = [...pmrel];
-    // prelが最低1つあれば削除可能
-    if (vers.length > 1) {
-      vers.splice(index, 1);
+    let tmpList = [...teamIdList];
+    // imrelデータでなく、irelが最低1つあれば削除可能。imrelデータだったら未選択のままにして、ポストしてdel_flg=trueにしましょう
+    if (tmpList.length > 1) {
+      tmpList.splice(index, 1);
     }
-    setPmrel(vers);
+    setTeamIdList(tmpList);
   }
 
   // メンバーがprelMに入っていなかったら追加、入っていたら抜く
   const togglePrelM = (memberId) => {
-    let vers = [...pmrelM];
-    let ver2 = vers.filter(rel => rel[2] !== memberId);
-
-    if (vers.length === ver2.length) {
-      ver2.push([null, null, memberId, 0]);
+    var tmpList = [...memIdList];
+    // https://stackoverflow.com/questions/61997123/how-to-delete-a-value-from-array-if-exist-or-push-it-to-array-if-not-exists
+    if(!tmpList.includes(memberId)){ //checking weather array contain the id
+        tmpList.push(memberId); //adding to array because value doesnt exists
+    }else{
+        tmpList.splice(tmpList.indexOf(memberId), 1); //deleting
     }
-    setPmrelM(ver2);
-    insertPrelObj(pmrel, ver2);
-  }
-
-  // member関連objectを全て設定
-  // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
-  const insertPrelObj = (prel, prelM) => {
-    var allMemList = exportFunction.getAllMember();
-
-    // このprogramが持ってるteamidlistを作る
-    var tmpTeamIdList = [];
-
-    if (prel !== null && prel !== undefined && prel.length > 0) {
-      prel.forEach((rel) => {
-        if (!tmpTeamIdList.includes(rel[2])) {
-          tmpTeamIdList.push(rel[2]);
-        }
-      });
-
-    var objArr = [];
-    // programが持ってるteamIdを全部オブジェクトに突っ込む
-    tmpTeamIdList.forEach((teamId) => {
-      var addFlg = true;
-      objArr.forEach((obj) => {
-        if (obj.teamId === teamId) {
-          addFlg = false;
-        }
-      });
-
-      if (addFlg && teamId !== undefined) {
-        var mList = [];
-        allMemList.forEach((g, index) => {
-          if (g.teamId === teamId) {
-            mList.push(g.id);
-          }
-        });
-
-        var elem = {
-          teamId : teamId,
-          list : mList,
-          redList : []
-        };
-        objArr.push(elem);
-      }
-    });
-
-    if (prelM !== null && prelM !== undefined) {
-      prelM.forEach((relM) => {
-        var elem = {};
-        var index_obj_var = null;
-        objArr.forEach((obj, index_obj) => {
-          var tId = exportFunction.getTeamIdOfMember(relM[2]);
-          if (obj.teamId === tId) {
-            elem = obj;
-            index_obj_var = index_obj;
-          }
-        });
-
-        if (!isEmpty(elem)) {
-          var list = elem.list;
-          var index = list.indexOf(relM[2]);
-          var redList = elem.redList;    
-
-          if (index > -1) {
-            list.splice(index, 1);
-          }
-
-          if (!redList.includes(relM[2])) {
-            redList.push(relM[2]);
-          }
-
-          // elem.teamId = elem.teamId;
-          elem.list = list;
-          elem.redList = redList;
-          objArr[index_obj_var] = elem;
-        }
-      });
-      setPmrelObj(objArr);
-    }
-    }
-  }
-
-  const isEmpty = (obj) => {
-    return !Object.keys(obj).length;
+    setMemIdList(tmpList);
   }
 
   return (
     <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
       {editedFlg
-        ? (<div className="target_pm" id={pm.id} data-teamid={teamId} data-title={title} data-description={description} data-prel={pmrel} data-prelm={pmrelM}></div>)
+        ? (<div className="target_pm" id={pm.id} data-teamid={teamId} data-title={title} data-description={description} data-teamarr={teamIdList} data-memarr={memIdList}></div>)
         : (<div id={pm.id} data-teamid={teamId}></div>)}
       <Text>
         <ul style={media === 1 ? row : column}>
@@ -404,21 +274,32 @@ const PM = ({ pm, teamId }) => {
             />
           </li>
           <li>
-            {pmrel !== null && pmrel !== undefined ? (
-              pmrel.map((e, index) => (
+            {function() {
+              if (showMem) {
+                return (
+                  <Btn onClick={toggleShowMem}>Mem編集完了</Btn>
+                )
+              } else {
+                return (
+                  <Btn onClick={toggleShowMem}>Mem編集</Btn>
+                )
+              }
+            }()}
+            {teamIdList !== null && teamIdList !== undefined ? (
+              teamIdList.map((e, index) => (
                 <div  style={media === 1 ? row : column}>
                   <NativeSelect
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     defaultValue=""
-                    value={exportFunction.teamIdToName(e[2])}
-                    label="Age"
-                    onChange={handleChangePrel}
+                    value={exportFunction.teamIdToName(e) + ":" + index}
+                    label="Team"
+                    onChange={handleChangeTeam}
                     name={index}
                   >
-                    {teamIdList !== null && teamIdList !== undefined ? (
-                      teamIdList.map((f, index) => (
-                      <option key={e[2]} value={exportFunction.teamIdToName(f.id)}>
+                    {allTeamIdList !== null && allTeamIdList !== undefined ? (
+                      allTeamIdList.map((f, index2) => (
+                      <option key={e} value={exportFunction.teamIdToName(f.id) + ":" + index}>
                       {exportFunction.teamIdToName(f.id)}
                       </option>
                       ))
@@ -426,37 +307,46 @@ const PM = ({ pm, teamId }) => {
                       <></>
                     )}
                   </NativeSelect>
-                  {e[2] === 4 ? (
+                  {e === 4 ? (
                     <RemoveIcon onClick={() => minusPrel(index)} />
                   ) : (null)}
-                  <div style={media === 1 ? row : column} class="width_6rem">
-                    {function() {
-                      if (pmrelObj !== null && pmrelObj !== undefined) {
-                        return (
-                          <div>
-                            {pmrelObj.map((g, index) => (
-                              <div>
-                                {function() {
-                                  if (g.teamId === e[2]) {
-                                    return (
-                                      <div>
-                                        {g.list.map((l, i) => (
-                                          <p  style={addMem ? showEle : hideEle} onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
-                                        ))}
-                                        {g.redList.map((l, i) => (
-                                          <p className="colorRed" onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
-                                        ))}
-                                      </div>
-                                    )
-                                  }
-                                }()}
-                              </div>
-                            ))}
-                          </div>
-                        )
-                      }
-                    }()}
-                  </div>
+                  {function() {
+                    if (showMem) {
+                      return (
+                        <div style={media === 1 ? row : column} class="width_6rem">
+                          {function() {
+                            if (allMemIdList !== null && allMemIdList !== undefined) {
+                              return (
+                                <div>
+                                  {allMemIdList.map((g, index3) => (
+                                    <div>
+                                      {function() {
+                                        if (g.teamId === Number(e)) {
+                                          if (memIdList.includes(g.id)) {
+                                            return (
+                                              <div>
+                                                <p className="colorRed" onClick={() => togglePrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                              </div>
+                                          )
+                                          } else {
+                                            return (
+                                              <div>
+                                                <p onClick={() => togglePrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                              </div>
+                                            )
+                                          }
+                                        }
+                                      }()}
+                                    </div>
+                                  ))}
+                                </div>
+                              )
+                            }
+                          }()}
+                        </div>
+                      )
+                    }
+                  }()}
                 </div>
               ))
             ) : (
@@ -473,7 +363,7 @@ const PM = ({ pm, teamId }) => {
                 name="tmpPrel"
               >
                 {teamIdList !== null && teamIdList !== undefined ? (
-                  teamIdList.map((f, index) => (
+                  teamIdList.map((f, index4) => (
                     <option key={4} value={exportFunction.teamIdToName(f.id)}>
                       {exportFunction.teamIdToName(f.id)}
                     </option>
@@ -485,17 +375,6 @@ const PM = ({ pm, teamId }) => {
             ) : (
               <Btn onClick={toggleAddPrelFlg}>+prel</Btn>
             )}
-            {function() {
-              if (!addMem) {
-                return(
-                  <Btn onClick={toggleAddMem}>Mem編集</Btn>
-                )
-              } else {
-                return(
-                  <Btn onClick={toggleAddMem}>Mem編集完了</Btn>
-                )
-              }
-            }()}
           </li>
           <li style={media === 1 ? row : column}>
             <Btn onClick={updPm}>更新</Btn>
@@ -524,14 +403,6 @@ const Btn = styled(Button)({
   margin: '10px 0',
   color: 'black',
 });
-
-const showEle = {
-  "display": "block",
-}
-
-const hideEle = {
-  "display": "none",
-}
 
 export default PM;
 
