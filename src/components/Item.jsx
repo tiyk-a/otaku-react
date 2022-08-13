@@ -333,7 +333,7 @@ const toggleSelectedItem = () => {
                                         <div>
                                           <p className="colorRed" onClick={() => toggleIrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                         </div>
-                                    )
+                                      )
                                     } else {
                                       return (
                                         <div>

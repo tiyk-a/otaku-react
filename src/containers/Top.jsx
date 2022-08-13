@@ -86,24 +86,12 @@ const Top = () => {
           const imlist = [];
 
           im.forEach(itemM => {
-            console.log(itemM);
-
-            // relListから必要な情報を抜き出す
-            // var wpId = '';
-            // itemM.relList.forEach(rel => {
-            //   // wpIdを取得したい
-            //   if (rel.team_id === id) {
-            //     wpId = rel.wp_id;
-            //   }
-            // });
-
             const m = {
               id: itemM.im.im_id,
               title: itemM.im.title,
               // price: itemM.im.price,
               pubDate: itemM.im.publication_date,
               image: itemM.im.amazon_image,
-              // wpId: wpId,
               ver: itemM.verList,
               teamArr: stringToArr(itemM.im.teamArr),
               memArr: stringToArr(itemM.im.memArr),

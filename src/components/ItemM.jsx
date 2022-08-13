@@ -13,7 +13,7 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
  * @param {object} item
  * @returns jsx
  */
-const ItemM = ({ item, teamId }) => {
+const ItemM = ({ item }) => {
   const moment = require("moment");
   const date = moment(item.pubDate).format('YYYY/MM/DD');
   const [id, setId] = useState('');
@@ -31,7 +31,6 @@ const ItemM = ({ item, teamId }) => {
   const [showMem, setShowMem] = useState(false);
 
   useEffect(() => {
-    console.log(item);
     // メディア判定
     isSmartPhone();
 
