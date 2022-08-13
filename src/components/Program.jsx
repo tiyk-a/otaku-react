@@ -8,7 +8,6 @@ import jaLocale from 'date-fns/locale/ja';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-import exportFunctionRel from '../functions/RelManage';
 import exportFunction from '../functions/TeamIdToName';
 
 /**
@@ -24,16 +23,16 @@ const Program = ({ program, teamId, regPmList }) => {
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
   const [date, setDate] = useState('');
-  const [prel, setPrel] = useState([]);
-  const [prelM, setPrelM] = useState([]);
+  const [teamIdList, setTeamIdList] = useState([]);
+  const [memIdList, setMemIdList] = useState([]);
+  const [allTeamIdList, setAllTeamIdList] = useState([]);
+  const [allMemIdList, setAllMemIdList] = useState([]);
   const [relPm, setRelPM] = useState([]);
   const [regPmOptionList, setRegPmOptionList] = useState([]);
-  const [teamIdList, setTeamIdList] = useState([]);
   const [id, setId] = useState('');
   const [pmId, setPmId] = useState('');
   const [selectedRegPm, setSelectedRegPm] = useState('');
   const [addPrelFlg, setAddPrelFlg] = useState(false);
-  const [prelObj, setPrelObj] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
   const [media, setMedia] = useState(1);
 
@@ -58,40 +57,18 @@ const Program = ({ program, teamId, regPmList }) => {
     
     setDate(moment(program.date).format('YYYY/MM/DD HH:mm'));
 
-    /**
-     * relに含まれるものは
-     * ・レギュラー番組が設定ある時、cast設定のチーム・メンバー
-     * ・指定でその放送用に設定したチーム・メンバー
-     * 
-     * useEffect()の場合、まだレギュラー番組設定はないはずなのでprogramでキャッチした
-     * チーム・メンバーのみが入る
-     */
-    const outerArr = [];
-    program.prelList.forEach((e) => {
-      const innerArr = [];
-      innerArr.push(e.p_rel_id, e.program_id, e.team_id, 0);
-      outerArr.push(innerArr);
-    });
-    setPrel(outerArr);
-
-    const outerArrM = [];
-    program.prelMList.forEach((e) => {
-      const innerArrM = [];
-      innerArrM.push(e.p_rel_mem_id, e.p_rel_id, e.member_id, 0);
-      outerArrM.push(innerArrM);
-    });
-
     const outerArrReg = [];
 
     setRegPmOptionList(outerArrReg);
-    setPrelM(outerArrM);
 
     setRelPM(program.relPmList);
 
-    setTeamIdList(exportFunction.getAllTeam());
-    insertPrelObj(outerArr, outerArrM);
+    setAllTeamIdList(exportFunction.getAllTeam());
+    setAllMemIdList(exportFunction.getAllMember());
+    setTeamIdList(program.teamArr);
+    setMemIdList(program.memArr);
     setRegPmOptionList(regPmList);
-  }, [moment, program.date, program.description, program.id, program.prelList, program.prelMList, program.title, program.url]);
+  }, [moment, program.date, program.description, program.id, program.teamArr, program.memArr, program.title, program.url]);
 
   // メディア判別
   const isSmartPhone = () => {
@@ -110,15 +87,11 @@ const Program = ({ program, teamId, regPmList }) => {
         setPmId(undefined);
       }
 
-      var irelDistinct = exportFunctionRel.getDistinctRel(prel);
-      var irelMDistinct = exportFunctionRel.getDistinctRel(prelM);
-
       const data = {
         program_id: id,
         pm_id: pmId,
-        teamId: teamId,
-        pmrel: irelDistinct,
-        pmrelm: irelMDistinct,
+        teamArr: teamIdList.join(', '),
+        memArr: memIdList.join(', '),
         title: title,
         description: description,
         on_air_date: date,
@@ -172,53 +145,22 @@ const Program = ({ program, teamId, regPmList }) => {
     }
   };
 
-  const handleChangePrel = e => {
-    // var prelId = e.target.name;
-    var prelId = e.target.name;
-    // 1. Make a shallow copy of the items
-    let vers = [...prel];
-    // 2. Make a shallow copy of the item you want to mutate
-    let ver = {...vers[prelId]};
-    // 3. Replace the property you're intested in
-    ver[2] = exportFunction.nameToTeamId(e.target.value);
-    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
-    vers[prelId] = [ver[0], ver[1], ver[2]];
-    // 5. Set the state to our new copy
-    setPrel(vers);
-    insertPrelObj(vers, prelM);
+  // 手入力で変更したirelを反映します。IDはそのまま使う（not新規but更新)
+  const handleChangeTeam = e => {
+    var arr = e.target.value.split(":");
+    var teamId = exportFunction.nameToTeamId(arr[0]);
+    var index = arr[1];
+    let tmpList = [...teamIdList];
+    tmpList[index] = teamId;
+    setTeamIdList(tmpList);
   }
-
+  
   // 新しいprelを配列に追加します(新規not更新)
   const handleChangeAddPrel = e => {
-    const teamIdTmp = exportFunction.nameToTeamId(e.target.value);
-    let vers = [...prel];
-    // [prelId, programId, teamId]
-    vers.push([null, id, teamIdTmp]);
-    setPrel(vers);
-    setAddPrelFlg(false);
-    insertPrelObj(vers, prelM);
-  }
-
-  // 新しいprelを配列に追加します(新規not更新)
-  // e=castId <30の時に飛んでくる、teamId
-  const handleChangeAddPrelById = e => {
-    let vers = [...prel];
-    let ind = null;
-    vers.forEach((v, index) => {
-      if (v[2] === e) {
-        ind = index;
-      }
-    });
-
-    if (ind !== null) {
-      window.alert("kotti" + e);
-      vers.splice(ind, 1);
-    } else {
-      window.alert("sotti" + e);
-      vers.push([null, id, e]);
-    }
-    setPrel(vers);
-    insertPrelObj(vers, prelM);
+    var teamId = exportFunction.nameToTeamId(e.target.value);
+    let tmpList = [...teamIdList];
+    tmpList.push(teamId);
+    setTeamIdList(tmpList);
   }
 
   const toggleAddPrelFlg = () => {
@@ -231,157 +173,25 @@ const Program = ({ program, teamId, regPmList }) => {
 
   // そのチームをprelから抜きます
   const minusPrel = (index) => {
-    let vers = [...prel];
-    // prelが最低1つあれば削除可能
-    if (vers.length > 1) {
-      vers.splice(index, 1);
+
+    let tmpList = [...teamIdList];
+    // imrelデータでなく、irelが最低1つあれば削除可能。imrelデータだったら未選択のままにして、ポストしてdel_flg=trueにしましょう
+    if (tmpList.length > 1) {
+      tmpList.splice(index, 1);
     }
-    setPrel(vers);
+    setTeamIdList(tmpList);
   }
 
   // メンバーがprelMに入っていなかったら追加、入っていたら抜く
   const togglePrelM = (memberId) => {
-    let vers = [...prelM];
-    let ver2 = vers.filter(rel => rel[2] !== memberId);
-
-    if (vers.length === ver2.length) {
-      ver2.push([null, null, memberId, 0]);
+    var tmpList = [...memIdList];
+    // https://stackoverflow.com/questions/61997123/how-to-delete-a-value-from-array-if-exist-or-push-it-to-array-if-not-exists
+    if(!tmpList.includes(memberId)){ //checking weather array contain the id
+        tmpList.push(memberId); //adding to array because value doesnt exists
+    }else{
+        tmpList.splice(tmpList.indexOf(memberId), 1); //deleting
     }
-    setPrelM(ver2);
-    insertPrelObj(prel, ver2);
-  }
-
-  // member関連objectを全て設定
-  // [{teamId,memList,redMemList},{teamId,memList,redMemList}]
-  const insertPrelObj = (prel, prelM) => {
-    var allMemList = exportFunction.getAllMember();
-
-    // このprogramが持ってるteamidlistを作る
-    var tmpTeamIdList = [];
-
-    if (prel !== null && prel !== undefined && prel.length > 0) {
-      prel.forEach((rel) => {
-        if (!tmpTeamIdList.includes(rel[2])) {
-          tmpTeamIdList.push(rel[2]);
-        }
-      });
-
-      var objArr = [];
-      // programが持ってるteamIdを全部オブジェクトに突っ込む
-      tmpTeamIdList.forEach((teamId) => {
-        var addFlg = true;
-        objArr.forEach((obj) => {
-          // if (obj.teamId === teamId) {
-          //   addFlg = false;
-          // }
-        });
-
-        if (addFlg && teamId !== undefined) {
-          var mList = [];
-          allMemList.forEach((g, index) => {
-            if (g.teamId === teamId) {
-              mList.push(g.id);
-            }
-          });
-
-          var elem = {
-            teamId : teamId,
-            list : mList,
-            redList : []
-          };
-          objArr.push(elem);
-        }
-      });
-
-      if (prelM !== null && prelM !== undefined) {
-        prelM.forEach((relM) => {
-          var elem = {};
-          var index_obj_var = null;
-          objArr.forEach((obj, index_obj) => {
-            var tId = exportFunction.getTeamIdOfMember(relM[2]);
-            if (obj.teamId === tId) {
-              elem = obj;
-              index_obj_var = index_obj;
-            }
-          });
-
-          if (!isEmpty(elem)) {
-            var list = elem.list;
-            var index = list.indexOf(relM[2]);
-            var redList = elem.redList;        
-
-            if (index > -1) {
-              list.splice(index, 1);
-            }
-
-            if (!redList.includes(relM[2])) {
-              redList.push(relM[2]);
-            }
-
-            // elem.teamId = elem.teamId;
-            elem.list = list;
-            elem.redList = redList;
-            objArr[index_obj_var] = elem;
-          }
-        });
-        setPrelObj(objArr);
-      }
-    }
-  }
-
-  const isEmpty = (obj) => {
-    return !Object.keys(obj).length;
-  }
-
-  const removeTeamIfExist = (t) => {
-    let vers = [...prel];
-    let ind = null;
-    vers.forEach((v, index) => {
-      if (v[2] === t) {
-        ind = index;
-      }
-    });
-
-    if (ind !== null) {
-      window.alert("kotti" + t);
-      vers.splice(ind, 1);
-    }
-    setPrel(vers);
-    insertPrelObj(vers, prelM);
-  }
-
-  const removeMemIfExist = (m) => {
-    let vers = [...prelM];
-    let ind = null;
-    vers.forEach((v, index) => {
-      if (v[2] === m) {
-        ind = index;
-      }
-    });
-
-    if (ind !== null) {
-      window.alert("kotti" + module);
-      vers.splice(ind, 1);
-    }
-    setPrel(vers);
-    insertPrelObj(prel, vers);
-  }
-
-  const addTeamIfNotExist = (t) => {
-    let vers = [...prel];
-    let ind = null;
-    vers.forEach((v, index) => {
-      if (v[2] === t) {
-        ind = index;
-      }
-    });
-
-    if (ind === null) {
-      window.alert("sotti" + t);
-      vers.push([null, id, t]);
-    }
-    setPrel(vers);
-    insertPrelObj(vers, prelM);
+    setMemIdList(tmpList);
   }
 
   // Program一括選択のためにboxを押したら選択/解除する
@@ -400,7 +210,7 @@ const Program = ({ program, teamId, regPmList }) => {
       </a>
       <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedProgram}>
         {editedFlg
-          ? (<div className="target_p" id={program.id} data-pmid={pmId} data-teamid={teamId} data-title={title} data-description={description} data-prel={prel} data-prelm={prelM}></div>)
+          ? (<div className="target_p" id={program.id} data-pmid={pmId} data-teamid={teamId} data-title={title} data-description={description} data-teamarr={teamIdList} data-memarr={memIdList}></div>)
           : (<div id={program.id} data-teamid={teamId}></div>)}
         <Text>
           <ul style={media === 1 ? row : column}>
@@ -416,21 +226,21 @@ const Program = ({ program, teamId, regPmList }) => {
               </MuiPickersUtilsProvider>
             </li>
             <li style={media === 1 ? null : column}>
-              {prel !== null && prel !== undefined ? (
-                prel.map((e, index) => (
+              {teamIdList !== null && teamIdList !== undefined ? (
+                teamIdList.map((e, index) => (
                   <div class="flex_row">
                     <NativeSelect
                       labelId="demo-simple-select-label"
-                      id="demo-simple-select"
+                      id={e}
                       defaultValue=""
-                      value={exportFunction.teamIdToName(e[2])}
-                      label="Age"
-                      onChange={handleChangePrel}
+                      value={exportFunction.teamIdToName(e) + ":" + index}
+                      label="Team"
+                      onChange={handleChangeTeam}
                       name={index}
                     >
-                    {teamIdList !== null && teamIdList !== undefined ? (
-                      teamIdList.map((f, index) => (
-                        <option key={e[2]} value={exportFunction.teamIdToName(f.id)}>
+                    {allTeamIdList !== null && allTeamIdList !== undefined ? (
+                      allTeamIdList.map((f, index2) => (
+                        <option key={e} value={exportFunction.teamIdToName(f.id) + ":" + index}>
                           {exportFunction.teamIdToName(f.id)}
                         </option>
                         ))
@@ -438,29 +248,32 @@ const Program = ({ program, teamId, regPmList }) => {
                       <></>
                     )}
                     </NativeSelect>
-                    {e[2] === 4 ? (
+                    {e === 4 ? (
                       <RemoveIcon onClick={() => minusPrel(index)} />
                     ) : (null)
                     }
                     <div class="flex_column width_6rem">
                       {function() {
-                        if (prelObj !== null && prelObj !== undefined) {
+                        if (allMemIdList !== null && allMemIdList !== undefined) {
                           return (
                             <div>
-                              {prelObj.map((g, index) => (
+                              {allMemIdList.map((g, index3) => (
                                 <div>
                                   {function() {
-                                    if (g.teamId === e[2]) {
-                                      return (
+                                    if (Number(g.teamId) === Number(e)) {
+                                      if (memIdList.includes(g.id)) {
+                                        return (
                                         <div>
-                                          {g.list.map((l, i) => (
-                                            <p onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
-                                          ))}
-                                          {g.redList.map((l, i) => (
-                                            <p className="colorRed" onClick={() => togglePrelM(l)}>{exportFunction.memberIdToName(l)}</p>
-                                          ))}
+                                          <p className="colorRed" onClick={() => togglePrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                         </div>
                                       )
+                                      } else {
+                                        return (
+                                          <div>
+                                            <p onClick={() => togglePrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                          </div>
+                                        )
+                                      }
                                     }
                                   }()}
                                 </div>
@@ -485,8 +298,8 @@ const Program = ({ program, teamId, regPmList }) => {
                   onChange={handleChangeAddPrel}
                   name="tmpPrel"
                 >
-                {teamIdList !== null && teamIdList !== undefined ? (
-                  teamIdList.map((f, index) => (
+                {allTeamIdList !== null && allTeamIdList !== undefined ? (
+                  allTeamIdList.map((f, index4) => (
                     <option key={4} value={exportFunction.teamIdToName(f.id)}>
                       {exportFunction.teamIdToName(f.id)}
                     </option>

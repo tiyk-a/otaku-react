@@ -57,8 +57,8 @@ const All = () => {
             date: pData.on_air_date,
             station_id: pData.station_id,
             station_name: data.station_name,
-            prelList: data.prelList,
-            prelMList: data.prelMList,
+            teamArr: stringToArr(pData.teamArr),
+            memArr: stringToArr(pData.memArr),
             relPmList: data.relPmList,
           };
           list.push(program);
@@ -82,8 +82,8 @@ const All = () => {
             id: pData.pm_id,
             title: pData.title,
             description: pData.description,
-            pmrelList: data.relList,
-            pmrelMList: data.relMemList,
+            teamArr: stringToArr(pData.teamArr),
+            memArr: stringToArr(pData.memArr),
             verList: data.verList,
           };
           pmlist.push(pm);
@@ -152,6 +152,14 @@ const All = () => {
     }
   }
 
+  const stringToArr = (str) => {
+    var tmpArr = str.split(",");
+    if (tmpArr.includes("")) {
+      tmpArr.splice(tmpArr.indexOf(""), 1);
+    }
+    return tmpArr;
+  }
+  
   const selected = {
     opacity: 0.5,
   }

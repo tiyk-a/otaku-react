@@ -21,34 +21,15 @@ const TvList = ({tvList, pmList, regPmList, teamId}) => {
 
     Array.from(elems).forEach((e) => {
       if (e.dataset.pmid === null || e.dataset.pmid === "") {
-
-        const prel = [];
-        if (e.dataset.prel !== undefined && e.dataset.prel !== null) {
-          var arrPrel = e.dataset.prel.split(",");
-          var j = 0;
-          while (arrPrel[j]!== undefined && arrPrel[j+1]!== undefined && arrPrel[j+2]!== undefined) {
-            prel.push([Number(arrPrel[j]), Number(arrPrel[j+1]), Number(arrPrel[j+2])]);
-            j = j + 4;
-          }
-        }
-
-        const prelm = [];
-        if (e.dataset.prelm !== undefined && e.dataset.prelm !== null) {
-          var arrPrelM = e.dataset.prelm.split(",");
-          var k = 0;
-          while (arrPrel[j]!== undefined && arrPrel[j+1]!== undefined && arrPrel[j+2]!== undefined) {
-            prelm.push([Number(arrPrelM[k]), Number(arrPrelM[k+1]), Number(arrPrelM[k+2])]);
-            k = k + 4;
-          }
-        }
         
+        // TODO: VERを追加しないといけない！！
         const p = {
           program_id: e.id,
           pm_id: e.dataset.pmid,
           teamId: e.dataset.teamid,
           description: e.dataset.description,
-          pmrel: prel,
-          pmrelm: prelm,
+          teamArr: e.dataset.teamarr,
+          memArr: e.dataset.memarr,
           title: e.dataset.title,
           // on_air_date: e.dataset.date,
           del_flg: false,
