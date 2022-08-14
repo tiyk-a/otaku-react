@@ -153,6 +153,10 @@ const All = () => {
   }
 
   const stringToArr = (str) => {
+    if (str === null || str === undefined) {
+      return [];
+    }
+    
     var tmpArr = str.split(",");
     if (tmpArr.includes("")) {
       tmpArr.splice(tmpArr.indexOf(""), 1);

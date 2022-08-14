@@ -86,18 +86,20 @@ const Top = () => {
           const imlist = [];
 
           im.forEach(itemM => {
+            console.log(itemM);
             const m = {
               id: itemM.im.im_id,
               title: itemM.im.title,
-              // price: itemM.im.price,
               pubDate: itemM.im.publication_date,
               image: itemM.im.amazon_image,
               ver: itemM.verList,
               teamArr: stringToArr(itemM.im.teamArr),
               memArr: stringToArr(itemM.im.memArr),
-              blog_not_updated: itemM.im.blog_not_updated,
+              blog_not_updated: itemM.im.blogNotUpdated,
             };
+            console.log(m);
           imlist.push(m);
+          console.log(imlist);
           });
           setItemMList(imlist);
         }
@@ -143,6 +145,9 @@ const Top = () => {
   }
 
   const stringToArr = (str) => {
+    if (str === null || str === undefined) {
+      return [];
+    }
     var tmpArr = str.split(",");
     if (tmpArr.includes("")) {
       tmpArr.splice(tmpArr.indexOf(""), 1);
@@ -241,6 +246,7 @@ const Top = () => {
       <div>
         {
           function() {
+            console.log(itemMList);
             return (
               <div>
                 <ItemMList itemList={itemList} itemMList={itemMList} teamId={id} errJList={errJList} />
