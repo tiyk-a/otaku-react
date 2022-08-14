@@ -8,13 +8,13 @@ import { ApiPath } from '../constants';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import NativeSelect from '@mui/material/NativeSelect';
-import exportFunctionRel from '../functions/RelManage';
-import exportFunction from '../functions/TeamIdToName';
+// import exportFunction from '../functions/TeamIdToName';
 
 /**
  * 新規商品登録or商品情報アップデート時のフォーム
  */
 const ItemForm = () => {
+  var exportFunction = require('../functions/TeamIdToName');
 
   // 【商品データ用のSTATES】
   const [id, setId] = useState('');

@@ -8,7 +8,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { DateTimePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from 'date-fns/locale/ja';
-import exportFunction from '../functions/TeamIdToName';
+// import exportFunction from '../functions/TeamIdToName';
 import NativeSelect from '@mui/material/NativeSelect';
 
 /**
@@ -18,6 +18,8 @@ import NativeSelect from '@mui/material/NativeSelect';
  * @returns jsx
  */
 const PM = ({ pm, teamId }) => {
+  var exportFunction = require('../functions/TeamIdToName');
+  
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [verList, setVerList] = useState([]);

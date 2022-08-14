@@ -11,7 +11,7 @@ import axios from '../axios';
 import { ApiPath } from '../constants';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
-import exportFunction from '../functions/TeamIdToName';
+// import exportFunction from '../functions/TeamIdToName';
 import MediaQuery from "react-responsive";
 
 /**
@@ -21,6 +21,8 @@ import MediaQuery from "react-responsive";
  * @returns jsx
  */
 const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
+  var exportFunction = require('../functions/TeamIdToName');
+  
   const moment = require("moment");
   const [date, setDate] = useState('');
   const [imId, setImId] = useState(0);

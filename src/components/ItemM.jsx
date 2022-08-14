@@ -1,7 +1,7 @@
 import { Box, Button, TextField, Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
-import exportFunction from '../functions/TeamIdToName';
+// import exportFunction from '../functions/TeamIdToName';
 import axios from '../axios';
 import { ApiPath } from '../constants';
 import NativeSelect from '@mui/material/NativeSelect';
@@ -14,6 +14,8 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
  * @returns jsx
  */
 const ItemM = ({ item }) => {
+  var exportFunction = require('../functions/TeamIdToName');
+  
   const moment = require("moment");
   const date = moment(item.pubDate).format('YYYY/MM/DD');
   const [id, setId] = useState('');

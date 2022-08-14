@@ -8,7 +8,7 @@ import jaLocale from 'date-fns/locale/ja';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-import exportFunction from '../functions/TeamIdToName';
+// import exportFunction from '../functions/TeamIdToName';
 
 /**
  *　商品１件を表示するコンポーネント
@@ -17,6 +17,8 @@ import exportFunction from '../functions/TeamIdToName';
  * @returns jsx
  */
 const Item = ({ item, teamId }) => {
+  var exportFunction = require('../functions/TeamIdToName');
+
   const moment = require("moment");
   const [id, setId] = useState('');
   const [imId, setImId] = useState('');

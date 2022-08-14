@@ -5,7 +5,7 @@ import axios from '../axios';
 import { ApiPath } from '../constants';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import NativeSelect from '@mui/material/NativeSelect';
-import exportFunction from '../functions/TeamIdToName';
+// import exportFunction from '../functions/TeamIdToName';
 import FormControl from '@mui/material/FormControl';
 
 /**
@@ -14,6 +14,7 @@ import FormControl from '@mui/material/FormControl';
  * @returns jsx
  */
 const RegPmUpdate = ({regPmList}) => {
+  var exportFunction = require('../functions/TeamIdToName');
 
   const [regPm, setRegPm] = useState('');
   const [displayForm, setDisplayForm] = useState(false);
