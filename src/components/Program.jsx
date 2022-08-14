@@ -90,8 +90,8 @@ const Program = ({ program, teamId, regPmList }) => {
       const data = {
         program_id: id,
         pm_id: pmId,
-        teamArr: teamIdList.join(', '),
-        memArr: memIdList.join(', '),
+        teamArr: teamIdList.join(','),
+        memArr: memIdList.join(','),
         title: title,
         description: description,
         on_air_date: date,
@@ -136,6 +136,7 @@ const Program = ({ program, teamId, regPmList }) => {
         break;
       case 'verTitle':
         setVerTitle(txt);
+        setTitle(txt);
         break;
       case 'selectedRegPm':
         setSelectedRegPm(txt);

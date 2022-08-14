@@ -178,8 +178,8 @@ const ItemM = ({ item }) => {
       amazon_image: image,
       del_flg: false,
       vers: verArr,
-      teamArr: teamIdList.join(', '),
-      memArr: memIdList.join(', '),
+      teamArr: teamIdList.join(','),
+      memArr: memIdList.join(','),
     }
 
     await axios

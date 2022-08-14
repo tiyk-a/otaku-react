@@ -67,8 +67,8 @@ const Item = ({ item, teamId }) => {
       const data = {
         item_id: id,
         im_id: imId,
-        teamArr: teamIdList.join(', '),
-        memArr: memIdList.join(', '),
+        teamArr: teamIdList.join(','),
+        memArr: memIdList.join(','),
         title: title,
         wp_id: "",
         publication_date: date,
@@ -77,6 +77,7 @@ const Item = ({ item, teamId }) => {
         vers: verArr,
       }
 
+      console.log(data);
       await axios
         .post(ApiPath.IM, data)
         .then(response => {

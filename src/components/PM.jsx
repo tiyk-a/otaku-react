@@ -87,8 +87,8 @@ const PM = ({ pm, teamId }) => {
       pm_id: pm.id,
       title: title,
       description: description,
-      teamArr: teamIdList.join(', '),
-      memArr: memIdList.join(', '),
+      teamArr: teamIdList.join(','),
+      memArr: memIdList.join(','),
       verList: verList
     }
 
