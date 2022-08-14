@@ -77,14 +77,14 @@ const Item = ({ item, teamId }) => {
         vers: verArr,
       }
 
-      console.log(data);
       await axios
         .post(ApiPath.IM, data)
         .then(response => {
           if (response.data) {
             var tmpUrl = window.location.href;
             var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-            window.location.href = newUrl;
+            var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
+            window.location.href = newUrl2;
           } else {
             window.alert("更新エラーです");
           }
@@ -137,7 +137,8 @@ const Item = ({ item, teamId }) => {
           if (response.data) {
             var tmpUrl = window.location.href;
             var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-            window.location.href = newUrl;
+            var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
+            window.location.href = newUrl2;
           } else {
             window.alert("削除エラーです");
             console.log(response);
@@ -153,30 +154,17 @@ const Item = ({ item, teamId }) => {
 
   // 手入力で変更したirelを反映します。IDはそのまま使う（not新規but更新)
   const handleChangeTeam = e => {
-    var arr = e.target.value.split(":");
-    var teamId = exportFunction.nameToTeamId(arr[0]);
-    var index = arr[1];
-    let tmpList = [...teamIdList];
-    tmpList[index] = teamId;
-    setTeamIdList(tmpList);
+    setTeamIdList(exportFunction.handleChangeTeam(e, teamIdList));
   }
 
   // 新しいirelを配列に追加します(新規not更新)
   const handleChangeAddIrel = e => {
-    var teamId = exportFunction.nameToTeamId(e.target.value);
-    let tmpList = [...teamIdList];
-    tmpList.push(teamId);
-    setTeamIdList(tmpList);
+    setTeamIdList(exportFunction.addTeam(e.target.value, teamIdList));
   }
 
   // そのチームをirelから抜きます
   const minusIrel = (index) => {
-    let tmpList = [...teamIdList];
-    // imrelデータでなく、irelが最低1つあれば削除可能。imrelデータだったら未選択のままにして、ポストしてdel_flg=trueにしましょう
-    if (tmpList.length > 1) {
-      tmpList.splice(index, 1);
-    }
-    setTeamIdList(tmpList);
+    setTeamIdList(exportFunction.minusTeam(index, teamIdList));
   }
 
   // 入力された検索ワードをSTATEに反映
@@ -207,7 +195,8 @@ const Item = ({ item, teamId }) => {
         .then(response => {
           var tmpUrl = window.location.href;
           var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-          window.location.href = newUrl;
+          var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
+          window.location.href = newUrl2;
         })
         .catch(error => {
           if (error.code === "ECONNABORTED") {
@@ -227,14 +216,7 @@ const Item = ({ item, teamId }) => {
 
   // メンバーがirelMに入っていなかったら追加、入っていたら抜く
   const toggleIrelM = (memberId) => {
-    var tmpList = [...memIdList];
-    // https://stackoverflow.com/questions/61997123/how-to-delete-a-value-from-array-if-exist-or-push-it-to-array-if-not-exists
-    if(!tmpList.includes(memberId)){ //checking weather array contain the id
-        tmpList.push(memberId); //adding to array because value doesnt exists
-    }else{
-        tmpList.splice(tmpList.indexOf(memberId), 1); //deleting
-    }
-    setMemIdList(tmpList);
+    setMemIdList(exportFunction.toggleMem(memberId, memIdList));
   }
 
 // Item一括選択のためにboxを押したら選択/解除する

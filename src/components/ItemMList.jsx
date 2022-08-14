@@ -7,7 +7,6 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { DatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from 'date-fns/locale/ja';
-import ItemForm from '../containers/ItemForm';
 import axios from '../axios';
 import { ApiPath } from '../constants';
 import FormControl from '@mui/material/FormControl';
@@ -82,7 +81,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         if (response.data) {
           var tmpUrl = window.location.href;
           var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-          window.location.href = newUrl;
+          var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
+            window.location.href = newUrl2;
         } else {
           window.alert("登録エラーです");
           console.log(response);
@@ -120,7 +120,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         if (response.data) {
           var tmpUrl = window.location.href;
           var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-          window.location.href = newUrl;
+          var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
+          window.location.href = newUrl2;
         } else {
           window.alert("登録エラーです");
           console.log(response);
@@ -171,7 +172,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         if (response.data) {
           var tmpUrl = window.location.href;
           var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-          window.location.href = newUrl;
+          var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
+          window.location.href = newUrl2;
         } else {
           window.alert("登録エラーです");
           console.log(response);
@@ -198,7 +200,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         if (response.data) {
           var tmpUrl = window.location.href;
           var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-          window.location.href = newUrl;
+          var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
+          window.location.href = newUrl2;
         } else {
           window.alert("登録エラーです");
           console.log(response);
@@ -474,7 +477,6 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         {/* <TbHeader styles={styles} /> */}
       </MediaQuery>
       <h3>ErrorJson</h3>
-      <ItemForm />
       {errJList !== undefined && errJList.length > 0 ? (
         errJList.map((e, index) => (
           <div className="itemBox" key={index}>

@@ -208,3 +208,66 @@ exports.getCal = function(teamId) {
     }
     return teamObject.cal;
 }
+
+/**
+ * Teamの変更を行い、変更後のarrayを返します
+ * 
+ * @param {*} e 
+ * @returns 
+ */
+exports.handleChangeTeam = function(e, array) {
+  var arr = e.target.value.split(":");
+  var teamId = exports.nameToTeamId(arr[0]);
+  var index = arr[1];
+  let tmpList = [...array];
+  tmpList[index] = teamId;
+  return tmpList;
+}
+
+/**
+ * Memberを変更します。変更後のarrayを返します
+ * 
+ * @param {*} memId 
+ * @param {*} array 
+ * @returns 
+ */
+exports.toggleMem = function(memId, array) {
+  var tmpList = [...array];
+  // https://stackoverflow.com/questions/61997123/how-to-delete-a-value-from-array-if-exist-or-push-it-to-array-if-not-exists
+  if(!tmpList.includes(memId)){ //checking weather array contain the id
+    tmpList.push(memId); //adding to array because value doesnt exists
+  }else{
+    tmpList.splice(tmpList.indexOf(memId), 1); //deleting
+  }
+  return tmpList;
+}
+
+/**
+ * Teamをarrayから抜く処理
+ * 
+ * @param {*} index 
+ * @param {*} array 
+ */
+exports.minusTeam = function(index, array) {
+  let tmpList = [...array];
+  if (tmpList.length > 1) {
+    tmpList.splice(index, 1);
+  }
+  return tmpList;
+}
+
+/**
+ * Teamをarrayに追加します
+ * 引数1はe.target.valueを与えること
+ * 引数2はteamidlist
+ * 
+ * @param {*} teamName 
+ * @param {*} array 
+ * @returns 
+ */
+exports.addTeam = function(teamName, array) {
+  var teamId = exports.nameToTeamId(teamName);
+  let tmpList = [...array];
+  tmpList.push(teamId);
+  return tmpList;
+}

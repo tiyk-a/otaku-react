@@ -44,7 +44,8 @@ const TvList = ({tvList, pmList, regPmList, teamId}) => {
         if (response.data) {
           var tmpUrl = window.location.href;
           var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-          window.location.href = newUrl;
+          var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
+          window.location.href = newUrl2;
         } else {
           window.alert("登録エラーです");
           console.log(response);
@@ -76,7 +77,8 @@ const TvList = ({tvList, pmList, regPmList, teamId}) => {
         if (response.data) {
           var tmpUrl = window.location.href;
           var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-          window.location.href = newUrl;
+          var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
+          window.location.href = newUrl2;
         } else {
           window.alert("登録エラーです");
           console.log(response);

@@ -62,15 +62,15 @@ const ItemForm = () => {
         setImId(undefined);
       }
 
-      var irelDistinct = exportFunctionRel.getDistinctRel(irel);
-      var irelMDistinct = exportFunctionRel.getDistinctRel(irelM);
+      // var irelDistinct = exportFunctionRel.getDistinctRel(irel);
+      // var irelMDistinct = exportFunctionRel.getDistinctRel(irelM);
 
       const data = {
         item_id: id,
         im_id: imId,
         teamId: teamId,
-        imrel: irelDistinct,
-        imrelm: irelMDistinct,
+        // imrel: irelDistinct,
+        // imrelm: irelMDistinct,
         title: title,
         wp_id: "",
         publication_date: date,
@@ -85,7 +85,8 @@ const ItemForm = () => {
           if (response.data) {
             var tmpUrl = window.location.href;
             var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-            window.location.href = newUrl;
+            var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
+            window.location.href = newUrl2;
           } else {
             window.alert("更新エラーです");
           }
