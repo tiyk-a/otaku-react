@@ -99,7 +99,7 @@ const Item = ({ item, teamId }) => {
 
   // 入力された検索ワードをSTATEに反映
   const handleChangeDate = e => {
-    setDate(e);
+    setDate(moment(e).format('YYYY/MM/DD'));
     if (!editedFlg) {
       setEditedFlg(true);
     }
