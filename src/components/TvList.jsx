@@ -14,7 +14,9 @@ import { ApiPath } from '../constants';
  */
 const TvList = ({tvList, pmList, regPmList, teamId}) => {
 
-  // 対象Itemを一括でIM登録します
+  /**
+   * 対象Itemを一括でIM登録します
+   */
   const bundlePm = async() => {
     var elems = document.getElementsByClassName("target_p");
     const data = [];
@@ -58,7 +60,10 @@ const TvList = ({tvList, pmList, regPmList, teamId}) => {
       });
   }
 
-  // 対象Pを一括で削除します
+  /**
+   * 対象プログラムを一括で削除します
+   * @returns 
+   */
   const bundleDelP = async() => {
     var res = window.confirm("一括削除しますか？");
     if (res === false) {

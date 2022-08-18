@@ -21,7 +21,6 @@ const RegPmUpdate = ({regPmList}) => {
   const [teamArr, setTeamArr] = useState([]);
   const [memArr, setMemArr] = useState([]);
   const [teamAllMem, setTeamAllMem] = useState([]);
-  const [id, setId] = useState('');
   const [teamIdList, setTeamIdList] = useState([]);
   const [addTeamFlg, setAddTeamFlg] = useState(false);
   const [staKey, setStaKey] = useState('');
@@ -127,10 +126,6 @@ const RegPmUpdate = ({regPmList}) => {
       ver2.push(memberId);
     }
     setMemArr(ver2);
-  }
-
-  const isEmpty = (obj) => {
-    return !Object.keys(obj).length;
   }
 
   /**

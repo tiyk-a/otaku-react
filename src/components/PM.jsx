@@ -8,7 +8,6 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { DateTimePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import jaLocale from 'date-fns/locale/ja';
-// import exportFunction from '../functions/TeamIdToName';
 import NativeSelect from '@mui/material/NativeSelect';
 
 /**
@@ -27,15 +26,13 @@ const PM = ({ pm, teamId }) => {
   const [memIdList, setMemIdList] = useState([]);
   const [allTeamIdList, setAllTeamIdList] = useState([]);
   const [allMemIdList, setAllMemIdList] = useState([]);
-  const [id, setId] = useState('');
-  const [addPrelFlg, setAddPrelFlg] = useState(false);
+  const [addTeamFlg, setAddTeamFlg] = useState(false);
   const [editedFlg, setEditedFlg] = useState(false);
   const [showMem, setShowMem] = useState(false);
   const [media, setMedia] = useState(1);
 
   useEffect(() => {
     isSmartPhone();
-    setId(pm.id);
     setTitle(pm.title);
     if (pm.description !== null && pm.description !== undefined) {
       setDescription(pm.description);
@@ -60,9 +57,11 @@ const PM = ({ pm, teamId }) => {
     });
     setVerList(outerArrV);
   }
-  }, [pm.description, pm.id, pm.teamIdList, pm.memIdList, pm.title, pm.verList]);
+  }, [pm.description, pm.teamIdList, pm.memIdList, pm.title, pm.verList]);
 
-  // メディア判別
+  /**
+   * メディア判別
+   */
   const isSmartPhone = () => {
     if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
       // SP
@@ -72,18 +71,20 @@ const PM = ({ pm, teamId }) => {
     }
   }
 
-  // Item一括選択のためにboxを押したら選択/解除する
-  const toggleSelectedItem = () => {
+  /**
+   * 編集した・しないtoggle
+   */
+  const toggleEditedFlg = () => {
     if (editedFlg) {
       setEditedFlg(false);
-      // setIsChecked(false);
     } else {
       setEditedFlg(true);
-      // setIsChecked(true);
     }
   }
 
-  // 既存商品の更新
+  /**
+   * 既存商品の更新
+   */
   const updPm = async() => {
     const data = {
       pm_id: pm.id,
@@ -113,6 +114,9 @@ const PM = ({ pm, teamId }) => {
     });
   };
 
+  /**
+   * PM削除
+   */
   const delPm = async () => {
     await axios
     .delete(ApiPath.PM + pm.id)
@@ -135,7 +139,10 @@ const PM = ({ pm, teamId }) => {
     });
   };
 
-  // 各要素が入力されたらSTATEをアップデート
+  /**
+   * 各要素が入力されたらSTATEをアップデート
+   * @param {*} e 
+   */
   const handleChange = e => {
     const txt = e.target.value;
 
@@ -151,15 +158,25 @@ const PM = ({ pm, teamId }) => {
     }
   };
 
-  const handleChangeTeam = e => {
-    setTeamIdList(exportFunction.handleChangeTeam(e, teamIdList));
+  /**
+   * Indexのteamを変更
+   * @param {*} e 
+   */
+  const changeTeamByIndex = e => {
+    setTeamIdList(exportFunction.changeTeamByIndex(e, teamIdList));
   }
 
-  // 新しいprelを配列に追加します(新規not更新)
-  const handleChangeAddPrel = e => {
+  /**
+   * 新しいTeamを追加します(新規not更新)
+   * @param {*} e 
+   */
+  const addTeam = e => {
     setTeamIdList(exportFunction.addTeam(e.target.value, teamIdList));
   }
 
+  /**
+   * Member表示・非表示toggle
+   */
   const toggleShowMem = () => {
     if (!showMem) {
       setShowMem(true);
@@ -168,26 +185,35 @@ const PM = ({ pm, teamId }) => {
     }
   }
 
-  const toggleAddPrelFlg = () => {
-    if (addPrelFlg) {
-      setAddPrelFlg(false);
+  /**
+   * Teamを追加する
+   */
+  const toggleAddTeam = () => {
+    if (addTeamFlg) {
+      setAddTeamFlg(false);
     } else {
-      setAddPrelFlg(true);
+      setAddTeamFlg(true);
     }
   }
 
-  // そのチームをprelから抜きます
-  const minusPrel = (index) => {
+  /**
+   * そのチームを抜きます
+   * @param {*} index 
+   */
+  const minusTeam = (index) => {
     setTeamIdList(exportFunction.minusTeam(index, teamIdList));
   }
 
-  // メンバーがprelMに入っていなかったら追加、入っていたら抜く
-  const togglePrelM = (memberId) => {
+  /**
+   * メンバーが入っていなかったら追加、入っていたら抜く
+   * @param {*} memberId 
+   */
+  const toggleMem = (memberId) => {
     setMemIdList(exportFunction.toggleMem(memberId, memIdList));
   }
 
   return (
-    <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
+    <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleEditedFlg}>
       {editedFlg
         ? (<div className="target_pm" id={pm.id} data-teamid={teamId} data-title={title} data-description={description} data-teamarr={teamIdList} data-memarr={memIdList}></div>)
         : (<div id={pm.id} data-teamid={teamId}></div>)}
@@ -278,7 +304,7 @@ const PM = ({ pm, teamId }) => {
                     defaultValue=""
                     value={exportFunction.teamIdToName(e) + ":" + index}
                     label="Team"
-                    onChange={handleChangeTeam}
+                    onChange={changeTeamByIndex}
                     name={index}
                   >
                     {allTeamIdList !== null && allTeamIdList !== undefined ? (
@@ -292,7 +318,7 @@ const PM = ({ pm, teamId }) => {
                     )}
                   </NativeSelect>
                   {e === 4 ? (
-                    <RemoveIcon onClick={() => minusPrel(index)} />
+                    <RemoveIcon onClick={() => minusTeam(index)} />
                   ) : (null)}
                   {function() {
                     if (showMem) {
@@ -309,13 +335,13 @@ const PM = ({ pm, teamId }) => {
                                           if (memIdList.includes(g.id)) {
                                             return (
                                               <div>
-                                                <p className="colorRed" onClick={() => togglePrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                                <p className="colorRed" onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                               </div>
                                           )
                                           } else {
                                             return (
                                               <div>
-                                                <p onClick={() => togglePrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                                <p onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                               </div>
                                             )
                                           }
@@ -336,14 +362,14 @@ const PM = ({ pm, teamId }) => {
             ) : (
               <></>
             )}
-            {addPrelFlg ? (
+            {addTeamFlg ? (
               <NativeSelect
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 defaultValue=""
                 value={exportFunction.teamIdToName(4)}
                 label="Age"
-                onChange={handleChangeAddPrel}
+                onChange={addTeam}
                 name="tmpPrel"
               >
                 {teamIdList !== null && teamIdList !== undefined ? (
@@ -357,7 +383,7 @@ const PM = ({ pm, teamId }) => {
                 )}
               </NativeSelect>
             ) : (
-              <Btn onClick={toggleAddPrelFlg}>+prel</Btn>
+              <Btn onClick={toggleAddTeam}>+prel</Btn>
             )}
           </li>
           <li style={media === 1 ? row : column}>

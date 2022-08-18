@@ -8,7 +8,6 @@ import jaLocale from 'date-fns/locale/ja';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-// import exportFunction from '../functions/TeamIdToName';
 
 /**
  *　商品１件を表示するコンポーネント
@@ -50,7 +49,9 @@ const Item = ({ item, teamId }) => {
     setAllMemIdList(exportFunction.getAllMember());
   }, [item, item.id, item.pubDate, item.title, item.teamArr, item.memArr, moment]);
 
-  // メディア判別
+  /**
+   * メディア判別
+   */
   const isSmartPhone = () => {
     if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
       // SP
@@ -60,6 +61,9 @@ const Item = ({ item, teamId }) => {
     }
   }
 
+  /**
+   * IMを登録する
+   */
   const registerIM = async () => {
     if (teamId !== undefined) {
       if (imId === 0) {
@@ -99,7 +103,11 @@ const Item = ({ item, teamId }) => {
     }
   };
 
-  // 入力された検索ワードをSTATEに反映
+  /**
+   * 日付を更新
+   * 
+   * @param {*} e 
+   */
   const handleChangeDate = e => {
     setDate(moment(e).format('YYYY/MM/DD'));
     if (!editedFlg) {
@@ -107,7 +115,11 @@ const Item = ({ item, teamId }) => {
     }
   };
 
-  // 入力された検索ワードをSTATEに反映
+  /**
+   * タイトル更新
+   * 
+   * @param {*} e 
+   */
   const handleChangeTitle = e => {
     const txt = e.target.value;
     setTitle(txt);
@@ -116,6 +128,11 @@ const Item = ({ item, teamId }) => {
     }
   };
 
+  /**
+   * アマゾン画像更新
+   * 
+   * @param {*} e 
+   */
   const handleChangeAmazonImage = e => {
     setAmazon_image(e.target.value);
     if (!editedFlg) {
@@ -123,6 +140,11 @@ const Item = ({ item, teamId }) => {
     }
   }
 
+  /**
+   * ver配列追加
+   * 
+   * @param {*} e 
+   */
   const addVerArr = e => {
     if (e.keyCode === 13) {
       setVerArr([...verArr, [null, tmpVer, null]]);
@@ -130,6 +152,9 @@ const Item = ({ item, teamId }) => {
     }
   }
 
+  /**
+   * IMを削除する
+   */
   const delIm = async () => {
     if (teamId !== undefined) {
       await axios
@@ -154,22 +179,38 @@ const Item = ({ item, teamId }) => {
     }
   };
 
-  // 手入力で変更したirelを反映します。IDはそのまま使う（not新規but更新)
-  const handleChangeTeam = e => {
-    setTeamIdList(exportFunction.handleChangeTeam(e, teamIdList));
+  /**
+   * indexのチームを変更する
+   * 
+   * @param {*} e 
+   */
+  const changeTeamByIndex = e => {
+    setTeamIdList(exportFunction.changeTeamByIndex(e, teamIdList));
   }
 
-  // 新しいirelを配列に追加します(新規not更新)
+  /**
+   * チームを追加する
+   * 
+   * @param {*} e 
+   */
   const handleChangeAddIrel = e => {
     setTeamIdList(exportFunction.addTeam(e.target.value, teamIdList));
   }
 
-  // そのチームをirelから抜きます
+  /**
+   * チームを削除する
+   * 
+   * @param {*} index 
+   */
   const minusIrel = (index) => {
     setTeamIdList(exportFunction.minusTeam(index, teamIdList));
   }
 
-  // 入力された検索ワードをSTATEに反映
+  /**
+   * verを追加する
+   * 
+   * @param {*} e 
+   */
   const handleAddVer = e => {
     const txt = e.target.value;
     setTmpVer(txt);
@@ -178,6 +219,11 @@ const Item = ({ item, teamId }) => {
     }
   };
 
+  /**
+   * verを変更する
+   * 
+   * @param {*} e 
+   */
   const handleVerArr = e => {
     var newVar = e.target.value;
     var index = e.target.name;
@@ -189,6 +235,11 @@ const Item = ({ item, teamId }) => {
     setVerArr(vers);
   }
 
+  /**
+   * fct_chkを更新する
+   * 
+   * @param {*} e 
+   */
   const updFctChk = async (e) => {
     if (imId === null || imId === undefined || imId === 0) {
     } else {
@@ -208,7 +259,10 @@ const Item = ({ item, teamId }) => {
     }
   }
 
-  const toggleAddIrelFlg = () => {
+  /**
+   * チーム追加toggle
+   */
+  const toggleAddTeamFlg = () => {
     if (addIrelFlg) {
       setAddIrelFlg(false);
     } else {
@@ -216,12 +270,17 @@ const Item = ({ item, teamId }) => {
     }
   }
 
-  // メンバーがirelMに入っていなかったら追加、入っていたら抜く
+  /**
+   * メンバーtoggle
+   * @param {*} memberId 
+   */
   const toggleIrelM = (memberId) => {
     setMemIdList(exportFunction.toggleMem(memberId, memIdList));
   }
 
-// Item一括選択のためにboxを押したら選択/解除する
+/**
+ * チーム一括選択toggle
+ */
 const toggleSelectedItem = () => {
   if (editedFlg) {
     setEditedFlg(false);
@@ -285,7 +344,7 @@ const toggleSelectedItem = () => {
                     defaultValue=""
                     value={exportFunction.teamIdToName(e) + ":" + index}
                     label="Team"
-                    onChange={handleChangeTeam}
+                    onChange={changeTeamByIndex}
                     name={index}
                   >
                   {allTeamIdList !== null && allTeamIdList !== undefined ? (
@@ -362,7 +421,7 @@ const toggleSelectedItem = () => {
               )}
               </NativeSelect>
             ) : (
-              <Btn onClick={toggleAddIrelFlg}>+Team</Btn>
+              <Btn onClick={toggleAddTeamFlg}>+Team</Btn>
             )}
             <br />
             {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("")}

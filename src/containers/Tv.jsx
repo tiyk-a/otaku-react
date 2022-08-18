@@ -108,7 +108,6 @@ const All = () => {
           regPm.forEach(data => {
           const regObject = {
             regularPM: data.regularPM,
-            castList: data.castList,
             stationMap: data.stationMap,
           };
           list.push(regObject);

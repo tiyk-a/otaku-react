@@ -8,7 +8,6 @@ import jaLocale from 'date-fns/locale/ja';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-// import exportFunction from '../functions/TeamIdToName';
 
 /**
  *　TV１件を表示するコンポーネント
@@ -21,7 +20,6 @@ const Program = ({ program, teamId, regPmList }) => {
   
   const moment = require("moment");
   const [title, setTitle] = useState('');
-  const [verTitle, setVerTitle] = useState('');
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
   const [date, setDate] = useState('');
@@ -34,9 +32,10 @@ const Program = ({ program, teamId, regPmList }) => {
   const [id, setId] = useState('');
   const [pmId, setPmId] = useState('');
   const [selectedRegPm, setSelectedRegPm] = useState('');
-  const [addPrelFlg, setAddPrelFlg] = useState(false);
+  const [addTeamFlg, setAddTeamFlg] = useState(false);
   const [editedFlg, setEditedFlg] = useState(false);
   const [media, setMedia] = useState(1);
+  const [regKey, setRegKey] = useState("");
 
   useEffect(() => {
 
@@ -58,10 +57,6 @@ const Program = ({ program, teamId, regPmList }) => {
     }
     
     setDate(moment(program.date).format('YYYY/MM/DD HH:mm'));
-
-    const outerArrReg = [];
-
-    setRegPmOptionList(outerArrReg);
 
     setRelPM(program.relPmList);
 
@@ -131,49 +126,79 @@ const Program = ({ program, teamId, regPmList }) => {
     const txt = e.target.value;
 
     switch (e.target.name) {
-      case 'p_name':
+      case 'title':
         setTitle(txt);
         break;
       case 'description':
         setDescription(txt);
         break;
-      case 'verTitle':
-        setVerTitle(txt);
-        setTitle(txt);
-        break;
       case 'selectedRegPm':
-        setSelectedRegPm(txt);
+        var arr = txt.split(":");
+        console.log(arr);
+        setSelectedRegPm(arr[0]);
+        // teamの登録がなかったら登録する
+        if (arr[1] !== null && arr[1] !== undefined && arr[1] != "") {
+          if (!teamIdList.includes(arr[1])) {
+            setTeamIdList(addTeam(arr[1], teamIdList));
+          }
+        }
+        // memの登録がなかったら登録する
+        if (arr[2] !== null && arr[2] !== undefined && arr[2] != "") {
+          if (!memIdList.includes(arr[2])) {
+            // setMemIdList(toggleMem(arr[1], memIdList));
+          }
+        }
+        break;
+      case 'regSearch':
+        setRegKey(txt);
         break;
       default:
         break;
     }
   };
 
-  // 手入力で変更したirelを反映します。IDはそのまま使う（not新規but更新)
-  const handleChangeTeam = e => {
-    setTeamIdList(exportFunction.handleChangeTeam(e, teamIdList));
+  /**
+   * チームの変更。not新規but更新
+   * 
+   */
+  const changeTeamByIndex = e => {
+    setTeamIdList(exportFunction.changeTeamByIndex(e, teamIdList));
   }
   
-  // 新しいprelを配列に追加します(新規not更新)
-  const handleChangeAddPrel = e => {
-    setTeamIdList(exportFunction.addTeam(e.target.value, teamIdList));
+  /**
+   * チームIDを追加する(新規not更新)
+   * 
+   * @param {*} e 
+   */
+  const addTeam = e => {
+    console.log(teamIdList);
+    var val = "";
+    if (e.target !== undefined && e.target.value !== undefined) {
+      val = e.target.value;
+    } else {
+      val = e;
+    }
+    setTeamIdList(exportFunction.addTeam(val, teamIdList));
   }
 
-  const toggleAddPrelFlg = () => {
-    if (addPrelFlg) {
-      setAddPrelFlg(false);
+  /**
+   * チームを追加する・しない
+   */
+  const toggleAddTeamFlg = () => {
+    if (addTeamFlg) {
+      setAddTeamFlg(false);
     } else {
-      setAddPrelFlg(true);
+      setAddTeamFlg(true);
     }
   }
 
   // そのチームをprelから抜きます
-  const minusPrel = (index) => {
+  const minusTeam = (index) => {
     setTeamIdList(exportFunction.minusTeam(index, teamIdList));
   }
 
-  // メンバーがprelMに入っていなかったら追加、入っていたら抜く
-  const togglePrelM = (memberId) => {
+  // メンバーが入っていなかったら追加、入っていたら抜く
+  const toggleMem = (memberId) => {
     setMemIdList(exportFunction.toggleMem(memberId, memIdList));
   }
 
@@ -184,6 +209,33 @@ const Program = ({ program, teamId, regPmList }) => {
     } else {
       setEditedFlg(true);
     }
+  }
+
+  /**
+   * キーワードよりレギュラー番組を検索します
+   */
+  const searchRegByKey = (e) => {
+    if (e.keyCode === 13) {
+      searchReg(regKey);
+      setRegKey("");
+    }
+  }
+
+  const searchReg = async (key) => {
+    await axios
+      .get(ApiPath.PM + 'searchReg?key=' + key)
+      .then(response => {
+        console.log(response.data);
+        setRegPmOptionList(response.data);
+        if (response.data.length === 0) {
+          window.alert("0 data hit :(");
+        }
+      })
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
   }
 
   return (
@@ -218,7 +270,7 @@ const Program = ({ program, teamId, regPmList }) => {
                       defaultValue=""
                       value={exportFunction.teamIdToName(e) + ":" + index}
                       label="Team"
-                      onChange={handleChangeTeam}
+                      onChange={changeTeamByIndex}
                       name={index}
                     >
                     {allTeamIdList !== null && allTeamIdList !== undefined ? (
@@ -232,7 +284,7 @@ const Program = ({ program, teamId, regPmList }) => {
                     )}
                     </NativeSelect>
                     {e === 4 ? (
-                      <RemoveIcon onClick={() => minusPrel(index)} />
+                      <RemoveIcon onClick={() => minusTeam(index)} />
                     ) : (null)
                     }
                     <div class="flex_column width_6rem">
@@ -247,13 +299,13 @@ const Program = ({ program, teamId, regPmList }) => {
                                       if (memIdList.includes(g.id)) {
                                         return (
                                         <div>
-                                          <p className="colorRed" onClick={() => togglePrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                          <p className="colorRed" onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                         </div>
                                       )
                                       } else {
                                         return (
                                           <div>
-                                            <p onClick={() => togglePrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                            <p onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                           </div>
                                         )
                                       }
@@ -271,14 +323,14 @@ const Program = ({ program, teamId, regPmList }) => {
               ) : (
                 <></>
               )}
-              {addPrelFlg ? (
+              {addTeamFlg ? (
                 <NativeSelect
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   defaultValue=""
                   value={exportFunction.teamIdToName(4)}
                   label="Age"
-                  onChange={handleChangeAddPrel}
+                  onChange={addTeam}
                   name="tmpPrel"
                 >
                 {allTeamIdList !== null && allTeamIdList !== undefined ? (
@@ -292,12 +344,10 @@ const Program = ({ program, teamId, regPmList }) => {
                 )}
                 </NativeSelect>
               ) : (
-                <Btn onClick={toggleAddPrelFlg}>+prel</Btn>
+                <Btn onClick={toggleAddTeamFlg}>+prel</Btn>
               )}
             </li>
             <li className={media === 1 ? "textBox" : "textBoxSp"}>
-              <span className='text_blue'>番組データ名</span>
-              <p>{title}</p>
               {/* レギュラー番組候補 */}
               <span className='text_blue'>レギュラー番組</span>
               <NativeSelect
@@ -310,8 +360,17 @@ const Program = ({ program, teamId, regPmList }) => {
                 name="selectedRegPm"
               >
               {regPmOptionList !== null && regPmOptionList !== undefined ? (
+                regPmOptionList.map((f, index) => (
+                  <option key={f.title} value={f.regular_pm_id + ":" + f.teamArr + ":" + f.memArr}>
+                    {f.title}
+                  </option>
+                  ))
+              ) : (
+                <></>
+              )}
+              {regPmList !== null && regPmList !== undefined ? (
                 regPmList.map((f, index) => (
-                  <option key={f.regularPM.title} value={f.regularPM.regular_pm_id}>
+                  <option key={f.regularPM.title} value={f.regularPM.regular_pm_id + ":" + f.regularPM.teamArr + ":" + f.regularPM.memArr}>
                     {f.regularPM.title}
                   </option>
                   ))
@@ -355,6 +414,15 @@ const Program = ({ program, teamId, regPmList }) => {
               ) : (
                 <></>
               )}
+              <Input
+                type="text"
+                name="regSearch"
+                value={regKey}
+                onChange={handleChange}
+                placeholder="レギュラー番組検索"
+                className="titleInput"
+                onKeyDown={searchRegByKey}
+              />
               <p className='text_blue'>放送局</p>
               {selectedRegPm !== undefined && selectedRegPm !== "" ? (
                 regPmList.map((regPm, index) => (
@@ -380,11 +448,11 @@ const Program = ({ program, teamId, regPmList }) => {
               <span className='text_blue'>PMタイトル</span>
               <Input
                 type="text"
-                name="verTitle"
-                value={verTitle}
+                name="title"
+                value={title}
                 label="番組名"
                 onChange={handleChange}
-                placeholder="verTitle"
+                placeholder="title"
                 className="titleInput"
               />
               <span className='text_blue'>説明</span>

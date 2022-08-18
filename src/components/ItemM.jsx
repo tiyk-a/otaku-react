@@ -1,7 +1,6 @@
 import { Box, Button, TextField, Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
-// import exportFunction from '../functions/TeamIdToName';
 import axios from '../axios';
 import { ApiPath } from '../constants';
 import NativeSelect from '@mui/material/NativeSelect';
@@ -49,7 +48,9 @@ const ItemM = ({ item }) => {
     setAllMemIdList(exportFunction.getAllMember());
   }, [item.id, item.image, item.relList, item.relMList, item.title, item.ver, item.teamArr, item.memArr]);
 
-  // メディア判別
+  /**
+   * メディア判別
+   */
   const isSmartPhone = () => {
     if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
       // SP
@@ -59,6 +60,11 @@ const ItemM = ({ item }) => {
     }
   }
 
+  /**
+   * ver配列を設定する
+   * 
+   * @param {*} ver 
+   */
   const setVerArrFunc = (ver) => {
     // verを登録する（im_v_idとver_name, im_idを配列にして入れる）
     const outerArray = [];
@@ -70,6 +76,11 @@ const ItemM = ({ item }) => {
     setVerArr(outerArray);
   }
 
+  /**
+   * ブログを更新する
+   * 
+   * @param {*} item 
+   */
   const upBlog = async (item) => {
     window.alert("ブログ更新発火！処理します");
     await axios
@@ -91,6 +102,9 @@ const ItemM = ({ item }) => {
       });
   };
 
+  /**
+   * IMを削除する
+   */
   const delIm = async () => {
     await axios
       .delete(ApiPath.IM + id)
@@ -113,6 +127,10 @@ const ItemM = ({ item }) => {
       });
   };
 
+  /**
+   * タイトルを変更する
+   * @param {*} e 
+   */
   const handleChangeTitle = e => {
     const txt = e.target.value;
     setTitle(txt);
@@ -129,6 +147,9 @@ const ItemM = ({ item }) => {
     }
   };
 
+  /**
+   * メンバーの表示非表示をtoggle
+   */
   const toggleShowMem = () => {
     if (!showMem) {
       setShowMem(true);
@@ -137,6 +158,11 @@ const ItemM = ({ item }) => {
     }
   }
 
+  /**
+   * ver配列を変更する
+   * 
+   * @param {*} e 
+   */
   const handleVerArr = e => {
     const txt = e.target.value;
     var verId = e.target.parentNode.getAttribute('data');
@@ -162,6 +188,11 @@ const ItemM = ({ item }) => {
     }
   };
 
+  /**
+   * ver配列を追加する
+   * 
+   * @param {*} e 
+   */
   const addVerArr = e => {
     if (e.keyCode === 13) {
       const tmpArr = [null, tmpVer, id];
@@ -173,6 +204,9 @@ const ItemM = ({ item }) => {
     }
   }
 
+  /**
+   * IMを更新する
+   */
   const updIM = async () => {
     const data = {
       im_id: id,
@@ -205,6 +239,9 @@ const ItemM = ({ item }) => {
     });
   };
 
+  /**
+   * アイキャッチを更新する
+   */
   const updEyeCatch = async () => {
     await axios
     .get(ApiPath.IM + "eye?id=" + id)
@@ -224,15 +261,28 @@ const ItemM = ({ item }) => {
     });
   }
 
-  const handleChangeAddIMrel = e => {
+  /**
+   * チームを配列に追加する
+   * 
+   * @param {*} e 
+   */
+  const handleChangeAddTeam = e => {
     setTeamIdList(exportFunction.addTeam(e.target.value, teamIdList));
   }
 
-  const handleChangeTeam = e => {
-    setTeamIdList(exportFunction.handleChangeTeam(e, teamIdList));
+  /**
+   * indexのチームを変更する
+   * 
+   * @param {*} e 
+   */
+  const changeTeamByIndex = e => {
+    setTeamIdList(exportFunction.changeTeamByIndex(e, teamIdList));
   }
 
-  const toggleAddIMrelFlg = () => {
+  /**
+   * チームを追加するtoggle
+   */
+  const toggleAddTeamFlg = () => {
     if (addIMrelFlg) {
       setAddIMrelFlg(false);
     } else {
@@ -240,13 +290,21 @@ const ItemM = ({ item }) => {
     }
   }
 
-  // そのチームをirelMから抜きます
-  const minusImrel = (index) => {
+  /**
+   * チームを抜きます
+   * 
+   * @param {*} index 
+   */
+  const minusTeam = (index) => {
     setTeamIdList(exportFunction.minusTeam(index, teamIdList));
   }
 
-  // メンバーがirelMに入っていなかったら追加、入っていたら抜く
-  const toggleImrelM = (memberId) => {
+  /**
+   * メンバーをtoggleします
+   * 
+   * @param {*} memberId 
+   */
+  const toggleMem = (memberId) => {
     setMemIdList(exportFunction.toggleMem(memberId, memIdList));
   }
 
@@ -283,14 +341,12 @@ const ItemM = ({ item }) => {
                           defaultValue=""
                           value={exportFunction.teamIdToName(e) + ":" + index}
                           label="Team"
-                          onChange={handleChangeTeam}
+                          onChange={changeTeamByIndex}
                           name={index}
                         >
                         {allTeamIdList !== null && allTeamIdList !== undefined ? (
                           allTeamIdList.map((f, index2) => (
-                            //
                             <option key={e} value={exportFunction.teamIdToName(f.id) + ":" + index}>
-                              {/*  */}
                               {exportFunction.teamIdToName(f.id)}
                             </option>
                             ))
@@ -299,7 +355,7 @@ const ItemM = ({ item }) => {
                         )}
                         </NativeSelect>
                         {e === 4 ? (
-                          <RemoveIcon onClick={() => minusImrel(index)} />
+                          <RemoveIcon onClick={() => minusTeam(index)} />
                         ) : (null)
                         }
                         {function() {
@@ -317,13 +373,13 @@ const ItemM = ({ item }) => {
                                                 if (memIdList.includes(g.id)) {
                                                   return (
                                                     <div>
-                                                      <p className="colorRed" onClick={() => toggleImrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                                      <p className="colorRed" onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                                     </div>
                                                 )
                                                 } else {
                                                   return (
                                                     <div>
-                                                      <p onClick={() => toggleImrelM(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                                      <p onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
                                                     </div>
                                                   )
                                                 }
@@ -353,7 +409,7 @@ const ItemM = ({ item }) => {
                 defaultValue=""
                 value={exportFunction.teamIdToName(4)}
                 label="Age"
-                onChange={handleChangeAddIMrel}
+                onChange={handleChangeAddTeam}
                 name="tmpIrel"
               >
               {allTeamIdList !== null && allTeamIdList !== undefined ? (
@@ -367,7 +423,7 @@ const ItemM = ({ item }) => {
               )}
               </NativeSelect>
             ) : (
-              <Btn onClick={toggleAddIMrelFlg}>+imrel</Btn>
+              <Btn onClick={toggleAddTeamFlg}>+imrel</Btn>
             )}
           </div>
           </li>

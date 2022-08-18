@@ -11,7 +11,6 @@ import axios from '../axios';
 import { ApiPath } from '../constants';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
-// import exportFunction from '../functions/TeamIdToName';
 import MediaQuery from "react-responsive";
 
 /**
@@ -35,12 +34,18 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
     setDate(moment('2020-01-01').format('YYYY/MM/DD'));
   }, [moment]);
 
-  // 入力された検索ワードをSTATEに反映
+  /**
+   * 日付を更新する
+   * 
+   * @param {*} e 
+   */
   const handleChangeDate = e => {
     setDate(e);
   };
 
-  // 対象Itemを一括でIM登録します
+  /**
+   * 一括IM登録
+   */
   const bundleItem = async() => {
     var elems = document.getElementsByClassName("target_item");
     const data = [];
@@ -97,7 +102,9 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       });
   }
 
-  // 対象Itemを一括でIM設定します
+  /**
+   * 対象Itemを一括でIM設定します
+   */
   const bundleItemManage2 = async() => {
     const data = [];
     const itemIdList = document.getElementsByName("add_item");
@@ -137,7 +144,9 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
     }
   }
 
-  // 対象IMを一括で更新します
+  /**
+   * 対象IMを一括で更新します
+   */
   const bundleIM = async() => {
     var elems = document.getElementsByClassName("target_im");
     const data = [];
@@ -188,7 +197,9 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       });
   }
 
-  // 対象IMを一括でアマゾンアイキャッチ設定します
+  /**
+   * 対象IMを一括でアマゾンアイキャッチ設定します
+   */
   const bundleIMEyeCatch = async() => {
     var elems = document.getElementsByClassName("target_im");
     const data = [];
@@ -216,11 +227,21 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       });
   }
 
+  /**
+   * IMキーを変更する
+   * 
+   * @param {*} e 
+   */
   const handleChangeImKey = e => {
     const txt = e.target.value;
     setImKey(txt);
   };
 
+  /**
+   * キーワードよりimを検索する
+   * 
+   * @param {*} e 
+   */
   const searchImByKw = (e) => {
     if (e.keyCode === 13) {
       searchOtherIm(imKey);
@@ -249,6 +270,11 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       });
   }
 
+  /**
+   * IMタイトルを変更する
+   * 
+   * @param {*} e 
+   */
   const handleChangeIMTitle = e => {
     const txt = e.target.value;
     // setImTitle(txt);
@@ -260,6 +286,11 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
     });
   };
 
+  /**
+   * OtherImTitleを変更する
+   * 
+   * @param {*} e 
+   */
   const handleChangeOtherIMTitle = e => {
     var txt = null;
     if (e.target.value !== "0") {
@@ -291,7 +322,9 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
     }
   };
 
-  // カレンダー表示・非表示切り替え
+  /**
+   * カレンダー表示・非表示切り替え
+   */
   const toggleCalendar = () => {
     if (dispCal) {
       setDispCal(false);
