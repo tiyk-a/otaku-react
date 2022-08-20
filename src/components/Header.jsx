@@ -42,9 +42,9 @@ const Header = styles => {
           <p>Env:{process.env.NODE_ENV}</p>
       </div>
       <div>
-        <Btn onClick={linkIm}>IM</Btn>
-        <Btn onClick={linkTv}>TV</Btn>
-        <Btn onClick={linkTw}>Twitter</Btn>
+        <Button className="button-pink" onClick={linkIm}>IM</Button>
+        <Button className="button-pink" onClick={linkTv}>TV</Button>
+        <Button className="button-pink" onClick={linkTw}>Twitter</Button>
       </div>
     </HeaderBar>
   );
@@ -64,16 +64,6 @@ const HeaderBar = styled(AppBar)({
   alignItems: 'center',
   padding: '12px 30px',
   position: 'absolute',
-});
-
-/**
- * UI(ボタン)
- */
-const Btn = styled(Button)({
-  marginLeft: '26px',
-  background: '#FFF2F2',
-  margin: '10px 0',
-  color: 'black',
 });
 
 export default Header;

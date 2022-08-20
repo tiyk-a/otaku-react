@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
 import NativeSelect from '@mui/material/NativeSelect';
-import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 /**
  *　商品１件を表示するコンポーネント
@@ -316,8 +315,8 @@ const ItemM = ({ item }) => {
     <div className={item.wpId !== null && item.wpId !== undefined ? "postedStyle itemContainer": editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"}>
       {editedFlg ? (<div className="target_im" id={item.id} data-title={title} data-wpid={item.wpId} data-date={date} data-image={image} data-verarr={verArr} data-teamarr={teamIdList} data-memarr={memIdList}></div>) : (null)}
       <Text>
-        <ul style={media === 1 ? row : column}>
-          <li style={media === 1 ? null : column}>
+        <ul className={media === 1 ? "row" : "column"}>
+          <li className={media === 1 ? null : "column"}>
             {function () {
               if (teamIdList !== null && teamIdList !== undefined) {
                 return (
@@ -325,16 +324,16 @@ const ItemM = ({ item }) => {
                     {function() {
                       if (showMem) {
                         return (
-                          <Btn onClick={toggleShowMem}>Mem編集完了</Btn>
+                          <Button className="button-pink" onClick={toggleShowMem}>Mem編集完了</Button>
                         )
                       } else {
                         return (
-                          <Btn onClick={toggleShowMem}>Mem編集</Btn>
+                          <Button className="button-pink" onClick={toggleShowMem}>Mem編集</Button>
                         )
                       }
                     }()}
                     {teamIdList.map((e, index) => (
-                      <div className={media === 1 ? row : column}>
+                      <div className={media === 1 ? "row" : "column"}>
                         <NativeSelect
                           labelId="demo-simple-select-label"
                           id={e}
@@ -355,7 +354,7 @@ const ItemM = ({ item }) => {
                         )}
                         </NativeSelect>
                         {e === 4 ? (
-                          <RemoveIcon onClick={() => minusTeam(index)} />
+                          <p onClick={() => minusTeam(index)} > - </p>
                         ) : (null)
                         }
                         {function() {
@@ -401,7 +400,7 @@ const ItemM = ({ item }) => {
                 )
               }
             }()}
-          <div style={row}>
+          <div className={"row"}>
             {addIMrelFlg ? (
               <NativeSelect
                 labelId="demo-simple-select-label"
@@ -423,7 +422,7 @@ const ItemM = ({ item }) => {
               )}
               </NativeSelect>
             ) : (
-              <Btn onClick={toggleAddTeamFlg}>+imrel</Btn>
+              <Button className="button-pink" onClick={toggleAddTeamFlg}>+imrel</Button>
             )}
           </div>
           </li>
@@ -485,11 +484,12 @@ const ItemM = ({ item }) => {
             <p>{item.url}</p>
           </li>
           <li>
-            <span style={media === 1 ? column : column}>
-              <Btn onClick={updIM}>IM更新</Btn>
-              <Btn onClick={updEyeCatch}>アイキャッチ更新</Btn>
-              <Btn onClick={upBlog} style={item.blog_not_updated ? null : selected}>Blog更新</Btn>
-              <Btn onClick={delIm}>DELETE</Btn>
+            {/* TODO:クラス分岐なし？ */}
+            <span className={media === 1 ? "column" : "column"}>
+              <Button className="button-pink" onClick={updIM}>IM更新</Button>
+              <Button className="button-pink" onClick={updEyeCatch}>アイキャッチ更新</Button>
+              <Button className="button-pink" onClick={upBlog} style={item.blog_not_updated ? null : selected}>Blog更新</Button>
+              <Button className="button-pink" onClick={delIm}>DELETE</Button>
             </span>
           </li>
         </ul>
@@ -505,34 +505,5 @@ const ItemM = ({ item }) => {
 const Text = styled(Box)({
   padding: '10px',
 });
-
-/**
- * UI(ボタン)
- */
-const Btn = styled(Button)({
-  marginLeft: '26px',
-  background: '#FFF2F2',
-  margin: '10px 0',
-  color: 'black',
-});
-
-const RemoveIcon = styled(RemoveCircleOutlineIcon)({
-  // TODO:高さがselectorsと一緒になるように揃えたい
-  cursor: 'pointer',
-  '&:hover': {
-    opacity: '0.5',
-    transition: 'opacity 0.5s',
-  },
-});
-
-const row = {
-  "display" : "flex",
-  "flex-direction" : "row"
-}
-
-const column = {
-  "display" : "flex",
-  "flex-direction" :"column"
-}
 
 export default ItemM;

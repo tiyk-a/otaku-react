@@ -11,6 +11,32 @@ body {
 html {
 }
 
+.MuiButtonBase-root {
+  margin-left: 26px;
+  /* background: #FFF2F2; */
+  margin: 10px 0;
+  color: black;
+  background: deeppink;
+}
+
+.btn100 {
+  margin-left: 26px;
+  background: #FFF2F2;
+  margin: 10px 0;
+  color: black;
+  width: 100%;
+}
+
+.row {
+  display : flex;
+  flex-direction : row;
+}
+
+.column {
+  display : flex;
+  flex-direction : column;
+}
+
 .displayFont {
   cursor: pointer;
   color: black;
@@ -52,7 +78,7 @@ ul {
   text-align: center;
 }
 
-.newItemForm {
+/* .newItemForm {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -60,7 +86,7 @@ ul {
   align-items: center;
   width: 80vw;
   margin: auto;
-}
+} */
 
 .textfield{
   color: red;
@@ -130,9 +156,16 @@ img {
 }
 
 button {
-    margin-left: 26px;
+    /* margin-left: 26px;
+    background: deeppink;
     background: #FFF2F2;
-    margin: 10px 0;
+    margin: 10px 0; */
+}
+
+.button-pink {
+  margin-left: 26px !important;
+  background: #FFF2F2 !important;
+  margin: 10px 0 !important;
 }
 
 button:hover {
@@ -527,8 +560,9 @@ color: #ff4444;
   z-index: 3000;
 }
 .add_regpm_box {
-  background: pink;
-  opacity: 90%;
+  background: purple;
+  color: white;
+  /* opacity: 100%; */
   top: 50rem;
   margin-top: 0;
 }

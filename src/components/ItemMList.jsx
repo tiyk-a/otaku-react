@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import { Button, Input } from '@material-ui/core';
-import styled from '@material-ui/styles/styled';
 import Item from '../components/Item';
 import ItemM from '../components/ItemM';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -338,8 +337,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       <MediaQuery query="(min-width: 767px)">
         {/* PC */}
         <h3>未チェックItem</h3>
-        <Btn onClick={bundleItem}>一括登録</Btn>
-        <Btn onClick={bundleItemManage2}>一括設定</Btn>
+        <Button className="button-pink" onClick={bundleItem}>一括登録</Button>
+        <Button className="button-pink" onClick={bundleItemManage2}>一括設定</Button>
         <FormControl fullWidth>
           <p>IM検索: {imId}</p>
           <Input
@@ -397,8 +396,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       <MediaQuery query="(max-width: 519px)">
         {/* SP */}
         <h3>未チェックItem</h3>
-        <Btn onClick={bundleItem}>一括登録</Btn>
-        <Btn onClick={bundleItemManage2}>一括設定</Btn>
+        <Button className="button-pink" onClick={bundleItem}>一括登録</Button>
+        <Button className="button-pink" onClick={bundleItemManage2}>一括設定</Button>
         <FormControl fullWidth>
         <p>IM検索: {imId}</p>
         <NativeSelect
@@ -467,8 +466,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       <MediaQuery query="(min-width: 767px)">
         {/* PC */}
         <h3>未チェックItem
-          <Btn onClick={bundleItem}>一括登録</Btn>
-          <Btn onClick={bundleItemManage2}>一括設定</Btn>
+          <Button className="button-pink" onClick={bundleItem}>一括登録</Button>
+          <Button className="button-pink" onClick={bundleItemManage2}>一括設定</Button>
           <FormControl fullWidth>
             <p>IM検索: {imId}</p>
             <Input
@@ -504,8 +503,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       <MediaQuery query="(max-width: 519px)">
         {/* SP */}
         <h3>未チェックItem</h3>
-        <Btn onClick={bundleItem}>一括登録</Btn>
-        <Btn onClick={bundleItemManage2}>一括設定</Btn>
+        <Button className="button-pink" onClick={bundleItem}>一括登録</Button>
+        <Button className="button-pink" onClick={bundleItemManage2}>一括設定</Button>
       </MediaQuery>
       <MediaQuery query="(min-width: 520px) and (max-width: 959px)">
         {/* TB */}
@@ -526,7 +525,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           <h1>ErrorJsonはなし</h1>
         </div>
       )}
-      <h3>今後のIM<Btn onClick={bundleIM}>一括処理</Btn> <Btn onClick={bundleIMEyeCatch}>一括アイキャッチ</Btn></h3>
+      <h3>今後のIM<Button className="button-pink" onClick={bundleIM}>一括処理</Button> <Button className="button-pink" onClick={bundleIMEyeCatch}>一括アイキャッチ</Button></h3>
       <p>期間指定</p>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
         <DatePicker
@@ -557,7 +556,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
                 <ItemM item={e} teamId={teamId} />
             </div>
           ))}
-          <Btn onClick={toggleCalendar}>カレンダー</Btn>
+          <Button className="button-pink" onClick={toggleCalendar}>カレンダー</Button>
           <div class="responsiveCal">
             {dispCal ? (
                 <div>
@@ -578,12 +577,4 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
   );
 };
 
-/**
- * UI(ボタン)
- */
-const Btn = styled(Button)({
-  marginLeft: '26px',
-  background: '#FFF2F2',
-  color: 'black',
-});
 export default ItemMList;

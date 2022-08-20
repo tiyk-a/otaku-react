@@ -215,7 +215,7 @@ exports.getCal = function(teamId) {
  * @param {*} e 
  * @returns 
  */
-exports.handleChangeTeam = function(e, array) {
+exports.changeTeamByIndex = function(e, array) {
   var arr = e.target.value.split(":");
   var teamId = exports.nameToTeamId(arr[0]);
   var index = arr[1];

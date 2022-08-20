@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Button } from '@material-ui/core';
-import styled from '@material-ui/styles/styled';
 import axios from '../axios';
 import ItemMList from '../components/ItemMList';
 import { ApiPath } from '../constants';
@@ -112,38 +111,28 @@ const Team = () => {
   return (
     <div>
       <div>
-        <Btn value="17" onClick={() => handleChange(17)}>SixTONES</Btn>
-        <Btn value="6" onClick={() => handleChange(6)}>SnowMan</Btn>
-        <Btn value="7" onClick={() => handleChange(7)}>関ジャニ∞</Btn>
-        <Btn value="8" onClick={() => handleChange(8)}>SexyZone</Btn>
-        <Btn value="9" onClick={() => handleChange(9)}>TOKIO</Btn>
-        <Btn value="10" onClick={() => handleChange(10)}>V6</Btn>
-        <Btn value="11" onClick={() => handleChange(11)}>嵐</Btn>
-        <Btn value="12" onClick={() => handleChange(12)}>NEWS</Btn>
-        <Btn value="13" onClick={() => handleChange(13)}>Kis-My-Ft2</Btn>
-        <Btn value="11" onClick={() => handleChange(14)}>ABC-Z</Btn>
-        <Btn value="11" onClick={() => handleChange(15)}>ジャニーズWEST</Btn>
-        <Btn value="11" onClick={() => handleChange(16)}>King&Prince</Btn>
-        <Btn value="11" onClick={() => handleChange(17)}>SixTONES</Btn>
-        <Btn value="11" onClick={() => handleChange(18)}>なにわ男子</Btn>
-        <Btn value="11" onClick={() => handleChange(19)}>Hey!Say!JUMP</Btn>
-        <Btn value="11" onClick={() => handleChange(20)}>KAT-TUN</Btn>
-        <Btn value="11" onClick={() => handleChange(21)}>Kinki Kids</Btn>
+        <Button className="button-pink" value="17" onClick={() => handleChange(17)}>SixTONES</Button>
+        <Button className="button-pink" value="6" onClick={() => handleChange(6)}>SnowMan</Button>
+        <Button className="button-pink" value="7" onClick={() => handleChange(7)}>関ジャニ∞</Button>
+        <Button className="button-pink" value="8" onClick={() => handleChange(8)}>SexyZone</Button>
+        <Button className="button-pink" value="9" onClick={() => handleChange(9)}>TOKIO</Button>
+        <Button className="button-pink" value="10" onClick={() => handleChange(10)}>V6</Button>
+        <Button className="button-pink" value="11" onClick={() => handleChange(11)}>嵐</Button>
+        <Button className="button-pink" value="12" onClick={() => handleChange(12)}>NEWS</Button>
+        <Button className="button-pink" value="13" onClick={() => handleChange(13)}>Kis-My-Ft2</Button>
+        <Button className="button-pink" value="11" onClick={() => handleChange(14)}>ABC-Z</Button>
+        <Button className="button-pink" value="11" onClick={() => handleChange(15)}>ジャニーズWEST</Button>
+        <Button className="button-pink" value="11" onClick={() => handleChange(16)}>King&Prince</Button>
+        <Button className="button-pink" value="11" onClick={() => handleChange(17)}>SixTONES</Button>
+        <Button className="button-pink" value="11" onClick={() => handleChange(18)}>なにわ男子</Button>
+        <Button className="button-pink" value="11" onClick={() => handleChange(19)}>Hey!Say!JUMP</Button>
+        <Button className="button-pink" value="11" onClick={() => handleChange(20)}>KAT-TUN</Button>
+        <Button className="button-pink" value="11" onClick={() => handleChange(21)}>Kinki Kids</Button>
         <h2>{h2}</h2>
         <ItemMList itemList={itemList} teamId={id} />
       </div>
     </div>
   );
 };
-
-/**
- * UI(ボタン)
- */
-const Btn = styled(Button)({
-  marginLeft: '26px',
-  background: '#FFF2F2',
-  margin: '10px 0',
-  color: 'black',
-});
 
 export default Team;

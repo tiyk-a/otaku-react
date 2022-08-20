@@ -1,6 +1,5 @@
 import { Box, Button, TextField, Input } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
-import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
@@ -218,13 +217,13 @@ const PM = ({ pm, teamId }) => {
         ? (<div className="target_pm" id={pm.id} data-teamid={teamId} data-title={title} data-description={description} data-teamarr={teamIdList} data-memarr={memIdList}></div>)
         : (<div id={pm.id} data-teamid={teamId}></div>)}
       <Text>
-        <ul style={media === 1 ? row : column}>
+        <ul className={media === 1 ? "row" : "column"}>
           <li>
             <p>pmId: {pm.id}</p>
             {verList !== null && verList !== undefined ? (
-              <ul style={media === 1 ? row : column}>
+              <ul className={media === 1 ? "row" : "column"}>
                 {verList.map((e, index) => (
-                  <li style={media === 1 ? row : column}>
+                  <li className={media === 1 ? "row" : "column"}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
                       <DateTimePicker
                       label="on_air_date"
@@ -287,17 +286,17 @@ const PM = ({ pm, teamId }) => {
             {function() {
               if (showMem) {
                 return (
-                  <Btn onClick={toggleShowMem}>Mem編集完了</Btn>
+                  <Button className="button-pink" onClick={toggleShowMem}>Mem編集完了</Button>
                 )
               } else {
                 return (
-                  <Btn onClick={toggleShowMem}>Mem編集</Btn>
+                  <Button className="button-pink" onClick={toggleShowMem}>Mem編集</Button>
                 )
               }
             }()}
             {teamIdList !== null && teamIdList !== undefined ? (
               teamIdList.map((e, index) => (
-                <div  style={media === 1 ? row : column}>
+                <div  className={media === 1 ? "row" : "column"}>
                   <NativeSelect
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -318,12 +317,12 @@ const PM = ({ pm, teamId }) => {
                     )}
                   </NativeSelect>
                   {e === 4 ? (
-                    <RemoveIcon onClick={() => minusTeam(index)} />
+                    <p onClick={() => minusTeam(index)} > - </p>
                   ) : (null)}
                   {function() {
                     if (showMem) {
                       return (
-                        <div style={media === 1 ? row : column} class="width_6rem">
+                        <div className={media === 1 ? "row" : "column"} class="width_6rem">
                           {function() {
                             if (allMemIdList !== null && allMemIdList !== undefined) {
                               return (
@@ -383,12 +382,12 @@ const PM = ({ pm, teamId }) => {
                 )}
               </NativeSelect>
             ) : (
-              <Btn onClick={toggleAddTeam}>+prel</Btn>
+              <Button className="button-pink" onClick={toggleAddTeam}>+prel</Button>
             )}
           </li>
-          <li style={media === 1 ? row : column}>
-            <Btn onClick={updPm}>更新</Btn>
-            <Btn onClick={delPm}>DELETE</Btn>
+          <li className={media === 1 ? "row" : "column"}>
+            <Button className="button-pink" onClick={updPm}>更新</Button>
+            <Button className="button-pink" onClick={delPm}>DELETE</Button>
           </li>
         </ul>
       </Text>
@@ -404,33 +403,4 @@ const Text = styled(Box)({
   padding: '10px',
 });
 
-/**
- * UI(ボタン)
- */
-const Btn = styled(Button)({
-  marginLeft: '26px',
-  background: '#FFF2F2',
-  margin: '10px 0',
-  color: 'black',
-});
-
 export default PM;
-
-const row = {
-  "display" : "flex",
-  "flex-direction" : "row"
-}
-
-const column = {
-  "display" : "flex",
-  "flex-direction" :"column"
-}
-
-const RemoveIcon = styled(RemoveCircleOutlineIcon)({
-  // TODO:高さがselectorsと一緒になるように揃えたい
-  cursor: 'pointer',
-  '&:hover': {
-  opacity: '0.5',
-  transition: 'opacity 0.5s',
-  },
-});

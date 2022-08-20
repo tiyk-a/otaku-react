@@ -1,5 +1,4 @@
 import { Button } from '@material-ui/core';
-import styled from '@material-ui/styles/styled';
 import React from 'react';
 import axios from '../axios';
 import PM from '../components/PM';
@@ -98,7 +97,7 @@ const TvList = ({tvList, pmList, regPmList, teamId}) => {
 
   return (
     <div className="allItemsList">
-      <h2>Program <Btn onClick={bundlePm}>一括登録</Btn> <Btn onClick={bundleDelP}>一括削除</Btn></h2>
+      <h2>Program <Button className="button-pink" onClick={bundlePm}>一括登録</Button> <Button className="button-pink" onClick={bundleDelP}>一括削除</Button></h2>
       {tvList !== undefined && tvList.length > 0 ? (
         tvList.map((e, index) => (
           <div className="itemBox" key={index}>
@@ -110,7 +109,7 @@ const TvList = ({tvList, pmList, regPmList, teamId}) => {
           <h1>TVデータが見つかりませんでした:(</h1>
         </div>
       )}
-      <Btn onClick={bundlePm}>一括登録</Btn> <Btn onClick={bundleDelP}>一括削除</Btn>
+      <Button className="button-pink" onClick={bundlePm}>一括登録</Button> <Button className="button-pink" onClick={bundleDelP}>一括削除</Button>
       <h2>PM</h2>
       {pmList !== undefined && pmList.length > 0 ? (
         pmList.map((e, index) => (
@@ -126,14 +125,5 @@ const TvList = ({tvList, pmList, regPmList, teamId}) => {
     </div>
   );
 };
-
-/**
- * UI(ボタン)
- */
-const Btn = styled(Button)({
-  marginLeft: '26px',
-  background: '#FFF2F2',
-  color: 'black',
-});
 
 export default TvList;

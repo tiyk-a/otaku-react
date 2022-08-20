@@ -1,6 +1,5 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { Box, Button, Input } from '@material-ui/core';
-import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import styled from '@material-ui/styles/styled';
 import NativeSelect from '@mui/material/NativeSelect';
@@ -297,7 +296,7 @@ const toggleSelectedItem = () => {
         ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-teamarr={teamIdList} data-memarr={memIdList} data-verarr={verArr}></div>)
         : (<div id={item.id} data-teamid={teamId}></div>)}
       <Text>
-        <ul style={media === 1 ? row : column}>
+        <ul className={media === 1 ? "row" : "column"}>
           <input type="checkbox" className="hiddenCheckBox" name="add_item" checked={isChecked} value={id} />
           <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
             <p>ItmId•{item.id}</p>
@@ -334,10 +333,10 @@ const toggleSelectedItem = () => {
               />
             </MuiPickersUtilsProvider>
           </li>
-          <li style={media === 1 ? null : column}>
+          <li className={media === 1 ? null : "column"}>
             {teamIdList !== null && teamIdList !== undefined ? (
               teamIdList.map((e, index) => (
-                <div className={media === 1 ? row : column}>
+                <div className={media === 1 ? "row" : "column"}>
                   <NativeSelect
                     labelId="demo-simple-select-label"
                     id={e}
@@ -360,7 +359,7 @@ const toggleSelectedItem = () => {
                   )}
                   </NativeSelect>
                   {e === 4 ? (
-                    <RemoveIcon onClick={() => minusIrel(index)} />
+                    <p onClick={() => minusIrel(index)} > - </p>
                   ) : (null)
                   }
                   <div class="flex_column width_6rem">
@@ -421,7 +420,7 @@ const toggleSelectedItem = () => {
               )}
               </NativeSelect>
             ) : (
-              <Btn onClick={toggleAddTeamFlg}>+Team</Btn>
+              <Button className="button-pink" onClick={toggleAddTeamFlg}>+Team</Button>
             )}
             <br />
             {item.masterId !== null && item.masterId !== undefined ? (item.masterId) : ("")}
@@ -457,10 +456,11 @@ const toggleSelectedItem = () => {
             <p>
               <b>{item.price}</b>&nbsp;yen
             </p>
-            <span style={media === 1 ? column : column}>
-              <Btn onClick={registerIM}>IM登録</Btn>
-              <Btn onClick={updFctChk}>IM設定</Btn>
-              <Btn onClick={delIm}>DELETE</Btn>
+            {/* TODO:クラス設定、分岐不要？ */}
+            <span className={media === 1 ? "column" : "column"}>
+              <Button className="button-pink" onClick={registerIM}>IM登録</Button>
+              <Button className="button-pink" onClick={updFctChk}>IM設定</Button>
+              <Button className="button-pink" onClick={delIm}>DELETE</Button>
             </span>
           </li>
         </ul>
@@ -476,34 +476,5 @@ const toggleSelectedItem = () => {
 const Text = styled(Box)({
   padding: '10px',
 });
-
-/**
- * UI(ボタン)
- */
-const Btn = styled(Button)({
-  marginLeft: '26px',
-  background: '#FFF2F2',
-  margin: '10px 0',
-  color: 'black',
-});
-
-const RemoveIcon = styled(RemoveCircleOutlineIcon)({
-  // TODO:高さがselectorsと一緒になるように揃えたい
-  cursor: 'pointer',
-  '&:hover': {
-    opacity: '0.5',
-    transition: 'opacity 0.5s',
-  },
-});
-
-const row = {
-  "display" : "flex",
-  "flex-direction" : "row"
-}
-
-const column = {
-  "display" : "flex",
-  "flex-direction" :"column"
-}
 
 export default Item;

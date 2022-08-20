@@ -1,6 +1,5 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { Box, Button, Input, TextField } from '@material-ui/core';
-import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import styled from '@material-ui/styles/styled';
 import NativeSelect from '@mui/material/NativeSelect';
@@ -137,15 +136,15 @@ const Program = ({ program, teamId, regPmList }) => {
         console.log(arr);
         setSelectedRegPm(arr[0]);
         // teamの登録がなかったら登録する
-        if (arr[1] !== null && arr[1] !== undefined && arr[1] != "") {
+        if (arr[1] !== null && arr[1] !== undefined && arr[1] !== "") {
           if (!teamIdList.includes(arr[1])) {
             setTeamIdList(addTeam(arr[1], teamIdList));
           }
         }
         // memの登録がなかったら登録する
-        if (arr[2] !== null && arr[2] !== undefined && arr[2] != "") {
+        if (arr[2] !== null && arr[2] !== undefined && arr[2] !== "") {
           if (!memIdList.includes(arr[2])) {
-            // setMemIdList(toggleMem(arr[1], memIdList));
+            setMemIdList(addMem(arr[2], memIdList));
           }
         }
         break;
@@ -192,17 +191,42 @@ const Program = ({ program, teamId, regPmList }) => {
     }
   }
 
-  // そのチームをprelから抜きます
+  /**
+   * チームを抜きます
+   * 
+   * @param {*} index 
+   */
   const minusTeam = (index) => {
     setTeamIdList(exportFunction.minusTeam(index, teamIdList));
   }
 
-  // メンバーが入っていなかったら追加、入っていたら抜く
+  /**
+   * メンバーIDを追加する(toggleしない)
+   * すでに追加されてる時は何もしない。
+   * 
+   * @param {*} e 
+   */
+  const addMem = e => {
+    if (!memIdList.includes(e)) {
+      var tmp = [...memIdList];
+      tmp.push(e);
+      return tmp;
+    }
+  }
+
+  /**
+   * メンバーをtoggle
+   * 
+   * @param {*} memberId 
+   */
   const toggleMem = (memberId) => {
     setMemIdList(exportFunction.toggleMem(memberId, memIdList));
   }
 
-  // Program一括選択のためにboxを押したら選択/解除する
+  /**
+   * 一括選択のtoggle
+   * 
+   */
   const toggleSelectedProgram = () => {
     if (editedFlg) {
       setEditedFlg(false);
@@ -221,6 +245,11 @@ const Program = ({ program, teamId, regPmList }) => {
     }
   }
 
+  /**
+   * レギュラー番組を検索します
+   * 
+   * @param {*} key 
+   */
   const searchReg = async (key) => {
     await axios
       .get(ApiPath.PM + 'searchReg?key=' + key)
@@ -248,7 +277,7 @@ const Program = ({ program, teamId, regPmList }) => {
           ? (<div className="target_p" id={program.id} data-pmid={pmId} data-teamid={teamId} data-title={title} data-description={description} data-teamarr={teamIdList} data-memarr={memIdList}></div>)
           : (<div id={program.id} data-teamid={teamId}></div>)}
         <Text>
-          <ul style={media === 1 ? row : column}>
+          <ul className={media === 1 ? "row" : "column"}>
             <li>
               <p>pId:{program.id}</p>
               <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
@@ -260,7 +289,7 @@ const Program = ({ program, teamId, regPmList }) => {
                 />
               </MuiPickersUtilsProvider>
             </li>
-            <li style={media === 1 ? null : column}>
+            <li className={media === 1 ? null : "column"}>
               {teamIdList !== null && teamIdList !== undefined ? (
                 teamIdList.map((e, index) => (
                   <div class="flex_row">
@@ -284,7 +313,7 @@ const Program = ({ program, teamId, regPmList }) => {
                     )}
                     </NativeSelect>
                     {e === 4 ? (
-                      <RemoveIcon onClick={() => minusTeam(index)} />
+                      <p onClick={() => minusTeam(index)} > - </p>
                     ) : (null)
                     }
                     <div class="flex_column width_6rem">
@@ -344,7 +373,7 @@ const Program = ({ program, teamId, regPmList }) => {
                 )}
                 </NativeSelect>
               ) : (
-                <Btn onClick={toggleAddTeamFlg}>+prel</Btn>
+                <Button className="button-pink" onClick={toggleAddTeamFlg}>+prel</Button>
               )}
             </li>
             <li className={media === 1 ? "textBox" : "textBoxSp"}>
@@ -468,7 +497,7 @@ const Program = ({ program, teamId, regPmList }) => {
                 maxRows={5}
               />
               <br />
-              <Btn100 onClick={registerPM}>PM登録</Btn100>
+              <Button className="button-pink" onClick={registerPM}>PM登録</Button>
             </li>
             {/* pm_ver */}
             <li>
@@ -508,41 +537,4 @@ const Text = styled(Box)({
   padding: '10px',
 });
 
-/**
- * UI(ボタン)
- */
-const Btn = styled(Button)({
-  marginLeft: '26px',
-  background: '#FFF2F2',
-  margin: '10px 0',
-  color: 'black',
-});
-
-const Btn100 = styled(Button)({
-  marginLeft: '26px',
-  background: '#FFF2F2',
-  margin: '10px 0',
-  color: 'black',
-  width: '100%',
-});
-
 export default Program;
-
-const RemoveIcon = styled(RemoveCircleOutlineIcon)({
-  // TODO:高さがselectorsと一緒になるように揃えたい
-  cursor: 'pointer',
-  '&:hover': {
-    opacity: '0.5',
-    transition: 'opacity 0.5s',
-  },
-});
-
-const row = {
-  "display" : "flex",
-  "flex-direction" : "row"
-}
-
-const column = {
-  "display" : "flex",
-  "flex-direction" :"column"
-}

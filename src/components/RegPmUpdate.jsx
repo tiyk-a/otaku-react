@@ -1,9 +1,7 @@
 import { Input, Button } from '@material-ui/core';
-import styled from '@material-ui/styles/styled';
 import React, { useState, useEffect } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 import NativeSelect from '@mui/material/NativeSelect';
 // import exportFunction from '../functions/TeamIdToName';
 import FormControl from '@mui/material/FormControl';
@@ -209,9 +207,9 @@ const RegPmUpdate = ({regPmList}) => {
     <div className='add_regpm_parent'>
       <div className='add_regpm_btn'>
         {displayForm ? (
-          <Btn onClick={toggleDisplayForm}>＜</Btn>
+          <Button className="button-pink" onClick={toggleDisplayForm}>＜</Button>
         ):(
-          <Btn onClick={toggleDisplayForm}>＞</Btn>
+          <Button className="button-pink" onClick={toggleDisplayForm}>＞</Button>
         )}
       </div>
       {displayForm ? (
@@ -258,7 +256,7 @@ const RegPmUpdate = ({regPmList}) => {
                     )}
                     </NativeSelect>
                     {tId === 4 ? (
-                      <RemoveIcon onClick={() => minusTeam(index)} />
+                      <p onClick={() => minusTeam(index)} > - </p>
                     ) : (null)
                     }
                     <div class="flex_column width_6rem">
@@ -322,7 +320,7 @@ const RegPmUpdate = ({regPmList}) => {
                 )}
                 </NativeSelect>
               ) : (
-                <Btn onClick={toggleAddTeamFlg}>+teamArr</Btn>
+                <Button className="button-pink" onClick={toggleAddTeamFlg}>+teamArr</Button>
               )}
             </li>
             {/* 放送局は複数選択が可能 */}
@@ -370,23 +368,5 @@ const RegPmUpdate = ({regPmList}) => {
     </div>
   );
 };
-
-/**
- * UI(ボタン)
- */
-const Btn = styled(Button)({
-  background: '#FFF2F2',
-  margin: '5px 0',
-  color: 'black',
-});
-
-const RemoveIcon = styled(RemoveCircleOutlineIcon)({
-  // TODO:高さがselectorsと一緒になるように揃えたい
-  cursor: 'pointer',
-  '&:hover': {
-    opacity: '0.5',
-    transition: 'opacity 0.5s',
-  },
-});
 
 export default RegPmUpdate;
