@@ -369,7 +369,7 @@ const ItemM = ({ item }) => {
                                           <div>
                                             {function() {
                                               if (g.teamId === Number(e)) {
-                                                if (memIdList.includes(g.id)) {
+                                                if (memIdList.includes(g.id) || memIdList.includes(g.id.toString())) {
                                                   return (
                                                     <div>
                                                       <p className="colorRed" onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>

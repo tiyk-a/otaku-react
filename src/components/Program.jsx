@@ -133,19 +133,30 @@ const Program = ({ program, teamId, regPmList }) => {
         break;
       case 'selectedRegPm':
         var arr = txt.split(":");
+        console.log(txt);
         console.log(arr);
         setSelectedRegPm(arr[0]);
         // teamの登録がなかったら登録する
         if (arr[1] !== null && arr[1] !== undefined && arr[1] !== "") {
-          if (!teamIdList.includes(arr[1])) {
-            setTeamIdList(addTeam(arr[1], teamIdList));
-          }
+          var tmpArr = arr[1].split(",");
+          console.log(tmpArr);
+          tmpArr.map((tId) => {
+            if (!teamIdList.includes(tId)) {
+              console.log(addTeam(tId));
+              setTeamIdList(addTeam(tId));
+            }
+          })
         }
         // memの登録がなかったら登録する
         if (arr[2] !== null && arr[2] !== undefined && arr[2] !== "") {
-          if (!memIdList.includes(arr[2])) {
-            setMemIdList(addMem(arr[2], memIdList));
-          }
+          var tmpArr = arr[2].split(",");
+          console.log(tmpArr);
+          tmpArr.map((mId) => {
+            if (!memIdList.includes(mId)) {
+              console.log(addMem(mId));
+              setMemIdList(addMem(mId));
+            }
+          })
         }
         break;
       case 'regSearch':
@@ -177,7 +188,12 @@ const Program = ({ program, teamId, regPmList }) => {
     } else {
       val = e;
     }
-    setTeamIdList(exportFunction.addTeam(val, teamIdList));
+    if (!teamIdList.includes(e)) {
+      var tmp = [...teamIdList];
+      tmp.push(e);
+      return tmp;
+    }
+    // setTeamIdList(exportFunction.addTeam(val, teamIdList));
   }
 
   /**
@@ -325,7 +341,7 @@ const Program = ({ program, teamId, regPmList }) => {
                                 <div>
                                   {function() {
                                     if (Number(g.teamId) === Number(e)) {
-                                      if (memIdList.includes(g.id)) {
+                                      if (memIdList.includes(g.id) || memIdList.includes(g.id.toString())) {
                                         return (
                                         <div>
                                           <p className="colorRed" onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
