@@ -34,6 +34,7 @@ const TvList = ({tvList, pmList, regPmList, teamId}) => {
           title: e.dataset.title,
           // on_air_date: e.dataset.date,
           del_flg: false,
+          regular_pm_id: e.dataset.regId,
         }
         data.push(p);
       }

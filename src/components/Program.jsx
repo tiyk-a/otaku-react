@@ -63,7 +63,28 @@ const Program = ({ program, teamId, regPmList }) => {
     setAllMemIdList(exportFunction.getAllMember());
     setTeamIdList(program.teamArr);
     setMemIdList(program.memArr);
-    setRegPmOptionList(regPmList);
+
+    const outerArr = [];
+    if (regPmList !== null && regPmList.length > 0) {
+      console.log("naka");
+      regPmList.forEach((f) => {
+        console.log("inner");
+        const innerArr = {
+          regular_pm_id: f.regularPM.regular_pm_id,
+          title: f.regularPM.title,
+          teamArr: f.regularPM.teamArr,
+          memArr: f.regularPM.memArr,
+        };
+        console.log(innerArr);
+        outerArr.push(innerArr);
+      });
+      console.log(outerArr);
+      setRegPmOptionList(outerArr);
+    } else {
+      console.log("kotti");
+      console.log(regPmList);
+      console.log(typeof(regPmList));
+    }
   }, [moment, program.date, program.description, program.id, program.teamArr, program.memArr, program.title, program.url]);
 
   // メディア判別
@@ -92,6 +113,7 @@ const Program = ({ program, teamId, regPmList }) => {
         description: description,
         on_air_date: date,
         station_id: program.station_id,
+        regular_pm_id: selectedRegPm,
       }
 
       await axios
@@ -290,7 +312,7 @@ const Program = ({ program, teamId, regPmList }) => {
       </a>
       <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedProgram}>
         {editedFlg
-          ? (<div className="target_p" id={program.id} data-pmid={pmId} data-teamid={teamId} data-title={title} data-description={description} data-teamarr={teamIdList} data-memarr={memIdList}></div>)
+          ? (<div className="target_p" id={program.id} data-pmid={pmId} data-regId={selectedRegPm} data-teamid={teamId} data-title={title} data-description={description} data-teamarr={teamIdList} data-memarr={memIdList}></div>)
           : (<div id={program.id} data-teamid={teamId}></div>)}
         <Text>
           <ul className={media === 1 ? "row" : "column"}>
@@ -394,7 +416,8 @@ const Program = ({ program, teamId, regPmList }) => {
             </li>
             <li className={media === 1 ? "textBox" : "textBoxSp"}>
               {/* レギュラー番組候補 */}
-              <span className='text_blue'>レギュラー番組</span>
+              RegPm: {selectedRegPm}
+              <span className='text_blue'>レギュラー番組※表示あってない</span>
               <NativeSelect
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
