@@ -71,7 +71,6 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
           teamArr: e.dataset.teamarr,
           memArr: e.dataset.memarr,
           title: e.dataset.title,
-          wp_id: "",
           publication_date: e.dataset.date,
           amazon_image: e.dataset.image,
           del_flg: false,
@@ -162,7 +161,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         }
       }
 
-      // teamarr, memarrを入れる、wp_idはverごとでは？
+      // teamarr, memarrを入れる
       const im = {
         im_id: e.id,
         title: e.dataset.title,

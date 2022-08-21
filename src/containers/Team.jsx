@@ -31,7 +31,6 @@ const Team = () => {
             title: targetItem.title,
             price: targetItem.price,
             pubDate: targetItem.publication_date,
-            wpId: targetItem.wp_id,
           };
           list.push(item);
         });

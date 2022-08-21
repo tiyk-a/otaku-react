@@ -210,7 +210,6 @@ const ItemM = ({ item }) => {
     const data = {
       im_id: id,
       title: title,
-      wp_id: item.wpId,
       publication_date: date,
       amazon_image: image,
       del_flg: false,
@@ -312,8 +311,8 @@ const ItemM = ({ item }) => {
   }
 
   return (
-    <div className={item.wpId !== null && item.wpId !== undefined ? "postedStyle itemContainer": editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"}>
-      {editedFlg ? (<div className="target_im" id={item.id} data-title={title} data-wpid={item.wpId} data-date={date} data-image={image} data-verarr={verArr} data-teamarr={teamIdList} data-memarr={memIdList}></div>) : (null)}
+    <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"}>
+      {editedFlg ? (<div className="target_im" id={item.id} data-title={title} data-date={date} data-image={image} data-verarr={verArr} data-teamarr={teamIdList} data-memarr={memIdList}></div>) : (null)}
       <Text>
         <ul className={media === 1 ? "row" : "column"}>
           <li className={media === 1 ? null : "column"}>
@@ -428,8 +427,6 @@ const ItemM = ({ item }) => {
           </li>
           <li>
             IMId: {item.id}
-            <br />
-            WpId: {item.wpId !== null && item.wpId !== undefined ? (item.wpId) : ("✖️")}
             <br />
             {date}
           </li>

@@ -75,7 +75,6 @@ const Item = ({ item, teamId }) => {
         teamArr: teamIdList.join(','),
         memArr: memIdList.join(','),
         title: title,
-        wp_id: "",
         publication_date: date,
         amazon_image: amazon_image,
         del_flg: false,
