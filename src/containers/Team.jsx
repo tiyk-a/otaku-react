@@ -111,7 +111,6 @@ const Team = () => {
   return (
     <div>
       <div>
-        <Button className="button-pink" value="17" onClick={() => handleChange(17)}>SixTONES</Button>
         <Button className="button-pink" value="6" onClick={() => handleChange(6)}>SnowMan</Button>
         <Button className="button-pink" value="7" onClick={() => handleChange(7)}>関ジャニ∞</Button>
         <Button className="button-pink" value="8" onClick={() => handleChange(8)}>SexyZone</Button>
@@ -120,14 +119,14 @@ const Team = () => {
         <Button className="button-pink" value="11" onClick={() => handleChange(11)}>嵐</Button>
         <Button className="button-pink" value="12" onClick={() => handleChange(12)}>NEWS</Button>
         <Button className="button-pink" value="13" onClick={() => handleChange(13)}>Kis-My-Ft2</Button>
-        <Button className="button-pink" value="11" onClick={() => handleChange(14)}>ABC-Z</Button>
-        <Button className="button-pink" value="11" onClick={() => handleChange(15)}>ジャニーズWEST</Button>
-        <Button className="button-pink" value="11" onClick={() => handleChange(16)}>King&Prince</Button>
-        <Button className="button-pink" value="11" onClick={() => handleChange(17)}>SixTONES</Button>
-        <Button className="button-pink" value="11" onClick={() => handleChange(18)}>なにわ男子</Button>
-        <Button className="button-pink" value="11" onClick={() => handleChange(19)}>Hey!Say!JUMP</Button>
-        <Button className="button-pink" value="11" onClick={() => handleChange(20)}>KAT-TUN</Button>
-        <Button className="button-pink" value="11" onClick={() => handleChange(21)}>Kinki Kids</Button>
+        <Button className="button-pink" value="14" onClick={() => handleChange(14)}>ABC-Z</Button>
+        <Button className="button-pink" value="15" onClick={() => handleChange(15)}>ジャニーズWEST</Button>
+        <Button className="button-pink" value="16" onClick={() => handleChange(16)}>King&Prince</Button>
+        <Button className="button-pink" value="17" onClick={() => handleChange(17)}>SixTONES</Button>
+        <Button className="button-pink" value="18" onClick={() => handleChange(18)}>なにわ男子</Button>
+        <Button className="button-pink" value="19" onClick={() => handleChange(19)}>Hey!Say!JUMP</Button>
+        <Button className="button-pink" value="20" onClick={() => handleChange(20)}>KAT-TUN</Button>
+        <Button className="button-pink" value="21" onClick={() => handleChange(21)}>Kinki Kids</Button>
         <h2>{h2}</h2>
         <ItemMList itemList={itemList} teamId={id} />
       </div>
