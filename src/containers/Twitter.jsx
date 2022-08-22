@@ -8,7 +8,7 @@ import TweetEmbed from 'react-tweet-embed';
 const Twitter = () => {
 
   return (
-    <div>
+    <div className='row wrap'>
       <TweetEmbed id="" options={{theme: 'dark' }} />
         <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
         <a className="twitter-timeline" data-height="1000" data-width="300" href="https://twitter.com/idol_hayainfo?ref_src=twsrc%5Etfw">idol_hayainfo</a>

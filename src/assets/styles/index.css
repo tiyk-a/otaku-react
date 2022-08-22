@@ -37,6 +37,10 @@ html {
   flex-direction : column;
 }
 
+.wrap {
+  flex-wrap: wrap;
+}
+
 .displayFont {
   cursor: pointer;
   color: black;
