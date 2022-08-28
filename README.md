@@ -2,7 +2,7 @@
 ~# フロントエンド課題~
 
 ## 使用制限
-**`https`通信はしようできません**
+**`https`通信は使用できません**
 -> `http`で接続してね！
 ○`http://chiharu-front.herokuapp.com/`
 ×`https://chiharu-front.herokuapp.com/`
@@ -61,9 +61,14 @@ $ npm install
 
 ##### アプリケーション起動
 ```
-$ npm start
+$ pm2 start "npm start" --name front
 ```
 → `localhost:3000`でフロントアプリケーションの起動確認
+
+##### アプリケーション停止
+```
+$ pm2 stop front
+```
 
 ###### ⚠️開発中の注意点
 - `.env`ファイルに環境変数を書く場合、`REACT_APP_`という名前の変数にしないと読み取ってもらえないよ！
