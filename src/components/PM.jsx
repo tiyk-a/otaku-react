@@ -30,6 +30,9 @@ const PM = ({ pm, teamId }) => {
   const [showMem, setShowMem] = useState(false);
   const [media, setMedia] = useState(1);
 
+  /**
+   * 
+   */
   useEffect(() => {
     isSmartPhone();
     setTitle(pm.title);
@@ -43,19 +46,19 @@ const PM = ({ pm, teamId }) => {
     setAllTeamIdList(exportFunction.getAllTeam());
     setAllMemIdList(exportFunction.getAllMember());
 
-  const outerArrV = [];
-  if (pm.verList !== null && pm.verList.length > 0) {
-    pm.verList.forEach((e) => {
-      const innerArrV = {
-        v_id: e.pm_v_id,
-        on_air_date: e.on_air_date,
-        station_name: e.station_name,
-        del_flg: e.del_flg
-      };
-      outerArrV.push(innerArrV);
-    });
-    setVerList(outerArrV);
-  }
+    const outerArrV = [];
+    if (pm.verList !== null && pm.verList.length > 0) {
+      pm.verList.forEach((e) => {
+        const innerArrV = {
+          v_id: e.pm_v_id,
+          on_air_date: e.on_air_date,
+          station_name: e.station_name,
+          del_flg: e.del_flg
+        };
+        outerArrV.push(innerArrV);
+      });
+      setVerList(outerArrV);
+    }
   }, [pm.description, pm.teamIdList, pm.memIdList, pm.title, pm.verList]);
 
   /**

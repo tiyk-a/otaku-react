@@ -14,7 +14,9 @@ const Item = () => {
   const [h2, setH2] = useState('');
   const [id, setId] = useState('');
 
-  // 商品全件取得
+  /**
+   * 商品全件取得
+   */
   const getTeamItems = useCallback(async (id) => {
     if (id !== undefined) {
       setId(id);
@@ -44,14 +46,25 @@ const Item = () => {
       });
   }, []);
 
+  /**
+   * 
+   */
   useEffect(() => {
     getTeamItems(6);
   }, [getTeamItems]);
 
+  /**
+   * 
+   * @param {*} e 
+   */
   const handleChange = e => {
     getTeamItems(e);
   };
 
+  /**
+   * 
+   * @param {*} e 
+   */
   const setButton = e => {
     switch (e) {
       case 6:

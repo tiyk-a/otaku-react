@@ -29,6 +29,9 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
   const [otherImTitle, setOtherImTitle] = useState("");
   const [dispCal, setDispCal] = useState(false);
 
+  /**
+   * 
+   */
   useEffect(() => {
     setDate(moment('2020-01-01').format('YYYY/MM/DD'));
   }, [moment]);

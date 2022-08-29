@@ -34,6 +34,9 @@ const Program = ({ program, teamId }) => {
   const [editedFlg, setEditedFlg] = useState(false);
   const [media, setMedia] = useState(1);
 
+  /**
+   * 
+   */
   useEffect(() => {
 
     // メディア判定
@@ -64,7 +67,9 @@ const Program = ({ program, teamId }) => {
     setStaId(program.station_id);
   }, [moment, program.date, program.description, program.id, program.teamArr, program.memArr, program.station_id, program.title, program.url]);
 
-  // メディア判別
+  /**
+   * メディア判別
+   */
   const isSmartPhone = () => {
     if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
       // SP
@@ -74,7 +79,9 @@ const Program = ({ program, teamId }) => {
     }
   }
 
-  // PM登録
+  /**
+   * PM登録
+   */
   const registerPM = async () => {
     if (teamId !== undefined) {
       if (pmId === 0) {
@@ -112,13 +119,19 @@ const Program = ({ program, teamId }) => {
     }
   };
 
-  // 入力された日付をSTATEに反映
+  /**
+   * 入力された日付をSTATEに反映
+   * @param {*} e 
+   */
   const handleChangeDate = e => {
     const newDate = moment(e).format('YYYY/MM/DD HH:mm');
     setDate(newDate);
   };
 
-  // 各要素が入力されたらSTATEをアップデート
+  /**
+   * 各要素が入力されたらSTATEをアップデート
+   * @param {*} e 
+   */
   const handleChange = e => {
     const txt = e.target.value;
 

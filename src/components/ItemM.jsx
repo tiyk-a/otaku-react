@@ -30,6 +30,9 @@ const ItemM = ({ item }) => {
   const [media, setMedia] = useState(1);
   const [showMem, setShowMem] = useState(false);
 
+  /**
+   * 
+   */
   useEffect(() => {
     // メディア判定
     isSmartPhone();
@@ -138,6 +141,10 @@ const ItemM = ({ item }) => {
     }
   };
 
+  /**
+   * Image変更
+   * @param {*} e 
+   */
   const handleChangeImage = e => {
     const txt = e.target.value;
     setImage(txt);
@@ -304,10 +311,6 @@ const ItemM = ({ item }) => {
    */
   const toggleMem = (memberId) => {
     setMemIdList(exportFunction.toggleMem(memberId, memIdList));
-  }
-
-  const selected = {
-    opacity: 0.5,
   }
 
   return (
@@ -485,7 +488,7 @@ const ItemM = ({ item }) => {
             <span className={media === 1 ? "column" : "column"}>
               <Button className="button-pink" onClick={updIM}>IM更新</Button>
               <Button className="button-pink" onClick={updEyeCatch}>アイキャッチ更新</Button>
-              <Button className="button-pink" onClick={upBlog} style={item.blog_not_updated ? null : selected}>Blog更新</Button>
+              <Button className="button-pink" onClick={upBlog} style={item.blog_not_updated ? null : "opacity: 0.5"}>Blog更新</Button>
               <Button className="button-pink" onClick={delIm}>DELETE</Button>
             </span>
           </li>

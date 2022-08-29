@@ -34,6 +34,9 @@ const Item = ({ item, teamId }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [media, setMedia] = useState(1);
 
+  /**
+   * 
+   */
   useEffect(() => {
     // メディア判定
     isSmartPhone();

@@ -18,30 +18,40 @@ const SpHeader = styles => {
     cursor: 'pointer',
   };
 
-  // トップ画面に変遷
+  /**
+   * トップ画面に変遷
+   */
   const toTop = () => {
     history.push('/');
   };
 
-  // マスター商品画面に変遷
+  /**
+   * マスター商品画面に変遷
+   */
   const linkIm = () => {
     const url = `/`;
     history.push(url);
   };
 
-  // TV画面に変遷
+  /**
+   * TV画面に変遷
+   */
   const linkTv = () => {
     const url = `/tv/`;
     history.push(url);
   };
 
-  // マスター商品画面に変遷
+  /**
+   * マスター商品画面に変遷
+   */
   const linkTw = () => {
     const url = `/tw/`;
     history.push(url);
   };
 
-  // ハンバーガーメニューをハンドルする
+  /**
+   * ハンバーガーメニューをハンドルする
+   */
   const toggleMenu = () => {
     if (menuFlg) {
       setMenuFlg(false);

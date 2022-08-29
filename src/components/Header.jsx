@@ -17,23 +17,62 @@ const Header = styles => {
     cursor: 'pointer',
   };
 
-  // マスター商品画面に変遷
+  /**
+   * マスター商品画面に変遷
+   */
   const linkIm = () => {
     const url = `/?teamId=17`;
     history.push(url);
   };
 
-  // TV画面に変遷
+  /**
+   * TV画面に変遷
+   */
   const linkTv = () => {
     const url = `/tv?teamId=17`;
     history.push(url);
   };
 
-  // マスター商品画面に変遷
+  /**
+   * マスター商品画面に変遷
+   */
   const linkTw = () => {
     const url = `/tw/`;
     history.push(url);
   };
+
+  // const getData = () => {
+  //   const mysql = require('mysql2');
+
+  //   // create the connection to database
+  //   const connection = mysql.createConnection({
+  //   host: 'localhost',
+  //   user: 'root',
+  //   database: 'root'
+  //   });
+
+  //   // simple query
+  //   connection.query(
+  //     'SELECT * FROM `item` WHERE `publication_date` > "2022-04-01"',
+  //     function(err, results, fields) {
+  //         // results contains rows returned by server
+  //         console.log(results);
+
+  //         // fields contains extra meta data about results, if available
+  //         console.log(fields);
+  //     }
+  //   );
+
+  //   // with placeholder
+  //   connection.query(
+  //     'SELECT * FROM `item` WHERE `publication_date` = ?',
+  //     //   ['Page', 45],
+  //     ['2022-04-01'],
+  //     function(err, results) {
+  //         console.log(results);
+  //     }
+  //   );
+  // }
 
   return (
     <HeaderBar>

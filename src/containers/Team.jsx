@@ -14,7 +14,9 @@ const Team = () => {
   const [h2, setH2] = useState('');
   const [id, setId] = useState('');
 
-  // 商品全件取得
+  /**
+   * 商品全件取得
+   */
   const getTeamItems = useCallback(async (id) => {
     if (id !== undefined) {
       setId(id);
