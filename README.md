@@ -72,3 +72,7 @@ $ pm2 stop front
 
 ###### ⚠️開発中の注意点
 - `.env`ファイルに環境変数を書く場合、`REACT_APP_`という名前の変数にしないと読み取ってもらえないよ！
+
+### history
+2022/08/29: Herokuアプリは削除しました
+http://chiharu-front.herokuapp.com/
