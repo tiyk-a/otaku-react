@@ -161,7 +161,6 @@ const Program = ({ program, teamId }) => {
    * @param {*} e 
    */
   const addTeam = e => {
-    console.log(teamIdList);
     var val = "";
     if (e.target !== undefined && e.target.value !== undefined) {
       val = e.target.value;
@@ -170,8 +169,9 @@ const Program = ({ program, teamId }) => {
     }
     if (!teamIdList.includes(e)) {
       var tmp = [...teamIdList];
-      tmp.push(e);
-      return tmp;
+      var id = exportFunction.nameToTeamId(val);
+      tmp.push(id.toString());
+      setTeamIdList(tmp);
     }
   }
 

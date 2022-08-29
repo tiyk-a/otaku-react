@@ -220,7 +220,7 @@ exports.changeTeamByIndex = function(e, array) {
   var teamId = exports.nameToTeamId(arr[0]);
   var index = arr[1];
   let tmpList = [...array];
-  tmpList[index] = teamId;
+  tmpList[index] = teamId.toString();
   return tmpList;
 }
 
@@ -233,11 +233,15 @@ exports.changeTeamByIndex = function(e, array) {
  */
 exports.toggleMem = function(memId, array) {
   var tmpList = [...array];
+  var memIdStr = memId;
+  if (typeof(memIdStr) !== 'string') {
+    memIdStr = memIdStr.toString();
+  }
   // https://stackoverflow.com/questions/61997123/how-to-delete-a-value-from-array-if-exist-or-push-it-to-array-if-not-exists
-  if(!tmpList.includes(memId)){ //checking weather array contain the id
-    tmpList.push(memId); //adding to array because value doesnt exists
+  if(!tmpList.includes(memIdStr)){ //checking weather array contain the id
+    tmpList.push(memIdStr); //adding to array because value doesnt exists
   }else{
-    tmpList.splice(tmpList.indexOf(memId), 1); //deleting
+    tmpList.splice(tmpList.indexOf(memIdStr), 1); //deleting
   }
   return tmpList;
 }
