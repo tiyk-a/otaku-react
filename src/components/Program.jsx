@@ -14,7 +14,7 @@ import { ApiPath } from '../constants';
  * @param {object} program
  * @returns jsx
  */
-const Program = ({ program, teamId, regPmList }) => {
+const Program = ({ program, teamId }) => {
   var exportFunction = require('../functions/TeamIdToName');
   
   const moment = require("moment");
@@ -24,13 +24,12 @@ const Program = ({ program, teamId, regPmList }) => {
   const [date, setDate] = useState('');
   const [teamIdList, setTeamIdList] = useState([]);
   const [memIdList, setMemIdList] = useState([]);
+  const [staId, setStaId] = useState(0);
   const [allTeamIdList, setAllTeamIdList] = useState([]);
   const [allMemIdList, setAllMemIdList] = useState([]);
   const [relPm, setRelPM] = useState([]);
-  const [regPmOptionList, setRegPmOptionList] = useState([]);
   const [id, setId] = useState('');
   const [pmId, setPmId] = useState('');
-  const [selectedRegPm, setSelectedRegPm] = useState('');
   const [addTeamFlg, setAddTeamFlg] = useState(false);
   const [editedFlg, setEditedFlg] = useState(false);
   const [media, setMedia] = useState(1);
@@ -63,29 +62,8 @@ const Program = ({ program, teamId, regPmList }) => {
     setAllMemIdList(exportFunction.getAllMember());
     setTeamIdList(program.teamArr);
     setMemIdList(program.memArr);
-
-    const outerArr = [];
-    if (regPmList !== null && regPmList.length > 0) {
-      console.log("naka");
-      regPmList.forEach((f) => {
-        console.log("inner");
-        const innerArr = {
-          regular_pm_id: f.regularPM.regular_pm_id,
-          title: f.regularPM.title,
-          teamArr: f.regularPM.teamArr,
-          memArr: f.regularPM.memArr,
-        };
-        console.log(innerArr);
-        outerArr.push(innerArr);
-      });
-      console.log(outerArr);
-      setRegPmOptionList(outerArr);
-    } else {
-      console.log("kotti");
-      console.log(regPmList);
-      console.log(typeof(regPmList));
-    }
-  }, [moment, program.date, program.description, program.id, program.teamArr, program.memArr, program.title, program.url]);
+    setStaId(program.station_id);
+  }, [moment, program.date, program.description, program.id, program.teamArr, program.memArr, program.station_id, program.title, program.url]);
 
   // メディア判別
   const isSmartPhone = () => {
@@ -109,11 +87,10 @@ const Program = ({ program, teamId, regPmList }) => {
         pm_id: pmId,
         teamArr: teamIdList.join(','),
         memArr: memIdList.join(','),
+        stationId: staId,
         title: title,
         description: description,
         on_air_date: date,
-        station_id: program.station_id,
-        regular_pm_id: selectedRegPm,
       }
 
       await axios
@@ -152,37 +129,6 @@ const Program = ({ program, teamId, regPmList }) => {
         break;
       case 'description':
         setDescription(txt);
-        break;
-      case 'selectedRegPm':
-        var arr = txt.split(":");
-        console.log(txt);
-        console.log(arr);
-        setSelectedRegPm(arr[0]);
-        // teamの登録がなかったら登録する
-        if (arr[1] !== null && arr[1] !== undefined && arr[1] !== "") {
-          var tmpArr = arr[1].split(",");
-          console.log(tmpArr);
-          tmpArr.map((tId) => {
-            if (!teamIdList.includes(tId)) {
-              console.log(addTeam(tId));
-              setTeamIdList(addTeam(tId));
-            }
-          })
-        }
-        // memの登録がなかったら登録する
-        if (arr[2] !== null && arr[2] !== undefined && arr[2] !== "") {
-          var tmpArr = arr[2].split(",");
-          console.log(tmpArr);
-          tmpArr.map((mId) => {
-            if (!memIdList.includes(mId)) {
-              console.log(addMem(mId));
-              setMemIdList(addMem(mId));
-            }
-          })
-        }
-        break;
-      case 'regSearch':
-        setRegKey(txt);
         break;
       default:
         break;
@@ -273,38 +219,6 @@ const Program = ({ program, teamId, regPmList }) => {
     }
   }
 
-  /**
-   * キーワードよりレギュラー番組を検索します
-   */
-  const searchRegByKey = (e) => {
-    if (e.keyCode === 13) {
-      searchReg(regKey);
-      setRegKey("");
-    }
-  }
-
-  /**
-   * レギュラー番組を検索します
-   * 
-   * @param {*} key 
-   */
-  const searchReg = async (key) => {
-    await axios
-      .get(ApiPath.PM + 'searchReg?key=' + key)
-      .then(response => {
-        console.log(response.data);
-        setRegPmOptionList(response.data);
-        if (response.data.length === 0) {
-          window.alert("0 data hit :(");
-        }
-      })
-      .catch(error => {
-        if (error.code === "ECONNABORTED") {
-          window.alert("タイムアウトしました");
-        }
-      });
-  }
-
   return (
     <div>
       <a href={url} target="_blank">
@@ -312,7 +226,7 @@ const Program = ({ program, teamId, regPmList }) => {
       </a>
       <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedProgram}>
         {editedFlg
-          ? (<div className="target_p" id={program.id} data-pmid={pmId} data-regId={selectedRegPm} data-teamid={teamId} data-title={title} data-description={description} data-teamarr={teamIdList} data-memarr={memIdList}></div>)
+          ? (<div className="target_p" id={program.id} data-pmid={pmId} data-stationid={staId} data-teamid={teamId} data-title={title} data-description={description} data-teamarr={teamIdList} data-memarr={memIdList}></div>)
           : (<div id={program.id} data-teamid={teamId}></div>)}
         <Text>
           <ul className={media === 1 ? "row" : "column"}>
@@ -415,104 +329,73 @@ const Program = ({ program, teamId, regPmList }) => {
               )}
             </li>
             <li className={media === 1 ? "textBox" : "textBoxSp"}>
-              {/* レギュラー番組候補 */}
-              RegPm: {selectedRegPm}
-              <span className='text_blue'>レギュラー番組※表示あってない</span>
-              <NativeSelect
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                defaultValue=""
-                value={selectedRegPm}
-                label="selectedRegPm"
-                onChange={handleChange}
-                name="selectedRegPm"
-              >
-              {regPmOptionList !== null && regPmOptionList !== undefined ? (
-                regPmOptionList.map((f, index) => (
-                  <option key={f.title} value={f.regular_pm_id + ":" + f.teamArr + ":" + f.memArr}>
-                    {f.title}
-                  </option>
-                  ))
-              ) : (
-                <></>
-              )}
-              {regPmList !== null && regPmList !== undefined ? (
-                regPmList.map((f, index) => (
-                  <option key={f.regularPM.title} value={f.regularPM.regular_pm_id + ":" + f.regularPM.teamArr + ":" + f.regularPM.memArr}>
-                    {f.regularPM.title}
-                  </option>
-                  ))
-              ) : (
-                <></>
-              )}
-              <option key={4} value={""}>
-                "N/A"
-              </option>
-              </NativeSelect>
-              {selectedRegPm !== undefined && selectedRegPm !== "" ? (
-                regPmList.map((regPm, index) => (
-                  String(regPm.regularPM.regular_pm_id) === String(selectedRegPm) ? (
-                    <>
-                      {regPm.castList !== undefined && regPm.castList.length > 0 ? (
-                        regPm.castList.map((cast) => {
-                          return (
-                            <>
-                            {function() {
-                              if (cast < 30) {
-                                return (
-                                  <p>{exportFunction.teamIdToName(cast)}</p>
-                                )
-                              } else {
-                                return (
-                                  <p>{exportFunction.memberIdToName(cast)}</p>
-                                )
-                              }
-                            }()}
-                            </>
-                          )
-                        })
-                      ) : (
-                        ""
-                      )}
-                    </>
+              {teamIdList !== null && teamIdList !== undefined ? (
+              teamIdList.map((e, index) => (
+                <div className={media === 1 ? "row" : "column"}>
+                  <NativeSelect
+                    labelId="demo-simple-select-label"
+                    id={e}
+                    defaultValue=""
+                    value={exportFunction.teamIdToName(e) + ":" + index}
+                    label="Team"
+                    onChange={changeTeamByIndex}
+                    name={index}
+                  >
+                  {allTeamIdList !== null && allTeamIdList !== undefined ? (
+                    allTeamIdList.map((f, index2) => (
+                      // optionの中は選択された時に持っていくvalue
+                      <option key={e} value={exportFunction.teamIdToName(f.id) + ":" + index}>
+                        {/* ここは選択肢として表示される文言 */}
+                        {exportFunction.teamIdToName(f.id)}
+                      </option>
+                      ))
                   ) : (
                     <></>
-                  )
+                  )}
+                  </NativeSelect>
+                  {e === 4 ? (
+                    <p onClick={() => minusTeam(index)} > - </p>
+                  ) : (null)
+                  }
+                  <div class="flex_column width_6rem">
+                    {function() {
+                      if (allMemIdList !== null && allMemIdList !== undefined) {
+                        return (
+                          <div>
+                            {allMemIdList.map((g, index) => (
+                              <div>
+                                {function() {
+                                  if (g.teamId === Number(e)) {
+                                    if (memIdList.includes(g.id) || memIdList.includes(g.id.toString())) {
+                                      return (
+                                        <div>
+                                          <p className="colorRed" onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                        </div>
+                                      )
+                                    } else {
+                                      return (
+                                        <div>
+                                          <p onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
+                                        </div>
+                                      )
+                                    }
+                                  }
+                                }()}
+                              </div>
+                            ))}
+                          </div>
+                        )
+                      }
+                    }()}
+                  </div>
+                </div>
                 ))
               ) : (
                 <></>
-              )}
-              <Input
-                type="text"
-                name="regSearch"
-                value={regKey}
-                onChange={handleChange}
-                placeholder="レギュラー番組検索"
-                className="titleInput"
-                onKeyDown={searchRegByKey}
-              />
+              )
+            }
               <p className='text_blue'>放送局</p>
-              {selectedRegPm !== undefined && selectedRegPm !== "" ? (
-                regPmList.map((regPm, index) => (
-                  String(regPm.regularPM.regular_pm_id) === String(selectedRegPm) ? (
-                    <>
-                      {regPm.stationMap !== undefined ? (
-                        Object.keys(regPm.stationMap).map(key => {
-                          return (
-                            <p>{regPm.stationMap[key]}</p>)}
-                          )
-                      ) : (
-                        <></>
-                      )}
-                      <></>
-                    </>
-                  ) : (
-                    <></>
-                  )
-                ))
-              ) : (
-                <></>
-              )}
+              <p>{staId}</p>
               <span className='text_blue'>PMタイトル</span>
               <Input
                 type="text"

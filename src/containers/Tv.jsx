@@ -83,6 +83,7 @@ const All = () => {
             description: pData.description,
             teamArr: stringToArr(pData.teamArr),
             memArr: stringToArr(pData.memArr),
+            stationArr: stringToArr(pData.stationArr),
             verList: data.verList,
           };
           pmlist.push(pm);
@@ -100,19 +101,19 @@ const All = () => {
         setPmList(pmlist);
 
         // そのチームの生きてるレギュラー番組
-        const regPm = response.data.regPmList;
-        if (regPm !== null) {
-          const list = [];
+        // const regPm = response.data.regPmList;
+        // if (regPm !== null) {
+        //   const list = [];
 
-          regPm.forEach(data => {
-          const regObject = {
-            regularPM: data.regularPM,
-            stationMap: data.stationMap,
-          };
-          list.push(regObject);
-        });
-          setRegPmList(list);
-        }
+        //   regPm.forEach(data => {
+        //   const regObject = {
+        //     regularPM: data.regularPM,
+        //     stationMap: data.stationMap,
+        //   };
+        //   list.push(regObject);
+        // });
+        //   setRegPmList(list);
+        // }
 
         // 未確認データ件数
         if (response.data.pnumberMap !== undefined) {
@@ -246,7 +247,7 @@ const All = () => {
       </MediaQuery>
       <div>
         <RegPmUpdate regPmList={regPmList} />
-        <TvList tvList={tvList} pmList={pmList} regPmList={regPmList} teamId={teamId} />
+        <TvList tvList={tvList} pmList={pmList} teamId={teamId} />
       </div>
     </div>
   );

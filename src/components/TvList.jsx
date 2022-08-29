@@ -11,10 +11,10 @@ import { ApiPath } from '../constants';
  * @param {array} itemList
  * @returns jsx
  */
-const TvList = ({tvList, pmList, regPmList, teamId}) => {
+const TvList = ({tvList, pmList, teamId}) => {
 
   /**
-   * 対象Itemを一括でIM登録します
+   * 対象Itemを一括でPM登録します
    */
   const bundlePm = async() => {
     var elems = document.getElementsByClassName("target_p");
@@ -31,10 +31,10 @@ const TvList = ({tvList, pmList, regPmList, teamId}) => {
           description: e.dataset.description,
           teamArr: e.dataset.teamarr,
           memArr: e.dataset.memarr,
+          stationId: e.dataset.stationid,
           title: e.dataset.title,
-          // on_air_date: e.dataset.date,
+          on_air_date: e.dataset.date,
           del_flg: false,
-          regular_pm_id: e.dataset.regId,
         }
         data.push(p);
       }
@@ -102,7 +102,7 @@ const TvList = ({tvList, pmList, regPmList, teamId}) => {
       {tvList !== undefined && tvList.length > 0 ? (
         tvList.map((e, index) => (
           <div className="itemBox" key={index}>
-            <Program program={e} teamId={teamId} regPmList={regPmList} key={e.id} />
+            <Program program={e} teamId={teamId} key={e.id} />
           </div>
         ))
       ) : (
