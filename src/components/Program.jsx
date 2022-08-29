@@ -33,7 +33,6 @@ const Program = ({ program, teamId }) => {
   const [addTeamFlg, setAddTeamFlg] = useState(false);
   const [editedFlg, setEditedFlg] = useState(false);
   const [media, setMedia] = useState(1);
-  const [regKey, setRegKey] = useState("");
 
   useEffect(() => {
 
@@ -161,7 +160,6 @@ const Program = ({ program, teamId }) => {
       tmp.push(e);
       return tmp;
     }
-    // setTeamIdList(exportFunction.addTeam(val, teamIdList));
   }
 
   /**
@@ -217,6 +215,35 @@ const Program = ({ program, teamId }) => {
     } else {
       setEditedFlg(true);
     }
+  }
+
+  /**
+   * PMにステーションIDを追加します
+   */
+  const addPm = async(pm_id) => {
+    const data = {
+      program_id: id,
+      pm_id: pm_id,
+      station_id: staId
+    }
+
+    await axios
+      .post(ApiPath.TV + "addStation", data)
+      .then(response => {
+        if (response.data) {
+          var tmpUrl = window.location.href;
+          var newUrl = tmpUrl.replace("http://localhost:3000/", "");
+          var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
+          window.location.href = newUrl2;
+        } else {
+          window.alert("更新エラーです");
+        }
+      })
+      .catch(error => {
+        if (error.code === "ECONNABORTED") {
+          window.alert("タイムアウトしました");
+        }
+      });
   }
 
   return (
@@ -329,74 +356,6 @@ const Program = ({ program, teamId }) => {
               )}
             </li>
             <li className={media === 1 ? "textBox" : "textBoxSp"}>
-              {teamIdList !== null && teamIdList !== undefined ? (
-              teamIdList.map((e, index) => (
-                <div className={media === 1 ? "row" : "column"}>
-                  <NativeSelect
-                    labelId="demo-simple-select-label"
-                    id={e}
-                    defaultValue=""
-                    value={exportFunction.teamIdToName(e) + ":" + index}
-                    label="Team"
-                    onChange={changeTeamByIndex}
-                    name={index}
-                  >
-                  {allTeamIdList !== null && allTeamIdList !== undefined ? (
-                    allTeamIdList.map((f, index2) => (
-                      // optionの中は選択された時に持っていくvalue
-                      <option key={e} value={exportFunction.teamIdToName(f.id) + ":" + index}>
-                        {/* ここは選択肢として表示される文言 */}
-                        {exportFunction.teamIdToName(f.id)}
-                      </option>
-                      ))
-                  ) : (
-                    <></>
-                  )}
-                  </NativeSelect>
-                  {e === 4 ? (
-                    <p onClick={() => minusTeam(index)} > - </p>
-                  ) : (null)
-                  }
-                  <div class="flex_column width_6rem">
-                    {function() {
-                      if (allMemIdList !== null && allMemIdList !== undefined) {
-                        return (
-                          <div>
-                            {allMemIdList.map((g, index) => (
-                              <div>
-                                {function() {
-                                  if (g.teamId === Number(e)) {
-                                    if (memIdList.includes(g.id) || memIdList.includes(g.id.toString())) {
-                                      return (
-                                        <div>
-                                          <p className="colorRed" onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
-                                        </div>
-                                      )
-                                    } else {
-                                      return (
-                                        <div>
-                                          <p onClick={() => toggleMem(g.id)}>{exportFunction.memberIdToName(g.id)}</p>
-                                        </div>
-                                      )
-                                    }
-                                  }
-                                }()}
-                              </div>
-                            ))}
-                          </div>
-                        )
-                      }
-                    }()}
-                  </div>
-                </div>
-                ))
-              ) : (
-                <></>
-              )
-            }
-              <p className='text_blue'>放送局</p>
-              <p>{staId}</p>
-              <span className='text_blue'>PMタイトル</span>
               <Input
                 type="text"
                 name="title"
@@ -406,7 +365,6 @@ const Program = ({ program, teamId }) => {
                 placeholder="title"
                 className="titleInput"
               />
-              <span className='text_blue'>説明</span>
               <TextField
                 required
                 name="description"
@@ -421,7 +379,6 @@ const Program = ({ program, teamId }) => {
               <br />
               <Button className="button-pink" onClick={registerPM}>PM登録</Button>
             </li>
-            {/* pm_ver */}
             <li>
               <p>放送</p>
               {program.station_name}
@@ -431,15 +388,8 @@ const Program = ({ program, teamId }) => {
                 if (relPm.length > 0) {
                   return (
                     relPm.map((f, index) => (
-                      <p>{f}</p>
+                      <p className={"add_pm add_pm-" + f.pm_id} onClick={() => addPm(f.pm_id)}>{f.on_air_date}|{f.title}|{f.description}</p>
                     ))
-                  )
-                } else {
-                  return (
-                    <div>
-                      <p>2023/01/20 レギュラー番組名 PMタイトル</p>
-                      <p>説明</p>
-                    </div>
                   )
                 }
               }()}

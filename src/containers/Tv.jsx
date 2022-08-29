@@ -6,7 +6,6 @@ import TvList from '../components/TvList';
 import { ApiPath } from '../constants';
 import history from '../history';
 import MediaQuery from "react-responsive";
-import RegPmUpdate from '../components/RegPmUpdate';
 
 /**
  * TVトップページコンテナ
@@ -16,7 +15,6 @@ const All = () => {
   // TV一覧リストのSTATES
   const [tvList, setTvList] = useState([]);
   const [pmList, setPmList] = useState([]);
-  const [regPmList, setRegPmList] = useState([]);
   const [teamId, setTeamId] = useQueryParam('teamId', NumberParam);
   const [id, setId] = useState('');
   const [menuFlg, setMenuFlg] = useState(false);
@@ -99,21 +97,6 @@ const All = () => {
           }
         });
         setPmList(pmlist);
-
-        // そのチームの生きてるレギュラー番組
-        // const regPm = response.data.regPmList;
-        // if (regPm !== null) {
-        //   const list = [];
-
-        //   regPm.forEach(data => {
-        //   const regObject = {
-        //     regularPM: data.regularPM,
-        //     stationMap: data.stationMap,
-        //   };
-        //   list.push(regObject);
-        // });
-        //   setRegPmList(list);
-        // }
 
         // 未確認データ件数
         if (response.data.pnumberMap !== undefined) {
@@ -246,7 +229,6 @@ const All = () => {
         <Button className="button-pink" value="21" onClick={() => handleChange(21)} style={id === 21 ? selected : null}>Kinki Kids<span className='itemNumber'>{numbers[21] > 0 ? numbers[21] : ""}</span></Button>
       </MediaQuery>
       <div>
-        <RegPmUpdate regPmList={regPmList} />
         <TvList tvList={tvList} pmList={pmList} teamId={teamId} />
       </div>
     </div>

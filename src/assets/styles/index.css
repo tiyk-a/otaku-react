@@ -575,3 +575,13 @@ color: #ff4444;
   opacity: 90%;
   position: relative;
 }
+
+.add_pm {
+  cursor: pointer;
+}
+
+.add_pm:hover {
+  opacity: 0.5;
+  transition: opacity 0.5s;
+  color: red;
+}
