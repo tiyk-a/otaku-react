@@ -85,7 +85,6 @@ const Top = () => {
           const imlist = [];
 
           im.forEach(itemM => {
-            console.log(itemM);
             const m = {
               id: itemM.im.im_id,
               title: itemM.im.title,
@@ -96,9 +95,7 @@ const Top = () => {
               memArr: stringToArr(itemM.im.memArr),
               blog_not_updated: itemM.im.blogNotUpdated,
             };
-            console.log(m);
           imlist.push(m);
-          console.log(imlist);
           });
           setItemMList(imlist);
         }

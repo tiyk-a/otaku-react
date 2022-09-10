@@ -22,7 +22,6 @@ const TvList = ({tvList, pmList, teamId}) => {
 
     Array.from(elems).forEach((e) => {
       if (e.dataset.pmid === null || e.dataset.pmid === "") {
-        
         // TODO: VERを追加しないといけない！！
         const p = {
           program_id: e.id,
@@ -31,9 +30,9 @@ const TvList = ({tvList, pmList, teamId}) => {
           description: e.dataset.description,
           teamArr: e.dataset.teamarr,
           memArr: e.dataset.memarr,
-          stationId: e.dataset.stationid,
+          station_id: e.dataset.stationid,
           title: e.dataset.title,
-          on_air_date: e.dataset.date,
+          on_air_date: e.dataset.onairdate,
           del_flg: false,
         }
         data.push(p);

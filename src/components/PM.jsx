@@ -3,10 +3,6 @@ import styled from '@material-ui/styles/styled';
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { DateTimePicker } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import jaLocale from 'date-fns/locale/ja';
 import NativeSelect from '@mui/material/NativeSelect';
 
 /**
@@ -223,19 +219,11 @@ const PM = ({ pm, teamId }) => {
         <ul className={media === 1 ? "row" : "column"}>
           <li>
             <p>pmId: {pm.id}</p>
+            <p>{pm.date}</p>
             {verList !== null && verList !== undefined ? (
               <ul className={media === 1 ? "row" : "column"}>
                 {verList.map((e, index) => (
                   <li className={media === 1 ? "row" : "column"}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={jaLocale}>
-                      <DateTimePicker
-                      label="on_air_date"
-                      value={e.on_air_date}
-                      // onChange={handleChangeDate}
-                      format="yyyy/MM/dd HH:mm"
-                      />
-                    </MuiPickersUtilsProvider>
-                    <br />
                     <Input
                       type="text"
                       name="station_name"
@@ -258,21 +246,6 @@ const PM = ({ pm, teamId }) => {
               placeholder="title"
               className="titleInput"
             />
-            <NativeSelect
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              defaultValue=""
-              // value={exportFunction.teamIdToName(e[2])}
-              label="PM"
-              // onChange={handleChange}
-              // name={index}
-            >
-              {/* {pmSearchRes.map((e, index) => ( */}
-                <option key={0} value={0}>
-                  {0}
-                </option>
-              {/* ))} */}
-            </NativeSelect>
             <TextField
               required
               name="description"

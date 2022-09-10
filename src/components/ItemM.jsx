@@ -316,7 +316,7 @@ const ItemM = ({ item }) => {
   return (
     <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"}>
       {editedFlg ? (<div className="target_im" id={item.id} data-title={title} data-date={date} data-image={image} data-verarr={verArr} data-teamarr={teamIdList} data-memarr={memIdList}></div>) : (null)}
-      <Text>
+    <Text>
         <ul className={media === 1 ? "row" : "column"}>
           <li className={media === 1 ? null : "column"}>
             {function () {
@@ -488,7 +488,7 @@ const ItemM = ({ item }) => {
             <span className={media === 1 ? "column" : "column"}>
               <Button className="button-pink" onClick={updIM}>IM更新</Button>
               <Button className="button-pink" onClick={updEyeCatch}>アイキャッチ更新</Button>
-              <Button className="button-pink" onClick={upBlog} style={item.blog_not_updated ? null : "opacity: 0.5"}>Blog更新</Button>
+              <Button className="button-pink" onClick={upBlog}>Blog更新</Button>
               <Button className="button-pink" onClick={delIm}>DELETE</Button>
             </span>
           </li>

@@ -93,7 +93,7 @@ const Program = ({ program, teamId }) => {
         pm_id: pmId,
         teamArr: teamIdList.join(','),
         memArr: memIdList.join(','),
-        stationId: staId,
+        station_id: staId,
         title: title,
         description: description,
         on_air_date: date,
@@ -266,7 +266,7 @@ const Program = ({ program, teamId }) => {
       </a>
       <div className={editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedProgram}>
         {editedFlg
-          ? (<div className="target_p" id={program.id} data-pmid={pmId} data-stationid={staId} data-teamid={teamId} data-title={title} data-description={description} data-teamarr={teamIdList} data-memarr={memIdList}></div>)
+          ? (<div className="target_p" id={program.id} data-pmid={pmId} data-stationid={staId} data-teamid={teamId} data-title={title} data-description={description} data-teamarr={teamIdList} data-memarr={memIdList} data-onairdate={date}></div>)
           : (<div id={program.id} data-teamid={teamId}></div>)}
         <Text>
           <ul className={media === 1 ? "row" : "column"}>
@@ -393,7 +393,7 @@ const Program = ({ program, teamId }) => {
               <Button className="button-pink" onClick={registerPM}>PM登録</Button>
             </li>
             <li>
-              <p>放送</p>
+              <p>放送：{staId}</p>
               {program.station_name}
               <br />
               <span className='text_blue'>類似予定</span>

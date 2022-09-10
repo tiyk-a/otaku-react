@@ -555,7 +555,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         <div>
           {itemMList.map((e, index) => (
             <div className="itemBox" key={index}>
-                <ItemM item={e} teamId={teamId} />
+              <ItemM item={e} teamId={teamId} />
             </div>
           ))}
           <Button className="button-pink" onClick={toggleCalendar}>カレンダー</Button>

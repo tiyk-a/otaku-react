@@ -79,6 +79,7 @@ const All = () => {
             id: pData.pm_id,
             title: pData.title,
             description: pData.description,
+            date: pData.on_air_date,
             teamArr: stringToArr(pData.teamArr),
             memArr: stringToArr(pData.memArr),
             stationArr: stringToArr(pData.stationArr),
