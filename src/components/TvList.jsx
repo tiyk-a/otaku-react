@@ -98,6 +98,19 @@ const TvList = ({tvList, pmList, teamId}) => {
   return (
     <div className="allItemsList">
       <h2>Program <Button className="button-pink" onClick={bundlePm}>一括登録</Button> <Button className="button-pink" onClick={bundleDelP}>一括削除</Button></h2>
+      {function () {
+        // チーム固有のメッセージ
+        // V6
+        if (teamId === 10) {
+          return (
+            <p>
+              <b>長野博</b>
+              <br/>
+              水：よじごじＤａｙｓ、金：ノンストップ！
+            </p>
+          )
+        }
+      }()}
       {tvList !== undefined && tvList.length > 0 ? (
         tvList.map((e, index) => (
           <div className="itemBox" key={index}>
