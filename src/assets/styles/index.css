@@ -8,9 +8,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-html {
-}
-
 .MuiButtonBase-root {
   margin-left: 26px;
   /* background: #FFF2F2; */
@@ -46,8 +43,6 @@ html {
   color: black;
   font-weight: 600;
 }
-code {
-}
 
 a {
   text-decoration: none;
@@ -71,30 +66,9 @@ ul {
   display: flex;
 }
 
-.allItemsList {
-  /* display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center; */
-}
-
 .itemContainer {
   text-align: center;
 }
-
-/* .newItemForm {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  width: 80vw;
-  margin: auto;
-} */
-
-.textfield{
-  color: red;
- }
 
 .header {
   display: flex;
@@ -138,38 +112,20 @@ ul {
   width: 50vw;
 }
 
-.postedStyle {
-  /* background: red; */
-}
-
 .notPostedStyle {
-  background: pink;
+  border-color: lightgray;
+  border-style: solid;
+  /* background: pink; */
 }
 
 .editedStyle {
   background: rgba(204, 140, 246, 0.329);
 }
 
-.notEditedStyle {
-  background: green;
-}
-
-img {
-  width: 20vw;
-  height: 25vh;
-}
-
-button {
-    /* margin-left: 26px;
-    background: deeppink;
-    background: #FFF2F2;
-    margin: 10px 0; */
-}
-
 .button-pink {
   margin-left: 26px !important;
   background: #FFF2F2 !important;
-  margin: 10px 0 !important;
+  margin: 10px 5px !important;
 }
 
 button:hover {
@@ -235,10 +191,6 @@ p {
 .textBoxSp {
   overflow: hidden;
 }
-
-/* ul li:nth-child(1){
-  flex-basis:  50px;
-} */
 
 .textBoxTitle {
   overflow: hidden;
@@ -560,24 +512,6 @@ color: #ff4444;
 
 .text_blue {
   color: #3584bb;
-}
-
-.add_regpm_parent {
-  position:fixed;
-  top:10%;
-  z-index: 3000;
-}
-.add_regpm_box {
-  background: purple;
-  color: white;
-  /* opacity: 100%; */
-  top: 50rem;
-  margin-top: 0;
-}
-
-.add_regpm_btn {
-  opacity: 90%;
-  position: relative;
 }
 
 .add_pm {
