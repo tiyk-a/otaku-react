@@ -515,6 +515,10 @@ color: #ff4444;
   opacity: 90%;
 }
 
+.hidden {
+  display: none;
+}
+
 .hiddenCheckBox {
   display: none;
 }
@@ -584,4 +588,8 @@ color: #ff4444;
   opacity: 0.5;
   transition: opacity 0.5s;
   color: red;
+}
+
+.selected {
+  opacity: 0.5;
 }

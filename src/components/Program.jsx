@@ -33,6 +33,7 @@ const Program = ({ program, teamId }) => {
   const [addTeamFlg, setAddTeamFlg] = useState(false);
   const [editedFlg, setEditedFlg] = useState(false);
   const [media, setMedia] = useState(1);
+  const [hidden, setHidden] = useState(false);
 
   /**
    * 
@@ -78,46 +79,6 @@ const Program = ({ program, teamId }) => {
       setMedia(1);
     }
   }
-
-  /**
-   * PM登録
-   */
-  const registerPM = async () => {
-    if (teamId !== undefined) {
-      if (pmId === 0) {
-        setPmId(undefined);
-      }
-
-      const data = {
-        program_id: id,
-        pm_id: pmId,
-        teamArr: teamIdList.join(','),
-        memArr: memIdList.join(','),
-        station_id: staId,
-        title: title,
-        description: description,
-        on_air_date: date,
-      }
-
-      await axios
-        .post(ApiPath.TV, data)
-        .then(response => {
-          if (response.data) {
-            var tmpUrl = window.location.href;
-            var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-            var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
-            window.location.href = newUrl2;
-          } else {
-            window.alert("更新エラーです");
-          }
-        })
-        .catch(error => {
-          if (error.code === "ECONNABORTED") {
-            window.alert("タイムアウトしました");
-          }
-        });
-    }
-  };
 
   /**
    * 入力された日付をSTATEに反映
@@ -196,20 +157,6 @@ const Program = ({ program, teamId }) => {
   }
 
   /**
-   * メンバーIDを追加する(toggleしない)
-   * すでに追加されてる時は何もしない。
-   * 
-   * @param {*} e 
-   */
-  const addMem = e => {
-    if (!memIdList.includes(e)) {
-      var tmp = [...memIdList];
-      tmp.push(e);
-      return tmp;
-    }
-  }
-
-  /**
    * メンバーをtoggle
    * 
    * @param {*} memberId 
@@ -235,7 +182,6 @@ const Program = ({ program, teamId }) => {
    * 
    */
   const remALlMem = () => {
-    console.log(memIdList);
     setMemIdList([]);
   }
 
@@ -252,13 +198,8 @@ const Program = ({ program, teamId }) => {
     await axios
       .post(ApiPath.TV + "addStation", data)
       .then(response => {
-        if (response.data) {
-          var tmpUrl = window.location.href;
-          var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-          var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
-          window.location.href = newUrl2;
-        } else {
-          window.alert("更新エラーです");
+        if (!response.data) {
+          window.alert("追加エラーです");
         }
       })
       .catch(error => {
@@ -269,7 +210,7 @@ const Program = ({ program, teamId }) => {
   }
 
   return (
-    <div>
+    <div className={hidden ? "hidden" : ""}>
       <a href={url} target="_blank">
         <div className="link"><p>詳細</p></div>
       </a>
@@ -399,8 +340,6 @@ const Program = ({ program, teamId }) => {
                 minRows={3}
                 maxRows={5}
               />
-              <br />
-              <Button className="button-pink" onClick={registerPM}>PM登録</Button>
             </li>
             <li>
               <p>放送：{staId}</p>

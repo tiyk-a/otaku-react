@@ -79,10 +79,11 @@ const TvList = ({tvList, pmList, teamId}) => {
       .post(ApiPath.TV + "bundle/del_p", data)
       .then(response => {
         if (response.data) {
-          var tmpUrl = window.location.href;
-          var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-          var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
-          window.location.href = newUrl2;
+          Array.from(elems).forEach((e) => {
+            var elem = document.getElementById(e.id);
+            // HTML構造にとっても依存！！
+            elem.parentElement.parentElement.classList.add('hidden');
+          });
         } else {
           window.alert("登録エラーです");
           console.log(response);
