@@ -81,8 +81,8 @@ const Header = styles => {
           <p>Env:{process.env.NODE_ENV}</p>
       </div>
       <div>
-        <Button className="button-pink" onClick={linkIm}>IM</Button>
-        <Button className="button-pink" onClick={linkTv}>TV</Button>
+        <Button className="button-pink header-im" onClick={linkIm}>IM</Button>
+        <Button className="button-pink header-tv" onClick={linkTv}>TV</Button>
         <Button className="button-pink" onClick={linkTw}>Twitter</Button>
       </div>
     </HeaderBar>

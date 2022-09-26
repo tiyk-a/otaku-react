@@ -48,13 +48,29 @@ const Top = () => {
         const im = response.data.im;
         const errJ = response.data.errJ;
 
-        // 未確認データ件数
+        // 未確認Itemデータ件数
+        var itemCount = 0;
         if (response.data.itemNumberMap !== undefined) {
           var map = {};
           Object.keys(response.data.itemNumberMap).forEach(function (key) {
+            itemCount = itemCount + response.data.itemNumberMap[key];
             map[key] = response.data.itemNumberMap[key];
           });
           setNumbers(map);
+        }
+
+        // 1件以上未確認ITEMがあれば数をヘッダーに表示してあげる
+        if (itemCount > 0) {
+          var elem = document.getElementsByClassName('header-im');
+          // HTML構造にとっても依存！！
+          elem[0].innerHTML = "<p>IM <span class='itemNumber'>" + itemCount + "</span></p>";
+        }
+
+        // 1件以上未確認TV件数があれば数をヘッダーに表示してあげる
+        if (response.data.tvCount !== undefined && response.data.tvCount > 0) {
+          var elem = document.getElementsByClassName('header-tv');
+          // HTML構造にとっても依存！！
+          elem[0].innerHTML = "<p>PM <span class='itemNumber'>" + response.data.tvCount + "</span></p>";
         }
 
         // item(w/o IM)

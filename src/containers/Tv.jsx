@@ -100,12 +100,28 @@ const All = () => {
         setPmList(pmlist);
 
         // 未確認データ件数
+        var tvCount = 0;
         if (response.data.pnumberMap !== undefined) {
           var map = {};
           Object.keys(response.data.pnumberMap).forEach(function (key) {
+            tvCount = tvCount + response.data.pnumberMap[key];
             map[key] = response.data.pnumberMap[key];
           });
           setNumbers(map);
+        }
+
+        // 1件以上未確認ITEMがあれば数をヘッダーに表示してあげる
+        if (tvCount > 0) {
+          var elem = document.getElementsByClassName('header-pm');
+          // HTML構造にとっても依存！！
+          elem[0].innerHTML = "<p>PM <span class='itemNumber'>" + tvCount + "</span></p>";
+        }
+
+        // 1件以上未確認ITEM件数があれば数をヘッダーに表示してあげる
+        if (response.data.itemCount !== undefined && response.data.tvCount > 0) {
+          var elem = document.getElementsByClassName('header-im');
+          // HTML構造にとっても依存！！
+          elem[0].innerHTML = "<p>IM <span class='itemNumber'>" + response.data.itemCount + "</span></p>";
         }
       })
       .catch(error => {
