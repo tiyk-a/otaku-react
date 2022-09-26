@@ -339,8 +339,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       <MediaQuery query="(min-width: 767px)">
         {/* PC */}
         <h3>未チェックItem</h3>
-        <Button className="button-pink" onClick={bundleItem}>一括登録</Button>
-        <Button className="button-pink" onClick={bundleItemManage2}>一括設定</Button>
+        <Button className="button-pink" onClick={bundleItem}>登録</Button>
+        <Button className="button-pink" onClick={bundleItemManage2}>設定</Button>
         <FormControl fullWidth>
           <p>IM検索: {imId}</p>
           <Input
@@ -398,8 +398,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       <MediaQuery query="(max-width: 519px)">
         {/* SP */}
         <h3>未チェックItem</h3>
-        <Button className="button-pink" onClick={bundleItem}>一括登録</Button>
-        <Button className="button-pink" onClick={bundleItemManage2}>一括設定</Button>
+        <Button className="button-pink" onClick={bundleItem}>登録</Button>
+        <Button className="button-pink" onClick={bundleItemManage2}>設定</Button>
         <FormControl fullWidth>
         <p>IM検索: {imId}</p>
         <NativeSelect
@@ -468,8 +468,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       <MediaQuery query="(min-width: 767px)">
         {/* PC */}
         <h3>未チェックItem
-          <Button className="button-pink" onClick={bundleItem}>一括登録</Button>
-          <Button className="button-pink" onClick={bundleItemManage2}>一括設定</Button>
+          <Button className="button-pink" onClick={bundleItem}>登録</Button>
+          <Button className="button-pink" onClick={bundleItemManage2}>設定</Button>
           <FormControl fullWidth>
             <p>IM検索: {imId}</p>
             <Input
@@ -505,8 +505,8 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
       <MediaQuery query="(max-width: 519px)">
         {/* SP */}
         <h3>未チェックItem</h3>
-        <Button className="button-pink" onClick={bundleItem}>一括登録</Button>
-        <Button className="button-pink" onClick={bundleItemManage2}>一括設定</Button>
+        <Button className="button-pink" onClick={bundleItem}>登録</Button>
+        <Button className="button-pink" onClick={bundleItemManage2}>設定</Button>
       </MediaQuery>
       <MediaQuery query="(min-width: 520px) and (max-width: 959px)">
         {/* TB */}

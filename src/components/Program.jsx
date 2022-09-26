@@ -198,7 +198,11 @@ const Program = ({ program, teamId }) => {
     await axios
       .post(ApiPath.TV + "addStation", data)
       .then(response => {
-        if (!response.data) {
+        if (response.data) {
+          var elem = document.getElementById(id);
+          // HTML構造にとっても依存！！
+          elem.parentElement.parentElement.classList.add('hidden');
+        } else {
           window.alert("追加エラーです");
         }
       })
@@ -315,7 +319,7 @@ const Program = ({ program, teamId }) => {
                 )}
                 </NativeSelect>
               ) : (
-                <Button className="button-pink" onClick={toggleAddTeamFlg}>+prel</Button>
+                <Button className="button-pink" onClick={toggleAddTeamFlg}>+Team</Button>
               )}
               <Button className="button-pink" onClick={remALlMem}>× Mem</Button>
             </li>

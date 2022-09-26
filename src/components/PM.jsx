@@ -358,7 +358,7 @@ const PM = ({ pm, teamId }) => {
                 )}
               </NativeSelect>
             ) : (
-              <Button className="button-pink" onClick={toggleAddTeam}>+prel</Button>
+              <Button className="button-pink" onClick={toggleAddTeam}>+Team</Button>
             )}
           </li>
           <li className={media === 1 ? "row" : "column"}>

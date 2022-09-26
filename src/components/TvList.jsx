@@ -64,7 +64,7 @@ const TvList = ({tvList, pmList, teamId}) => {
    * @returns 
    */
   const bundleDelP = async() => {
-    var res = window.confirm("一括削除しますか？");
+    var res = window.confirm("削除しますか？");
     if (res === false) {
       return "";
     }
@@ -98,7 +98,7 @@ const TvList = ({tvList, pmList, teamId}) => {
 
   return (
     <div className="allItemsList">
-      <h2>Program <Button className="button-pink" onClick={bundlePm}>一括登録</Button> <Button className="button-pink" onClick={bundleDelP}>一括削除</Button></h2>
+      <h2>Program <Button className="button-pink" onClick={bundlePm}>登録</Button> <Button className="button-pink" onClick={bundleDelP}>削除</Button></h2>
       {function () {
         // チーム固有のメッセージ
         // V6
@@ -123,7 +123,7 @@ const TvList = ({tvList, pmList, teamId}) => {
           <h1>TVデータが見つかりませんでした:(</h1>
         </div>
       )}
-      <Button className="button-pink" onClick={bundlePm}>一括登録</Button> <Button className="button-pink" onClick={bundleDelP}>一括削除</Button>
+      <Button className="button-pink" onClick={bundlePm}>登録</Button> <Button className="button-pink" onClick={bundleDelP}>削除</Button>
       <h2>PM</h2>
       {pmList !== undefined && pmList.length > 0 ? (
         pmList.map((e, index) => (
