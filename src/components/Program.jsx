@@ -231,6 +231,15 @@ const Program = ({ program, teamId }) => {
   }
 
   /**
+   * このボタン押したらメンバー全部抜きます
+   * 
+   */
+  const remALlMem = () => {
+    console.log(memIdList);
+    setMemIdList([]);
+  }
+
+  /**
    * PMにステーションIDを追加します
    */
   const addPm = async(pm_id) => {
@@ -367,6 +376,7 @@ const Program = ({ program, teamId }) => {
               ) : (
                 <Button className="button-pink" onClick={toggleAddTeamFlg}>+prel</Button>
               )}
+              <Button className="button-pink" onClick={remALlMem}>× Mem</Button>
             </li>
             <li className={media === 1 ? "textBox" : "textBoxSp"}>
               <Input
