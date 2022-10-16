@@ -121,10 +121,14 @@ const PM = ({ pm, teamId }) => {
     .then(response => {
       // 処理が成功したらresponseにはstatus=200,data=trueを返却するようにしてる
       if (response.data) {
-        var tmpUrl = window.location.href;
-        var newUrl = tmpUrl.replace("http://localhost:3000/", "");
-        var newUrl2 = newUrl.replace("http://chiharu-front.herokuapp.com/", "");
-        window.location.href = newUrl2;
+        var elem = document.getElementById(pm.id);
+        // editedを外す
+        if (editedFlg) {
+          setEditedFlg(false);
+        }
+        // HTML構造にとっても依存！！
+        elem.parentElement.parentElement.classList.add('hidden');
+        elem.parentElement.innerHTML = "<div></div>";
       } else {
         window.alert("削除エラーです");
         console.log(response);

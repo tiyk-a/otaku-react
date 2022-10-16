@@ -83,6 +83,8 @@ const TvList = ({tvList, pmList, teamId}) => {
             var elem = document.getElementById(e.id);
             // HTML構造にとっても依存！！
             elem.parentElement.parentElement.classList.add('hidden');
+            elem.classList.remove('target_p');
+            elem.innerHTML = "<div></div>";
           });
         } else {
           window.alert("登録エラーです");

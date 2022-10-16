@@ -200,8 +200,14 @@ const Program = ({ program, teamId }) => {
       .then(response => {
         if (response.data) {
           var elem = document.getElementById(id);
+          // editedを外す
+          if (editedFlg) {
+            setEditedFlg(false);
+          }
           // HTML構造にとっても依存！！
           elem.parentElement.parentElement.classList.add('hidden');
+          elem.classList.remove('target_p');
+          elem.innerHTML = "<div></div>";
         } else {
           window.alert("追加エラーです");
         }
