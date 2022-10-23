@@ -527,3 +527,7 @@ color: #ff4444;
 .selected {
   opacity: 0.5;
 }
+
+.pointer {
+  cursor:pointer;
+}

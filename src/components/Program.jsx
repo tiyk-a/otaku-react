@@ -34,6 +34,7 @@ const Program = ({ program, teamId }) => {
   const [editedFlg, setEditedFlg] = useState(false);
   const [media, setMedia] = useState(1);
   const [hidden, setHidden] = useState(false);
+  const [comment, setComment] = useState('');
 
   /**
    * 
@@ -66,6 +67,9 @@ const Program = ({ program, teamId }) => {
     setTeamIdList(program.teamArr);
     setMemIdList(program.memArr);
     setStaId(program.station_id);
+
+    // team固有の処理を最後に入れようか
+    commentSetting();
   }, [moment, program.date, program.description, program.id, program.teamArr, program.memArr, program.station_id, program.title, program.url]);
 
   /**
@@ -77,6 +81,36 @@ const Program = ({ program, teamId }) => {
       setMedia(2);
     } else {
       setMedia(1);
+    }
+  }
+
+  /**
+   * チームとメンバー固有の設定
+   * 特定曜日とか隔週でしか出演しない情報がある時、
+   * そのことを通知してあげたいの
+   * commentに設定してあげるよ
+   * https://qiita.com/kazu56/items/557740f398e82fc881df
+   * str.match(/文字列/)で、文字列が含まれれば配列、文字列が含まれなければnullが返る
+   * 
+   */
+  const commentSetting = () => {
+    // V6
+    if (teamId === 10) {
+      // ノンストップ
+      if (title.match(/ノンストップ/)) {
+        setComment("金：坂本昌行の生料理");
+      }
+      // よじごじＤａｙｓ
+      if (title.match(/よじごじＤａｙｓ/)) {
+        setComment("水：長野博");
+      }
+    }
+    // Snowman
+    if (teamId === 6) {
+      // ノンストップ
+      if (title.match(/ノンストップ/)) {
+        setComment("木隔週：深澤辰哉");
+      }
     }
   }
 
@@ -237,7 +271,7 @@ const Program = ({ program, teamId }) => {
                   label="on_air_date"
                   value={date}
                   onChange={handleChangeDate}
-                  format="yyyy/MM/dd HH:mm"
+                  format="yyyy/MM/dd EE HH:mm"
                 />
               </MuiPickersUtilsProvider>
             </li>
@@ -330,6 +364,7 @@ const Program = ({ program, teamId }) => {
               <Button className="button-pink" onClick={remALlMem}>× Mem</Button>
             </li>
             <li className={media === 1 ? "textBox" : "textBoxSp"}>
+              <span className='text_blue'>{comment}</span>
               <Input
                 type="text"
                 name="title"
