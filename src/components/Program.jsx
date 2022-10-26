@@ -94,6 +94,14 @@ const Program = ({ program, teamId }) => {
    * 
    */
   const commentSetting = () => {
+    // Snowman
+    if (teamId === 6) {
+      // ノンストップ
+      if (title.match(/ノンストップ/)) {
+        setComment("木隔週：深澤辰哉");
+      }
+    }
+
     // V6
     if (teamId === 10) {
       // ノンストップ
@@ -105,11 +113,20 @@ const Program = ({ program, teamId }) => {
         setComment("水：長野博");
       }
     }
-    // Snowman
-    if (teamId === 6) {
-      // ノンストップ
-      if (title.match(/ノンストップ/)) {
-        setComment("木隔週：深澤辰哉");
+
+    // ジャニーズWEST
+    if (teamId === 15 || teamId === 7) {
+      // ヒルナンデス
+      if (title.match(/ヒルナンデス/)) {
+        setComment("木：中間淳太、桐山照史、関ジャニ∞横山裕");
+      }
+    }
+
+    // Hey!Say!JUMP
+    if (teamId === 19) {
+      // ヒルナンデス
+      if (title.match(/ヒルナンデス/)) {
+        setComment("火：八乙女光、有岡大貴");
       }
     }
   }
