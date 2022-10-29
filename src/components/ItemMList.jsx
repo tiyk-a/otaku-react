@@ -436,6 +436,7 @@ const ItemMList = ({itemList, itemMList, teamId, errJList}) => {
         <h3>未チェックItem</h3>
         <Button className="button-pink" onClick={bundleItem}>登録</Button>
         <Button className="button-pink" onClick={bundleItemManage2}>設定</Button>
+        <Button className="button-pink" onClick={bundleDel}>削除</Button>
         <FormControl fullWidth>
           <p>IM検索: {imId}</p>
           <Input

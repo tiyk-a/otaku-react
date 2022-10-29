@@ -33,6 +33,7 @@ const Item = ({ item, teamId }) => {
   const [allMemIdList, setAllMemIdList] = useState([]);
   const [addIrelFlg, setAddIrelFlg] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [dispDetail, setDispDetail] = useState(false);
   const [media, setMedia] = useState(1);
 
   /**
@@ -294,18 +295,29 @@ const Item = ({ item, teamId }) => {
     setMemIdList(exportFunction.toggleMem(memberId, memIdList));
   }
 
-/**
- * チーム一括選択toggle
- */
-const toggleSelectedItem = () => {
-  if (editedFlg) {
-    setEditedFlg(false);
-    setIsChecked(false);
-  } else {
-    setEditedFlg(true);
-    setIsChecked(true);
+  /**
+   * チーム一括選択toggle
+   */
+  const toggleSelectedItem = () => {
+    if (editedFlg) {
+      setEditedFlg(false);
+      setIsChecked(false);
+    } else {
+      setEditedFlg(true);
+      setIsChecked(true);
+    }
   }
-}
+
+  /**
+   * 詳細表示・非表示切り替え
+   */
+  const toggleDispDetail = () => {
+    if (dispDetail) {
+      setDispDetail(false);
+    } else {
+      setDispDetail(true);
+    }
+  }
 
   return (
     <div className={item.masterId !== null && item.masterId !== undefined ? "postedStyle itemContainer": editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
@@ -316,8 +328,6 @@ const toggleSelectedItem = () => {
         <ul className={media === 1 ? "row" : "column"}>
           <input type="checkbox" className="hiddenCheckBox" name="add_item" checked={isChecked} value={id} />
           <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
-            <p className='hidden'>ItmId•{item.id}</p>
-            <br />
             <Input
             type="text"
             name="IM register"
@@ -349,6 +359,8 @@ const toggleSelectedItem = () => {
                 autoOk={true}
               />
             </MuiPickersUtilsProvider>
+            <Button className="button-pink" onClick={toggleDispDetail}>詳細表示</Button>
+            <p className={dispDetail ? ("") : ("hidden")}>ItmId•{item.id}</p>
           </li>
           <li className={media === 1 ? null : "column"}>
             {teamIdList !== null && teamIdList !== undefined ? (
@@ -478,17 +490,6 @@ const toggleSelectedItem = () => {
             className="titleInput"
             />
           </li>
-          {/* <li className="price">
-            <p className='hidden'>
-              <b>{item.price}</b>&nbsp;yen
-            </p> */}
-            {/* TODO:クラス設定、分岐不要？ */}
-            {/* <span className={media === 1 ? "column" : "column"}>
-              <Button className="button-pink" onClick={registerIM}>IM登録</Button>
-              <Button className="button-pink" onClick={updFctChk}>IM設定</Button>
-              <Button className="button-pink" onClick={delIm}>DELETE</Button>
-            </span>
-          </li> */}
         </ul>
       </Text>
     </div>
