@@ -23,6 +23,7 @@ const Item = ({ item, teamId }) => {
   const [date, setDate] = useState('');
   const [amazon_image, setAmazon_image] = useState('');
   const [title, setTitle] = useState('');
+  const [note, setNote] = useState('');
   const [tmpVer, setTmpVer] = useState('');
   const [verArr, setVerArr] = useState([]);
   const [editedFlg, setEditedFlg] = useState(false);
@@ -82,6 +83,7 @@ const Item = ({ item, teamId }) => {
         amazon_image: amazon_image,
         del_flg: false,
         vers: verArr,
+        note: note,
       }
 
       await axios
@@ -124,6 +126,19 @@ const Item = ({ item, teamId }) => {
   const handleChangeTitle = e => {
     const txt = e.target.value;
     setTitle(txt);
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
+  };
+
+  /**
+   * note更新
+   * 
+   * @param {*} e 
+   */
+  const handleChangeNote = e => {
+    const txt = e.target.value;
+    setNote(txt);
     if (!editedFlg) {
       setEditedFlg(true);
     }
@@ -295,13 +310,13 @@ const toggleSelectedItem = () => {
   return (
     <div className={item.masterId !== null && item.masterId !== undefined ? "postedStyle itemContainer": editedFlg ? "editedStyle itemContainer" : "notPostedStyle itemContainer"} onClick={toggleSelectedItem}>
       {editedFlg
-        ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-teamarr={teamIdList} data-memarr={memIdList} data-verarr={verArr}></div>)
+        ? (<div className="target_item" id={item.id} data-imid={imId} data-teamid={teamId} data-title={title} data-date={date} data-image={amazon_image} data-teamarr={teamIdList} data-memarr={memIdList} data-verarr={verArr} data-note={note}></div>)
         : (<div id={item.id} data-teamid={teamId}></div>)}
       <Text>
         <ul className={media === 1 ? "row" : "column"}>
           <input type="checkbox" className="hiddenCheckBox" name="add_item" checked={isChecked} value={id} />
           <li className={media === 1 ? "textBoxTitle" : "textBoxTitleSp"}>
-            <p>ItmId•{item.id}</p>
+            <p className='hidden'>ItmId•{item.id}</p>
             <br />
             <Input
             type="text"
@@ -453,18 +468,27 @@ const toggleSelectedItem = () => {
               ):("")
             }
             <p>{item.url}</p>
+            <br />
+            <Input
+            type="text"
+            name="短文商品ポイント"
+            value={note}
+            onChange={handleChangeNote}
+            placeholder="短文商品ポイント"
+            className="titleInput"
+            />
           </li>
-          <li className="price">
-            <p>
+          {/* <li className="price">
+            <p className='hidden'>
               <b>{item.price}</b>&nbsp;yen
-            </p>
+            </p> */}
             {/* TODO:クラス設定、分岐不要？ */}
-            <span className={media === 1 ? "column" : "column"}>
+            {/* <span className={media === 1 ? "column" : "column"}>
               <Button className="button-pink" onClick={registerIM}>IM登録</Button>
               <Button className="button-pink" onClick={updFctChk}>IM設定</Button>
               <Button className="button-pink" onClick={delIm}>DELETE</Button>
             </span>
-          </li>
+          </li> */}
         </ul>
       </Text>
     </div>

@@ -104,6 +104,7 @@ const Top = () => {
             const m = {
               id: itemM.im.im_id,
               title: itemM.im.title,
+              note: itemM.im.note,
               pubDate: itemM.im.publication_date,
               image: itemM.im.amazon_image,
               ver: itemM.verList,

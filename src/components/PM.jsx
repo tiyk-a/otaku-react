@@ -127,7 +127,6 @@ const PM = ({ pm, teamId }) => {
           setEditedFlg(false);
         }
         // HTML構造にとっても依存！！
-        elem.parentElement.parentElement.classList.add('hidden');
         elem.parentElement.innerHTML = "<div></div>";
       } else {
         window.alert("削除エラーです");
