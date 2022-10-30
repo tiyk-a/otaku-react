@@ -18,6 +18,7 @@ const ItemM = ({ item }) => {
   const date = moment(item.pubDate).format('YYYY/MM/DD');
   const [id, setId] = useState('');
   const [title, setTitle] = useState('');
+  const [note, setNote] = useState('');
   const [image, setImage] = useState('');
   const [verArr, setVerArr] = useState([]);
   const [tmpVer, setTmpVer] = useState('');
@@ -38,6 +39,7 @@ const ItemM = ({ item }) => {
     isSmartPhone();
 
     setTitle(item.title);
+    setNote(item.note);
 
     // verを登録する（im_v_idとver_name, im_idを配列にして入れる）
     setVerArrFunc(item.ver);
@@ -48,7 +50,7 @@ const ItemM = ({ item }) => {
     setMemIdList(item.memArr);
     setAllTeamIdList(exportFunction.getAllTeam());
     setAllMemIdList(exportFunction.getAllMember());
-  }, [item.id, item.image, item.relList, item.relMList, item.title, item.ver, item.teamArr, item.memArr]);
+  }, [item.id, item.image, item.relList, item.relMList, item.title, item.note, item.ver, item.teamArr, item.memArr]);
 
   /**
    * メディア判別
@@ -154,6 +156,19 @@ const ItemM = ({ item }) => {
   };
 
   /**
+   * note更新
+   * 
+   * @param {*} e 
+   */
+  const handleChangeNote = e => {
+    const txt = e.target.value;
+    setNote(txt);
+    if (!editedFlg) {
+      setEditedFlg(true);
+    }
+  };
+
+  /**
    * メンバーの表示非表示をtoggle
    */
   const toggleShowMem = () => {
@@ -217,6 +232,7 @@ const ItemM = ({ item }) => {
     const data = {
       im_id: id,
       title: title,
+      note: note,
       publication_date: date,
       amazon_image: image,
       del_flg: false,
@@ -522,6 +538,15 @@ const ItemM = ({ item }) => {
             ):("")
             }
             <p>{item.url}</p>
+            <br />
+            <Input
+              type="text"
+              name="短文商品ポイント"
+              value={note}
+              onChange={handleChangeNote}
+              placeholder="短文商品ポイント"
+              className="titleInput"
+            />
           </li>
           <li>
             {/* TODO:クラス分岐なし？ */}
