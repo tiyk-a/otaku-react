@@ -141,6 +141,26 @@ const PM = ({ pm, teamId }) => {
   };
 
   /**
+   * 既存商品の更新
+   */
+  const tvAlertTasklet = async() => {
+
+    await axios
+    .get(ApiPath.PM + "tvAlertTasklet?pmid=" + pm.id)
+    .then(response => {
+      if (response.data) {
+        var elem = document.getElementById("async-data-pm");
+        elem.innerHTML = "<p>" + response.data + "</p>";
+      }
+    })
+    .catch(error => {
+      if (error.code === "ECONNABORTED") {
+        window.alert("タイムアウトしました");
+      }
+    });
+  };
+
+  /**
    * 各要素が入力されたらSTATEをアップデート
    * @param {*} e 
    */
@@ -366,9 +386,11 @@ const PM = ({ pm, teamId }) => {
           </li>
           <li className={media === 1 ? "row" : "column"}>
             <Button className="button-pink" onClick={updPm}>更新</Button>
+            <Button className="button-pink" onClick={tvAlertTasklet}>tvAlertTasklet</Button>
             <Button className="button-pink" onClick={delPm}>DELETE</Button>
           </li>
         </ul>
+        <div id="async-data-pm"></div>
       </Text>
     </div>
   );

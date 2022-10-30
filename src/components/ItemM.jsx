@@ -267,6 +267,46 @@ const ItemM = ({ item }) => {
   }
 
   /**
+   * futureItemReminderのサンプルを見る
+   */
+  const futureItemReminder = async () => {
+
+    await axios
+    .get(ApiPath.IM + "futureItemReminder?imid=" + id + "&teamid=" + teamIdList[0])
+    .then(response => {
+      if (response.data) {
+        var elem = document.getElementById("async-data-im");
+        elem.innerHTML = "<p>" + response.data + "</p>";
+      }
+    })
+    .catch(error => {
+      if (error.code === "ECONNABORTED") {
+        window.alert("タイムアウトしました");
+      }
+    });
+  };
+
+  /**
+   * publishAnnounceTasklet
+   */
+  const publishAnnounceTasklet = async () => {
+
+    await axios
+    .get(ApiPath.IM + "publishAnnounceTasklet?imid=" + id)
+    .then(response => {
+      if (response.data) {
+        var elem = document.getElementById("async-data-im");
+        elem.innerHTML = "<p>" + response.data + "</p>";
+      }
+    })
+    .catch(error => {
+      if (error.code === "ECONNABORTED") {
+        window.alert("タイムアウトしました");
+      }
+    });
+  };
+
+  /**
    * チームを配列に追加する
    * 
    * @param {*} e 
@@ -487,12 +527,15 @@ const ItemM = ({ item }) => {
             {/* TODO:クラス分岐なし？ */}
             <span className={media === 1 ? "column" : "column"}>
               <Button className="button-pink" onClick={updIM}>IM更新</Button>
+              <Button className="button-pink" onClick={futureItemReminder}>futureItemReminder</Button>
+              <Button className="button-pink" onClick={publishAnnounceTasklet}>publishAnnounceTasklet</Button>
               <Button className="button-pink" onClick={updEyeCatch}>アイキャッチ更新</Button>
               <Button className="button-pink" onClick={upBlog}>Blog更新</Button>
               <Button className="button-pink" onClick={delIm}>DELETE</Button>
             </span>
           </li>
         </ul>
+        <div id="async-data-im"></div>
       </Text>
     </div>
   );
