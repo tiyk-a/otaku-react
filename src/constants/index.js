@@ -5,6 +5,7 @@ export const ApiPath = {
   IM: '/api/im/',
   TV: '/api/tv/',
   ITEM: '/api/item/',
-  PM: '/api/pm/'
+  PM: '/api/pm/',
+  ROOM: '/api/room/'
 };
 

@@ -1,7 +1,7 @@
 import { AppBar, Button } from '@material-ui/core';
 import styled from '@material-ui/styles/styled';
-import history from '../history';
 import React from 'react';
+import history from '../history';
 
 /**
  * ヘッダーコンポーネント
@@ -38,6 +38,14 @@ const Header = styles => {
    */
   const linkTw = () => {
     const url = `/tw/`;
+    history.push(url);
+  };
+
+  /**
+   * 楽天ROOM画面に変遷
+   */
+  const linkRoom = () => {
+    const url = `/room/`;
     history.push(url);
   };
 
@@ -84,6 +92,7 @@ const Header = styles => {
         <Button className="button-pink header-im" onClick={linkIm}>IM</Button>
         <Button className="button-pink header-tv" onClick={linkTv}>TV</Button>
         <Button className="button-pink" onClick={linkTw}>Twitter</Button>
+        <Button className="button-pink" onClick={linkRoom}>ROOM</Button>
       </div>
     </HeaderBar>
   );

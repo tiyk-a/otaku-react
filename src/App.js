@@ -7,6 +7,7 @@ import Header from './components/Header';
 import Tv from './containers/Tv';
 import Top from './containers/Top';
 import Twitter from './containers/Twitter';
+import Room from './components/Room';
 import MediaQuery from "react-responsive";
 import SpHeader from './components/SpHeader';
 import TbHeader from './components/TbHeader';
@@ -80,6 +81,9 @@ class App extends Component {
           </Route>
           <Route exact path="/tw">
             <Twitter />
+          </Route>
+          <Route exact path="/room">
+            <Room />
           </Route>
           <Route exact path="/error/">
             <Error styles={styles} />
