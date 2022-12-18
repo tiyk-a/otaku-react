@@ -1,4 +1,4 @@
-import { Input } from '@material-ui/core';
+import { Button, Input } from '@material-ui/core';
 import React, { useState } from 'react';
 import axios from '../axios';
 import { ApiPath } from '../constants';
@@ -42,10 +42,10 @@ const Room = () => {
             user_id: userId
             }
 
+            window.alert("処理を始めました");
             axios
             .post(ApiPath.ROOM + "seek_like", data)
             .then(response => {
-                window.alert("処理を始めました");
                 // if (response.data) {
                 //     setRes(response.data);
                 // } else {
@@ -95,6 +95,26 @@ const Room = () => {
         }
     }
 
+    /**
+   　　* 昨日いいねしてくれた人を見ます
+   　　*/
+    const seeLikedUsers = () => {
+        axios
+        .get(ApiPath.ROOM + "sug")
+        .then(response => {
+            if (response.data) {
+                setRes(response.data);
+            } else {
+            window.alert("エラーです");
+            }
+        })
+        .catch(error => {
+            if (error.code === "ECONNABORTED") {
+            window.alert("タイムアウトしました");
+            }
+        });
+    }
+
   return (
     <div>
         {/* ユーザーを入れる */}
@@ -117,6 +137,7 @@ const Room = () => {
                 className="titleInput"
                 onKeyDown={seeUserLikes}
             />
+            <Button onClick={seeLikedUsers}>昨日いいねしてくれた人</Button>
         </div>
         {/* 結果を入れる */}
         <div>
@@ -127,6 +148,7 @@ const Room = () => {
                     {res.map((e, index) => (
                         <li id={e.replace(/.*:/,'')} onClick={() =>deleteElem(e.replace(/.*:/,''))}>
                             <a href={"https://room.rakuten.co.jp/" + e.replace(/.*:/,'') + "/items"} target="_blank">{e.replace(/.*:/,'')}</a>
+                             【{e.replace(/:.*/,'')}】
                         </li>
                     ))}
                 </div>
