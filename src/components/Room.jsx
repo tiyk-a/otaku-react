@@ -13,6 +13,7 @@ const Room = () => {
 
     // 画面表示するやつ
     const [user, setUser] = useState('');
+    const [likes, setLikes] = useState(0);
     // 実際にデータにセットするやつ
     const [userId, setUserId] = useState('');
     const [res, setRes] = useState([]);
@@ -115,6 +116,22 @@ const Room = () => {
         });
     }
 
+    /**
+     * 最新のいいね数を取ってきます
+     */
+    const getLatestLikes = () => {
+        axios
+        .get(ApiPath.ROOM + "latest_mylike")
+        .then(response => {
+            setLikes(response.data);
+        })
+        .catch(error => {
+            if (error.code === "ECONNABORTED") {
+            window.alert("タイムアウトしました");
+            }
+        });
+    }
+
   return (
     <div>
         {/* ユーザーを入れる */}
@@ -138,9 +155,12 @@ const Room = () => {
                 onKeyDown={seeUserLikes}
             />
             <Button onClick={seeLikedUsers}>昨日いいねしてくれた人</Button>
+            <br />
+            <Button onClick={getLatestLikes}>いいね更新</Button>
         </div>
         {/* 結果を入れる */}
         <div>
+            <p>いいね：{likes}</p>
             <ul>
                {res.length > 0 ? (
                 <div>
