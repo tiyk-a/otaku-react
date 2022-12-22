@@ -132,6 +132,18 @@ const Room = () => {
         });
     }
 
+    /**
+     * 新規タブで全部開く
+     * @param {*} e 
+     */
+    const openTabs = e => {
+        var elems = document.getElementsByClassName("range_" + e);
+        Array.from(elems).forEach((e) => {
+            window.open(e.getAttribute("href"), '_blank');
+            e.parentNode.remove();
+        })
+    }
+
   return (
     <div>
         {/* ユーザーを入れる */}
@@ -166,10 +178,17 @@ const Room = () => {
                 <div>
                     <p>ユーザー数：{res.length}</p>
                     {res.map((e, index) => (
-                        <li id={e.replace(/.*:/,'')} onClick={() =>deleteElem(e.replace(/.*:/,''))}>
-                            <a href={"https://room.rakuten.co.jp/" + e.replace(/.*:/,'') + "/items"} target="_blank">{e.replace(/.*:/,'')}</a>
-                             【{e.replace(/:.*/,'')}】
-                        </li>
+                        <div>
+                            <li id={e.replace(/.*:/,'')} onClick={() =>deleteElem(e.replace(/.*:/,''))}>
+                                <a href={"https://room.rakuten.co.jp/" + e.replace(/.*:/,'') + "/items"} target="_blank" className={"range_" + Math.floor(index/50)}>{e.replace(/.*:/,'')}</a>
+                                【{e.replace(/:.*/,'')}】{index + "::" + Math.floor(index/50)}
+                            </li>
+                            {function() {
+                                if ((index+1) % 50 === 0) {
+                                    return (<Button className='button-pink' onClick={() => openTabs(Math.floor(index/50))}>{index+1}</Button>)
+                                }
+                            }()}
+                        </div>
                     ))}
                 </div>
                 ) : (
